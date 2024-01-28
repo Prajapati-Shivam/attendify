@@ -35,10 +35,10 @@ const LoginForm = (props: Props) => {
         />
       </div>
       <div className="flex gap-x-4">
-        <Button className="bg-indigo-600 dark:hover:bg-indigo-700 dark:text-white flex-1">
+        <Button className="bg-indigo-600 hover:dark:bg-indigo-700 dark:text-white flex-1">
           Sign in
         </Button>
-        <Button className="bg-white text-black flex-1">
+        <Button className="dark:bg-white dark:text-black flex-1">
           Continue with Google
         </Button>
       </div>
