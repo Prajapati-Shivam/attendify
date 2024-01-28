@@ -8,7 +8,7 @@ type Props = {};
 
 const LoginForm = (props: Props) => {
   return (
-    <form className="bg-white shadow-md dark:bg-gray-800 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-50 p-5 lg:p-10 rounded-md flex flex-col gap-6">
+    <form className="bg-white shadow-md dark:bg-gray-800 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-50 p-5 lg:p-10 rounded-md flex flex-col gap-5">
       <div>
         <UserRadio />
       </div>
@@ -34,9 +34,12 @@ const LoginForm = (props: Props) => {
           className="mt-2 outline-none border-2 border-gray-300 bg-white dark:bg-gray-600 dark:border-gray-700 focus:bg-gray-100"
         />
       </div>
-      <div>
-        <Button className="bg-indigo-600 dark:hover:bg-indigo-700 dark:text-white">
+      <div className="flex gap-x-4">
+        <Button className="bg-indigo-600 dark:hover:bg-indigo-700 dark:text-white flex-1">
           Sign in
+        </Button>
+        <Button className="bg-white text-black flex-1">
+          Continue with Google
         </Button>
       </div>
       <Link
