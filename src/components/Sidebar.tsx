@@ -13,12 +13,15 @@ import {
 } from "@/components/ui/sheet";
 import {
   AreaChart,
+  ChevronRightCircle,
   FileSpreadsheet,
   GraduationCap,
+  LogOut,
   ScrollText,
 } from "lucide-react";
+import { useComponentStore } from "@/store";
 
-export function Sidebar({ selectedComponent, setSelectedComponent }: any) {
+export function Sidebar() {
   const links = [
     {
       name: "Classroom",
@@ -41,30 +44,43 @@ export function Sidebar({ selectedComponent, setSelectedComponent }: any) {
       logo: <ScrollText />,
     },
   ];
-  const handleClick = (comp: any) => {
-    setSelectedComponent(comp);
-  };
+  const component = useComponentStore((state) => state.component);
+  const setComponent = useComponentStore((state) => state.setComponent);
+  const session = true;
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline">Open</Button>
+        <div className="absolute -left-5 top-20 p-2 cursor-pointer">
+          <ChevronRightCircle size={35} />
+        </div>
       </SheetTrigger>
-      <SheetContent side={"left"}>
-        <div className="bg-gray-300 z-30 dark:bg-gray-950 h-screen w-[20%] pt-5 absolute -left-72 space-y-4 shadow-md">
+      <SheetContent side={"left"} className="w-[80%] sm:w-[300px] p-0">
+        <SheetHeader>
+          <SheetTitle className="font-bold text-2xl p-4">Attendify</SheetTitle>
+        </SheetHeader>
+        <div className="">
           {links.map((link) => (
             <div
               key={link.name}
-              className={`flex items-center space-x-4 text-sky-900 dark:text-sky-100 p-4 rounded-r-full transition-all duration-300 hover:bg-gray-100 hover:font-bold hover:dark:bg-gray-100 hover:dark:text-indigo-600 hover:text-indigo-600 cursor-pointer ${
-                selectedComponent === link.component
-                  ? "bg-gray-100 font-bold dark:bg-gray-800 text-indigo-600"
+              className={`flex items-center space-x-4 text-sky-900 dark:text-sky-100 p-4 rounded-r-full transition-all duration-300 hover:bg-gray-200 hover:font-bold hover:dark:bg-gray-800 cursor-pointer ${
+                component === link.component
+                  ? "bg-gray-200 font-bold dark:bg-gray-800 text-indigo-600"
                   : ""
               }`}
-              onClick={() => handleClick(link.component)}
+              onClick={() => setComponent(link.component)}
             >
               <span>{link.logo}</span>
-              <p>{link.name}</p>
+              <span>{link.name}</span>
             </div>
           ))}
+          {session && (
+            <div className="flex items-center space-x-4 text-sky-900 dark:text-sky-100 p-4 rounded-r-full transition-all duration-300 hover:bg-gray-200 hover:font-bold hover:dark:bg-gray-800 cursor-pointer">
+              <span>
+                <LogOut />
+              </span>
+              <span>Logout</span>
+            </div>
+          )}
         </div>
       </SheetContent>
     </Sheet>
