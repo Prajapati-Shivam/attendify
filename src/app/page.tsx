@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <div className="h-[calc(100vh-60px)]">
       <Sidebar />
-      <div className="py-8 px-12">
+      <div className="py-8 px-5 sm:px-12 lg:px-20">
         {/* Render content based on the selectedLink */}
         {selectedComponent === "Dashboard" && <Dashboard />}
         {selectedComponent === "AttendanceSheet" && <AttendanceSheet />}
