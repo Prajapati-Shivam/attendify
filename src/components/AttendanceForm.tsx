@@ -9,7 +9,7 @@ type Props = {};
 const AttendanceForm = (props: Props) => {
   return (
     // Create form with dropdown menu for Classroom, subject and date
-    <div className="border-2 rounded-md border-white p-4">
+    <div className="rounded-md bg-white dark:bg-gray-800 p-4">
       <form action="" className="flex gap-5">
         <SelectClassroom />
         <SelectSubject />

@@ -23,7 +23,7 @@ export function CreateClass() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Create classroom</Button>
+        <Button className="hover:bg-indigo-600/90">Create classroom</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

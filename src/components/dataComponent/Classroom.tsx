@@ -11,7 +11,7 @@ const Classroom = (props: Props) => {
       <h2 className="text-2xl text-indigo-500 font-semibold">Classroom</h2>
       <CreateClass />
       {classroom > 0 && (
-        <div className="mt-10">
+        <div className="mt-10 p-4 bg-white dark:bg-gray-800">
           <ClassroomDataTable />
         </div>
       )}
