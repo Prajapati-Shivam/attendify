@@ -1,5 +1,5 @@
 "use client";
-import { UserRadio } from "@/components/UserRadio";
+import { UserRadio } from "@/components/login_page/UserRadio";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

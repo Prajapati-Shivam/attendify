@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { CreateClass } from "../CreateClass";
-import { ClassroomDataTable } from "../ClassroomDataTable";
+import { CreateClass } from "../classroom/CreateClass";
+import { ClassroomDataTable } from "../classroom/ClassroomDataTable";
 
 type Props = {};
 const classroom = 3;

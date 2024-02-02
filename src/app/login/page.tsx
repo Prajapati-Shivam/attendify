@@ -1,4 +1,4 @@
-import LoginForm from "@/components/LoginForm";
+import LoginForm from "@/components/login_page/LoginForm";
 
 type Props = {};
 

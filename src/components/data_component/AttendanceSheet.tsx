@@ -1,7 +1,7 @@
 import React from "react";
-import AttendanceForm from "../AttendanceForm";
+import AttendanceForm from "../attendance_sheet/AttendanceForm";
 import { Button } from "../ui/button";
-import { StudentList } from "../StudentList";
+import { StudentList } from "../attendance_sheet/StudentList";
 
 type Props = {};
 
