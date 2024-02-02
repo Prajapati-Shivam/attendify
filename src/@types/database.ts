@@ -11,3 +11,13 @@ export interface IAdminsCollection {
   AdminCreateTime: Timestamp | FieldValue;
   AdminNameChangeTime: Timestamp | FieldValue;
 }
+
+export interface IFacultiesCollection {
+  FacultyId: string;
+  FacultyFirstName?: string;
+  FacultyLastName?: string;
+  FacultyPhone: string;
+  FacultyEmail?: string;
+  FacultyCreateTime: Timestamp | FieldValue;
+  FacultyNameChangeTime: Timestamp | FieldValue;
+}

@@ -30,10 +30,10 @@ const firestore = initializeFirestore(app, {
 
 export const db = firestore;
 
-export const analytics = getAnalytics(app);
+//export const analytics = getAnalytics(app);
 
 export const auth = getAuth();
 
-export const storage = getStorage();
+////export const storage = getStorage();
 
-export const messaging = getMessaging(app);
+//export const messaging = getMessaging(app);
