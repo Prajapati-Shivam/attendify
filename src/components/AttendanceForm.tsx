@@ -1,7 +1,7 @@
 import React from "react";
-import { SelectClassroom } from "./selectInput/SelectClassroom";
-import { SelectSubject } from "./selectInput/SelectSubject";
-import { SelectDate } from "./selectInput/SelectDate";
+import { SelectClassroom } from "./select_input/SelectClassroom";
+import { SelectSubject } from "./select_input/SelectSubject";
+import { SelectDate } from "./select_input/SelectDate";
 import { Button } from "./ui/button";
 
 type Props = {};

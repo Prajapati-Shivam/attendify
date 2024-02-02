@@ -1,8 +1,8 @@
 "use client";
-import AttendanceSheet from "@/components/dataComponent/AttendanceSheet";
-import Dashboard from "@/components/dataComponent/Dashboard";
-import Report from "@/components/dataComponent/Report";
-import Classroom from "@/components/dataComponent/Classroom";
+import AttendanceSheet from "@/components/data_component/AttendanceSheet";
+import Dashboard from "@/components/data_component/Dashboard";
+import Report from "@/components/data_component/Report";
+import Classroom from "@/components/data_component/Classroom";
 import { useComponentStore } from "@/store";
 import { Sidebar } from "@/components/Sidebar";
 

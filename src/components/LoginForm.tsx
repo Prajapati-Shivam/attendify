@@ -1,14 +1,33 @@
+"use client";
 import { UserRadio } from "@/components/UserRadio";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { auth } from "@/firebase_configs/config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 
 type Props = {};
 
 const LoginForm = (props: Props) => {
+  /* const handleClick = async () => {
+    createUserWithEmailAndPassword(
+      auth,
+      "yuvrajssingh@gmail.com",
+      "yuvrajSingh"
+    )
+      .then((res) => {
+        console.log(res, "res");
+        
+      })
+      .catch((error) => console.log(error, "error"));
+  }; */
   return (
-    <form className="bg-white dark:bg-slate-800 shadow-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-50 p-5 lg:p-10 rounded-md flex flex-col gap-5">
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="bg-white dark:bg-slate-800 shadow-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-50 p-5 lg:p-10 rounded-md flex flex-col gap-5"
+    >
+      {/* <button onClick={handleClick}>Test</button> */}
       <div>
         <UserRadio />
       </div>
