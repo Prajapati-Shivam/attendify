@@ -1,7 +1,7 @@
 import React from "react";
-import { ToggleMode } from "./ToggleMode";
+import { ToggleMode } from "../components/ToggleMode";
 import { Bell, MessageSquare } from "lucide-react";
-import { UserAvatar } from "./UserAvatar";
+import { UserAvatar } from "../components/UserAvatar";
 type Props = {};
 
 const Navbar = (props: Props) => {
