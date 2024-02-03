@@ -1,4 +1,3 @@
-import { Sidebar } from "@/components/Sidebar";
 import AttendanceForm from "@/components/attendance_sheet/AttendanceForm";
 import { StudentList } from "@/components/attendance_sheet/StudentList";
 import { Button } from "@/components/ui/button";
@@ -7,7 +6,6 @@ type Props = {};
 const AttendanceSheet = (props: Props) => {
   return (
     <div className="h-[calc(100vh-60px)]">
-      <Sidebar />
       <div className="py-8 px-5 sm:px-12 lg:px-20">
         <h2 className="text-2xl text-indigo-500 font-semibold mb-8">
           Attendace
