@@ -1,3 +1,4 @@
+"use client";
 import {
   Sheet,
   SheetContent,
@@ -14,26 +15,27 @@ import {
   LogOut,
   ScrollText,
 } from "lucide-react";
+import Link from "next/link";
 
 const links = [
   {
     name: "Classroom",
-    component: "Classroom",
+    component: "classroom",
     logo: <GraduationCap />,
   },
   {
     name: "Attendance Sheet",
-    component: "AttendanceSheet",
+    component: "attendance_sheet",
     logo: <FileSpreadsheet />,
   },
   {
     name: "Dashboard",
-    component: "Dashboard",
+    component: "dashboard",
     logo: <AreaChart />,
   },
   {
     name: "Report",
-    component: "Report",
+    component: "report",
     logo: <ScrollText />,
   },
 ];
@@ -55,18 +57,18 @@ export function Sidebar() {
         </SheetHeader>
         <div className="">
           {links.map((link) => (
-            <div
+            <Link
+              href={link.component}
               key={link.name}
               className={`flex items-center space-x-4 text-sky-900 dark:text-sky-100 p-4 rounded-r-full transition-all duration-300 hover:bg-gray-200 hover:font-bold hover:dark:bg-gray-800 cursor-pointer ${
                 component === link.component
                   ? "bg-gray-200 font-bold dark:bg-gray-800 text-indigo-600"
                   : ""
               }`}
-              onClick={() => setComponent(link.component)}
             >
               <span>{link.logo}</span>
               <span>{link.name}</span>
-            </div>
+            </Link>
           ))}
           {session && (
             <div className="flex items-center space-x-4 text-sky-900 dark:text-sky-100 p-4 rounded-r-full transition-all duration-300 hover:bg-gray-200 hover:font-bold hover:dark:bg-gray-800 cursor-pointer">
