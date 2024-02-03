@@ -15,29 +15,30 @@ import {
   ScrollText,
 } from "lucide-react";
 
+const links = [
+  {
+    name: "Classroom",
+    component: "Classroom",
+    logo: <GraduationCap />,
+  },
+  {
+    name: "Attendance Sheet",
+    component: "AttendanceSheet",
+    logo: <FileSpreadsheet />,
+  },
+  {
+    name: "Dashboard",
+    component: "Dashboard",
+    logo: <AreaChart />,
+  },
+  {
+    name: "Report",
+    component: "Report",
+    logo: <ScrollText />,
+  },
+];
+
 export function Sidebar() {
-  const links = [
-    {
-      name: "Classroom",
-      component: "Classroom",
-      logo: <GraduationCap />,
-    },
-    {
-      name: "Attendance Sheet",
-      component: "AttendanceSheet",
-      logo: <FileSpreadsheet />,
-    },
-    {
-      name: "Dashboard",
-      component: "Dashboard",
-      logo: <AreaChart />,
-    },
-    {
-      name: "Report",
-      component: "Report",
-      logo: <ScrollText />,
-    },
-  ];
   const component = useComponentStore((state) => state.component);
   const setComponent = useComponentStore((state) => state.setComponent);
   const session = true;
