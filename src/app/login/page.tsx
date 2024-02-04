@@ -4,7 +4,7 @@ type Props = {};
 
 const LoginPage = (props: Props) => {
   return (
-    <div className="h-[calc(100vh-60px)] flex flex-col p-8 md:p-12 lg:p-20 md:flex-row justify-between items-center gap-y-5">
+    <div className="flex flex-col p-8 md:p-12 lg:p-20 md:flex-row justify-between items-center gap-y-5">
       <div
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-100"
         aria-hidden="true"

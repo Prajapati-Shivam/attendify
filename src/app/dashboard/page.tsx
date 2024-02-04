@@ -4,7 +4,7 @@ type Props = {};
 
 const Dashboard = (props: Props) => {
   return (
-    <div className="h-[calc(100vh-60px)]">
+    <div className="h-max">
       <div className="py-8 px-5 sm:px-12 lg:px-20">
         <h2 className="text-2xl text-indigo-500 font-semibold">Dashboard</h2>
         <p>This is dashboard page</p>
