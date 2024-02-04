@@ -1,7 +1,5 @@
 import type { FieldValue, Timestamp } from 'firebase/firestore';
 
-import type { AuthUserType } from './enum';
-
 export interface IAdminsCollection {
   AdminId: string;
   AdminFirstName?: string;
@@ -31,5 +29,5 @@ export interface ILoggedInUsersCollection {
   LoggedInCreatedAt: Timestamp | FieldValue;
   IsLoggedIn: boolean;
   LoggedInCrypt: string;
-  LoggedInUserType: AuthUserType;
+  LoggedInUserType: 'admin' | 'faculty' | 'student';
 }

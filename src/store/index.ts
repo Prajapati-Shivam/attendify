@@ -15,6 +15,6 @@ interface SessionState {
 export const useSessionStore = create<SessionState>(set => ({
   component: 'Classroom',
   setComponent: (component: string) => set(state => ({ ...state, component })),
-  authUser: { AuthUserAuthenticated: true, AuthUserRole: 'admin' },
+  authUser: { AuthUserAuthenticated: false, AuthUserRole: 'admin' },
   setAuthUser: data => set(state => ({ ...state, authUser: data })),
 }));
