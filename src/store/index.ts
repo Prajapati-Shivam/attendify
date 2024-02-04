@@ -16,6 +16,6 @@ export const useSessionStore = create<SessionState>((set) => ({
   component: "Classroom",
   setComponent: (component: string) =>
     set((state) => ({ ...state, component })),
-  authUser: { AuthUserAuthenticated: false, AuthUserRole: "admin" },
+  authUser: { AuthUserAuthenticated: true, AuthUserRole: "admin" },
   setAuthUser: (data) => set((state) => ({ ...state, authUser: data })),
 }));
