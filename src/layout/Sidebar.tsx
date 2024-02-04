@@ -6,7 +6,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useComponentStore } from "@/store";
 import {
   AreaChart,
   ChevronRightCircle,
@@ -16,6 +15,8 @@ import {
   ScrollText,
 } from "lucide-react";
 import Link from "next/link";
+import { useSessionStore } from "@/store";
+import { usePathname } from "next/navigation";
 
 const links = [
   {
@@ -41,9 +42,10 @@ const links = [
 ];
 
 export function Sidebar() {
-  const component = useComponentStore((state) => state.component);
-  const setComponent = useComponentStore((state) => state.setComponent);
-  const session = true;
+  const { authUser } = useSessionStore();
+
+  const pathname = usePathname();
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -60,17 +62,17 @@ export function Sidebar() {
             <Link
               href={link.component}
               key={link.name}
-              className={`flex items-center space-x-4 text-sky-900 dark:text-sky-100 p-4 rounded-r-full transition-all duration-300 hover:bg-gray-200 hover:font-bold hover:dark:bg-gray-800 cursor-pointer ${
-                component === link.component
+              className={`flex items-center space-x-4 text-sky-900 dark:text-sky-100 p-4 rounded-r-full transition-all duration-300  hover:font-bold  cursor-pointer ${
+                pathname.includes(link.component)
                   ? "bg-gray-200 font-bold dark:bg-gray-800 text-indigo-600"
-                  : ""
+                  : "hover:dark:bg-gray-800 hover:bg-gray-200"
               }`}
             >
               <span>{link.logo}</span>
               <span>{link.name}</span>
             </Link>
           ))}
-          {session && (
+          {authUser.AuthUserAuthenticated && (
             <div className="flex items-center space-x-4 text-sky-900 dark:text-sky-100 p-4 rounded-r-full transition-all duration-300 hover:bg-gray-200 hover:font-bold hover:dark:bg-gray-800 cursor-pointer">
               <span>
                 <LogOut />

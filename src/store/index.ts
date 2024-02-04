@@ -12,7 +12,7 @@ interface SessionState {
   setAuthUser: (authUser: IAuthUser) => void;
 }
 
-export const useComponentStore = create<SessionState>((set) => ({
+export const useSessionStore = create<SessionState>((set) => ({
   component: "Classroom",
   setComponent: (component: string) =>
     set((state) => ({ ...state, component })),
