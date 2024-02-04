@@ -1,6 +1,6 @@
 "use client";
 import { useComponentStore } from "@/store";
-import { Sidebar } from "@/layout/Sidebar";
+import { Sidebar } from "@/components/layout/Sidebar";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
