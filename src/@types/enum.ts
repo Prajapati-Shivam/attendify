@@ -1,10 +1,11 @@
 export enum CollectionName {
-  users = 'Users',
+  admins = 'Admins',
   classes = 'Classes',
   students = 'Students',
   faculties = 'Faculties',
   lectures = 'Lectures',
   attendances = 'Attendances',
+  loggedInUsers = 'LoggedInUsers',
 }
 
 export const LocalStorageKey = {
@@ -15,4 +16,9 @@ export enum AuthUserType {
   admin = 'Admin',
   faculty = 'Faculty',
   student = 'Student',
+}
+export interface LocalStorageLoggedInUserData {
+  LoggedInId: string;
+  LoggedInCrypt: string;
+  LoggedInAuthUserType: 'admin' | 'faculty' | 'student';
 }

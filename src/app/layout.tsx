@@ -33,7 +33,7 @@ export default function RootLayout({
           <AuthProvider>
             <Navbar />
             <Sidebar />
-            {children}
+            <div className="min-h-[calc(100vh-60px)]">{children}</div>
             <Footer />
           </AuthProvider>
         </ThemeProvider>
