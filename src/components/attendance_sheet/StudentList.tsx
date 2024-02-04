@@ -1,29 +1,27 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
 const students = [
   {
-    studentId: "1",
-    studentName: "John Doe",
-    status: "Present",
+    studentId: '1',
+    studentName: 'John Doe',
+    status: 'Present',
   },
   {
-    studentId: "2",
-    studentName: "Jane Doe",
-    status: "Present",
+    studentId: '2',
+    studentName: 'Jane Doe',
+    status: 'Present',
   },
   {
-    studentId: "3",
-    studentName: "Peter",
-    status: "Absent",
+    studentId: '3',
+    studentName: 'Peter',
+    status: 'Absent',
   },
 ];
 
@@ -39,7 +37,7 @@ export function StudentList() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {students.map((student) => (
+        {students.map(student => (
           <TableRow key={student.studentId}>
             <TableCell className="font-medium">
               <input type="checkbox" name="status" id={student.studentId} />

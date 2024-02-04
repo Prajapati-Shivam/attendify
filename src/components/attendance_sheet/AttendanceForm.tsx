@@ -1,15 +1,14 @@
-import React from "react";
-import { SelectClassroom } from "../select_input/SelectClassroom";
-import { SelectSubject } from "../select_input/SelectSubject";
-import { SelectDate } from "../select_input/SelectDate";
-import { Button } from "../ui/button";
+import React from 'react';
 
-type Props = {};
+import { SelectClassroom } from '../select_input/SelectClassroom';
+import { SelectDate } from '../select_input/SelectDate';
+import { SelectSubject } from '../select_input/SelectSubject';
+import { Button } from '../ui/button';
 
-const AttendanceForm = (props: Props) => {
+const AttendanceForm = () => {
   return (
     // Create form with dropdown menu for Classroom, subject and date
-    <div className="rounded-md bg-white dark:bg-gray-800 p-4">
+    <div className="rounded-md bg-white p-4 dark:bg-gray-800">
       <form action="" className="flex gap-5">
         <SelectClassroom />
         <SelectSubject />

@@ -1,11 +1,5 @@
-"use client";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+'use client';
+
 import {
   AreaChart,
   ChevronRightCircle,
@@ -13,30 +7,38 @@ import {
   GraduationCap,
   LogOut,
   ScrollText,
-} from "lucide-react";
-import Link from "next/link";
-import { useSessionStore } from "@/store";
-import { usePathname } from "next/navigation";
+} from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { useSessionStore } from '@/store';
 
 const links = [
   {
-    name: "Classroom",
-    component: "classroom",
+    name: 'Classroom',
+    component: 'classroom',
     logo: <GraduationCap />,
   },
   {
-    name: "Attendance Sheet",
-    component: "attendance_sheet",
+    name: 'Attendance Sheet',
+    component: 'attendance_sheet',
     logo: <FileSpreadsheet />,
   },
   {
-    name: "Dashboard",
-    component: "dashboard",
+    name: 'Dashboard',
+    component: 'dashboard',
     logo: <AreaChart />,
   },
   {
-    name: "Report",
-    component: "report",
+    name: 'Report',
+    component: 'report',
     logo: <ScrollText />,
   },
 ];
@@ -49,23 +51,23 @@ export function Sidebar() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <div className="absolute -left-5 top-20 p-2 cursor-pointer">
+        <div className="absolute -left-5 top-20 cursor-pointer p-2">
           <ChevronRightCircle size={35} />
         </div>
       </SheetTrigger>
-      <SheetContent side={"left"} className="w-[80%] sm:w-[300px] p-0">
+      <SheetContent side={'left'} className="w-[80%] p-0 sm:w-[300px]">
         <SheetHeader>
-          <SheetTitle className="font-bold text-2xl p-4">Attendify</SheetTitle>
+          <SheetTitle className="p-4 text-2xl font-bold">Attendify</SheetTitle>
         </SheetHeader>
         <div className="">
-          {links.map((link) => (
+          {links.map(link => (
             <Link
               href={link.component}
               key={link.name}
-              className={`flex items-center space-x-4 text-sky-900 dark:text-sky-100 p-4 rounded-r-full transition-all duration-300  hover:font-bold  cursor-pointer ${
+              className={`flex cursor-pointer items-center space-x-4 rounded-r-full p-4 text-sky-900 transition-all duration-300  hover:font-bold  dark:text-sky-100 ${
                 pathname.includes(link.component)
-                  ? "bg-gray-200 font-bold dark:bg-gray-800 text-indigo-600"
-                  : "hover:dark:bg-gray-800 hover:bg-gray-200"
+                  ? 'bg-gray-200 font-bold text-indigo-600 dark:bg-gray-800'
+                  : 'hover:bg-gray-200 hover:dark:bg-gray-800'
               }`}
             >
               <span>{link.logo}</span>
@@ -73,7 +75,7 @@ export function Sidebar() {
             </Link>
           ))}
           {authUser.AuthUserAuthenticated && (
-            <div className="flex items-center space-x-4 text-sky-900 dark:text-sky-100 p-4 rounded-r-full transition-all duration-300 hover:bg-gray-200 hover:font-bold hover:dark:bg-gray-800 cursor-pointer">
+            <div className="flex cursor-pointer items-center space-x-4 rounded-r-full p-4 text-sky-900 transition-all duration-300 hover:bg-gray-200 hover:font-bold dark:text-sky-100 hover:dark:bg-gray-800">
               <span>
                 <LogOut />
               </span>

@@ -3,25 +3,24 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
 const classrooms = [
   {
-    name: "Classroom 1",
+    name: 'Classroom 1',
     subject: 4,
     student: 150,
   },
   {
-    name: "Classroom 2",
+    name: 'Classroom 2',
     subject: 6,
     student: 200,
   },
   {
-    name: "Classroom 3",
+    name: 'Classroom 3',
     subject: 3,
     student: 100,
   },
@@ -39,7 +38,7 @@ export function ClassroomDataTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {classrooms.map((classroom) => (
+        {classrooms.map(classroom => (
           <TableRow key={classroom.name}>
             <TableCell className="font-medium">{classroom.name}</TableCell>
             <TableCell>{classroom.subject}</TableCell>

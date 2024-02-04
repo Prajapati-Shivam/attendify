@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 import {
   Select,
@@ -8,30 +8,30 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 // Fetch data of classroom and subject from database and display it in the dropdown menu
 // Dummpy Data
 const classroom = [
   {
     id: 1,
-    name: "Classroom 1",
+    name: 'Classroom 1',
   },
   {
     id: 2,
-    name: "Classroom 2",
+    name: 'Classroom 2',
   },
   {
     id: 3,
-    name: "Classroom 3",
+    name: 'Classroom 3',
   },
   {
     id: 4,
-    name: "Classroom 4",
+    name: 'Classroom 4',
   },
   {
     id: 5,
-    name: "Classroom 5",
+    name: 'Classroom 5',
   },
 ];
 export function SelectClassroom() {
@@ -44,7 +44,7 @@ export function SelectClassroom() {
         <SelectGroup>
           <SelectLabel>Classrooms</SelectLabel>
           {/* <SelectItem value="apple">Apple</SelectItem> */}
-          {classroom.map((item) => {
+          {classroom.map(item => {
             return (
               <SelectItem key={item.id} value={item.name}>
                 {item.name}

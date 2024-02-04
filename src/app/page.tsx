@@ -1,12 +1,11 @@
-"use client";
-import { useComponentStore } from "@/store";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { useRouter } from "next/navigation";
+'use client';
+
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
   // const selectedComponent = useComponentStore((state) => state.component);
-  return router.push("/dashboard");
+  return router.push('/dashboard');
   // return (
   //   <div className="h-[calc(100vh-60px)]">
 

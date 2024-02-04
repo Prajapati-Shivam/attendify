@@ -1,15 +1,13 @@
-"use client";
-import { UserRadio } from "@/components/login_page/UserRadio";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { auth } from "@/firebase_configs/config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import Link from "next/link";
+'use client';
 
-type Props = {};
+import Link from 'next/link';
 
-const LoginForm = (props: Props) => {
+import { UserRadio } from '@/components/login_page/UserRadio';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
+const LoginForm = () => {
   /* const handleClick = async () => {
     createUserWithEmailAndPassword(
       auth,
@@ -24,8 +22,8 @@ const LoginForm = (props: Props) => {
   }; */
   return (
     <form
-      onSubmit={(e) => e.preventDefault()}
-      className="bg-white dark:bg-slate-800 shadow-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-50 p-5 lg:p-10 rounded-md flex flex-col gap-5"
+      onSubmit={e => e.preventDefault()}
+      className="flex flex-col gap-5 rounded-md bg-white bg-opacity-50 bg-clip-padding p-5 shadow-md backdrop-blur-lg dark:bg-slate-800 lg:p-10"
     >
       {/* <button onClick={handleClick}>Test</button> */}
       <div>
@@ -44,21 +42,21 @@ const LoginForm = (props: Props) => {
         <Input type="password" name="password" id="password" className="mt-2" />
       </div>
       <div className="flex flex-col sm:flex-row">
-        <Button className="flex-1 hover:bg-current/50">Sign up</Button>
-        <span className="text-center my-2 sm:mx-2">or</span>
-        <Button className="bg-black text-white hover:bg-current/90 flex-1">
+        <Button className="hover:bg-current/50 flex-1">Sign up</Button>
+        <span className="my-2 text-center sm:mx-2">or</span>
+        <Button className="hover:bg-current/90 flex-1 bg-black text-white">
           Continue with Google
         </Button>
       </div>
       <Link
-        href={"/forgot-password"}
+        href={'/forgot-password'}
         className="text-gray-500 dark:text-gray-300"
       >
         Forgot Password?
       </Link>
       <div className="">
         {"Don't have an account? "}
-        <Link href={"/register"} className="text-indigo-500">
+        <Link href={'/register'} className="text-indigo-500">
           Register
         </Link>
       </div>

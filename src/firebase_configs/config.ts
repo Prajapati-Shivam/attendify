@@ -1,13 +1,11 @@
-import { CACHE_SIZE_UNLIMITED, initializeFirestore } from "@firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import {
+  CACHE_SIZE_UNLIMITED,
+  initializeFirestore,
   persistentLocalCache,
   persistentSingleTabManager,
-} from "firebase/firestore";
-import { getMessaging } from "firebase/messaging";
-import { getStorage } from "firebase/storage";
+} from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -30,10 +28,10 @@ const firestore = initializeFirestore(app, {
 
 export const db = firestore;
 
-//export const analytics = getAnalytics(app);
+// export const analytics = getAnalytics(app);
 
 export const auth = getAuth();
 
-////export const storage = getStorage();
+/// /export const storage = getStorage();
 
-//export const messaging = getMessaging(app);
+// export const messaging = getMessaging(app);

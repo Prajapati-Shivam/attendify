@@ -1,14 +1,14 @@
-import React from "react";
-import { ToggleMode } from "../ToggleMode";
-import { Bell, MessageSquare } from "lucide-react";
-import { UserAvatar } from "../UserAvatar";
-type Props = {};
+import { Bell, MessageSquare } from 'lucide-react';
+import React from 'react';
 
-const Navbar = (props: Props) => {
+import { ToggleMode } from '../ToggleMode';
+import { UserAvatar } from '../UserAvatar';
+
+const Navbar = () => {
   const session = true;
   return (
-    <div className="w-full h-[60px] sticky top-0 px-5 sm:px-12 lg:px-20 py-2 shadow-md z-50 justify-between items-center flex bg-white dark:bg-gray-950">
-      <div className="font-bold leading-relaxed text-2xl">Attendify</div>
+    <div className="sticky top-0 z-50 flex h-[60px] w-full items-center justify-between bg-white px-5 py-2 shadow-md dark:bg-gray-950 sm:px-12 lg:px-20">
+      <div className="text-2xl font-bold leading-relaxed">Attendify</div>
       <div className="flex items-center gap-x-3 sm:gap-x-5">
         <ToggleMode />
         {session && (
@@ -19,9 +19,9 @@ const Navbar = (props: Props) => {
             <div className="cursor-pointer">
               <MessageSquare />
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex items-center gap-2">
               <UserAvatar />
-              <span className="hidden sm:block">{"Username"}</span>
+              <span className="hidden sm:block">{'Username'}</span>
             </div>
           </div>
         )}

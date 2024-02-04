@@ -1,4 +1,4 @@
-import { FieldValue, Timestamp } from "firebase/firestore";
+import type { FieldValue, Timestamp } from 'firebase/firestore';
 
 export interface IAdminsCollection {
   AdminId: string;

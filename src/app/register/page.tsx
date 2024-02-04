@@ -1,19 +1,18 @@
-import { UserRadio } from "@/components/login_page/UserRadio";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Link from "next/link";
+import Link from 'next/link';
 
-type Props = {};
+import { UserRadio } from '@/components/login_page/UserRadio';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
-const RegisterPage = (props: Props) => {
+const RegisterPage = () => {
   return (
-    <div className="flex flex-col items-center mt-8">
+    <div className="mt-8 flex flex-col items-center">
       <h2 className="text-3xl font-bold">Create Account</h2>
-      <p className="text-base font-normal text-gray-600 dark:text-gray-300 my-5">
+      <p className="my-5 text-base font-normal text-gray-600 dark:text-gray-300">
         Get started with your free account on Attendify
       </p>
-      <form className="bg-white dark:bg-slate-800 w-[80%] md:w-[50%] lg:w-[30%] m-auto shadow-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-50 p-5 lg:p-10 rounded-md flex flex-col gap-5">
+      <form className="m-auto flex w-[80%] flex-col gap-5 rounded-md bg-white bg-opacity-50 bg-clip-padding p-5 shadow-md backdrop-blur-lg dark:bg-slate-800 md:w-[50%] lg:w-[30%] lg:p-10">
         <div>
           <UserRadio />
         </div>
@@ -35,16 +34,16 @@ const RegisterPage = (props: Props) => {
           />
         </div>
         <div className="flex flex-col sm:flex-row">
-          <Button className="flex-1 hover:bg-current/50">Sign up</Button>
-          <span className="text-center my-2 sm:mx-2">or</span>
-          <Button className="bg-black text-white hover:bg-current/90 flex-1">
+          <Button className="hover:bg-current/50 flex-1">Sign up</Button>
+          <span className="my-2 text-center sm:mx-2">or</span>
+          <Button className="hover:bg-current/90 flex-1 bg-black text-white">
             Continue with Google
           </Button>
         </div>
 
         <div className="">
-          {"Already have an account? "}
-          <Link href={"/login"} className="text-indigo-500">
+          {'Already have an account? '}
+          <Link href={'/login'} className="text-indigo-500">
             Login
           </Link>
         </div>
