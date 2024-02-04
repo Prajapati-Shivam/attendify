@@ -6,3 +6,13 @@ export enum CollectionName {
   lectures = 'Lectures',
   attendances = 'Attendances',
 }
+
+export const LocalStorageKey = {
+  LOGGEDIN_USER: 'loggedInUser',
+};
+
+export enum AuthUserType {
+  admin = 'Admin',
+  faculty = 'Faculty',
+  student = 'Student',
+}

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { UserRadio } from '@/components/login_page/UserRadio';
+import { UserRadio } from '@/components/login/UserRadio';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
