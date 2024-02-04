@@ -43,9 +43,10 @@ const LoginForm = (props: Props) => {
         </Label>
         <Input type="password" name="password" id="password" className="mt-2" />
       </div>
-      <div className="flex gap-x-4">
-        <Button className="flex-1 hover:bg-current/50">Sign in</Button>
-        <Button className="flex-1 hover:bg-current/50 bg-black text-white">
+      <div className="flex flex-col sm:flex-row">
+        <Button className="flex-1 hover:bg-current/50">Sign up</Button>
+        <span className="text-center my-2 sm:mx-2">or</span>
+        <Button className="bg-black text-white hover:bg-current/90 flex-1">
           Continue with Google
         </Button>
       </div>
