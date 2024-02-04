@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 
 import { UserRadio } from '@/components/login/UserRadio';
 import { Button } from '@/components/ui/button';
@@ -20,14 +21,18 @@ const LoginForm = () => {
       })
       .catch((error) => console.log(error, "error"));
   }; */
+
+  const [userType, setUserType] = useState<'admin' | 'faculty' | 'student'>(
+    'admin',
+  );
+
   return (
     <form
       onSubmit={e => e.preventDefault()}
       className="flex flex-col gap-5 rounded-md bg-white bg-clip-padding p-5 opacity-50 shadow-md backdrop-blur-lg dark:bg-slate-800 lg:p-10"
     >
-      <div>
-        <UserRadio />
-      </div>
+      <UserRadio value={userType} setValue={setUserType} />
+
       <div>
         <Label htmlFor="email" className="">
           Email Address
