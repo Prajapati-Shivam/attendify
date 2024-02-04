@@ -48,6 +48,8 @@ export function Sidebar() {
 
   const pathname = usePathname();
 
+  if (!authUser.AuthUserAuthenticated) return <div></div>;
+
   return (
     <Sheet>
       <SheetTrigger asChild>

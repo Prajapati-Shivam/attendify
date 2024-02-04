@@ -6,7 +6,8 @@ import { Nunito } from 'next/font/google';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar';
-import { ThemeProvider } from '@/components/providers/theme-provider';
+import AuthProvider from '@/providers/auth-provider';
+import { ThemeProvider } from '@/providers/theme-provider';
 
 const nunito = Nunito({ subsets: ['latin'] });
 
@@ -29,10 +30,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          <Sidebar />
-          {children}
-          <Footer />
+          <AuthProvider>
+            <Navbar />
+            <Sidebar />
+            {children}
+            <Footer />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
