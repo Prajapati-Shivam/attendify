@@ -23,9 +23,8 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={e => e.preventDefault()}
-      className="flex flex-col gap-5 rounded-md bg-white bg-opacity-50 bg-clip-padding p-5 shadow-md backdrop-blur-lg dark:bg-slate-800 lg:p-10"
+      className="flex flex-col gap-5 rounded-md bg-white bg-clip-padding p-5 opacity-50 shadow-md backdrop-blur-lg dark:bg-slate-800 lg:p-10"
     >
-      {/* <button onClick={handleClick}>Test</button> */}
       <div>
         <UserRadio />
       </div>

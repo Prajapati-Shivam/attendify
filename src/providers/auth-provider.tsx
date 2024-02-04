@@ -1,13 +1,23 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
+import { useSessionStore } from '@/store';
+
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  // const { setAuthUser } = useSessionStore();
+  const { authUser } = useSessionStore();
+
+  const router = useRouter();
 
   useEffect(() => {
     console.log('reloading');
-    // setAuthUser({ AuthUserRole: 'admin', AuthUserAuthenticated: false });
+
+    if (!authUser.AuthUserAuthenticated) {
+      router.push('/login');
+    } else {
+      router.push('/');
+    }
   }, []);
 
   return <>{children}</>;

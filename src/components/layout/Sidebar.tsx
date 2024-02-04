@@ -22,24 +22,25 @@ import { useSessionStore } from '@/store';
 
 const links = [
   {
+    name: 'Dashboard',
+    logo: <AreaChart />,
+    route: '/',
+  },
+  {
     name: 'Classroom',
-    component: 'classroom',
     logo: <GraduationCap />,
+    route: '/classroom',
   },
   {
     name: 'Attendance Sheet',
-    component: 'attendance_sheet',
     logo: <FileSpreadsheet />,
+    route: '/attendance_sheet',
   },
-  {
-    name: 'Dashboard',
-    component: 'dashboard',
-    logo: <AreaChart />,
-  },
+
   {
     name: 'Report',
-    component: 'report',
     logo: <ScrollText />,
+    route: '/report',
   },
 ];
 
@@ -64,10 +65,10 @@ export function Sidebar() {
         <div className="">
           {links.map(link => (
             <Link
-              href={link.component}
+              href={link.route}
               key={link.name}
               className={`flex cursor-pointer items-center space-x-4 rounded-r-full p-4 text-sky-900 transition-all duration-300  hover:font-bold  dark:text-sky-100 ${
-                pathname.includes(link.component)
+                pathname === link.route
                   ? 'bg-gray-200 font-bold text-indigo-600 dark:bg-gray-800'
                   : 'hover:bg-gray-200 hover:dark:bg-gray-800'
               }`}
