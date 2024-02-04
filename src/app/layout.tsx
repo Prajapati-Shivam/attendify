@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/layout/Navbar";
+import Navbar from "@/components/layout/Navbar";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import Layout from "@/layout";
+import Footer from "@/components/layout/Footer";
+import { Sidebar } from "@/components/layout/Sidebar";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -26,7 +27,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Layout>{children}</Layout>
+          <Navbar />
+          <Sidebar />
+          {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
