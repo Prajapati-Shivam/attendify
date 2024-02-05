@@ -6,6 +6,7 @@ import type { ConfirmationResult, User } from 'firebase/auth';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { doc, runTransaction, serverTimestamp } from 'firebase/firestore';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
@@ -26,6 +27,8 @@ import * as storage from '@/lib/Storage';
 import LoginAdmin from './LoginAdmin';
 
 const LoginForm = () => {
+  const router = useRouter();
+
   const [userType, setUserType] = useState<'admin' | 'faculty' | 'student'>(
     'admin',
   );
@@ -62,7 +65,6 @@ const LoginForm = () => {
   }, []);
 
   const sendOtp = () => {
-    console.log('click firing', phoneNumber);
     if (phoneNumber === '') return;
     if (!recaptchaVerifierData) return;
     console.log('sending otp');
@@ -149,6 +151,8 @@ const LoginForm = () => {
     try {
       const result = await final.confirm(otp);
       await otpSignInSuccess(result.user);
+      router.push('/');
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error);
