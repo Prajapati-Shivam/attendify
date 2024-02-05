@@ -6,7 +6,6 @@ import type { ConfirmationResult, User } from 'firebase/auth';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { doc, runTransaction, serverTimestamp } from 'firebase/firestore';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
@@ -23,11 +22,12 @@ import { Label } from '@/components/ui/label';
 import { auth, db } from '@/firebase_configs/config';
 import { getNewDocId } from '@/firebase_configs/DB/DbAuth';
 import * as storage from '@/lib/Storage';
+import { useSessionStore } from '@/store';
 
 import LoginAdmin from './LoginAdmin';
 
 const LoginForm = () => {
-  const router = useRouter();
+  const { setAuthUser } = useSessionStore();
 
   const [userType, setUserType] = useState<'admin' | 'faculty' | 'student'>(
     'admin',
@@ -65,6 +65,7 @@ const LoginForm = () => {
   }, []);
 
   const sendOtp = () => {
+    if (userType !== 'admin') return;
     if (phoneNumber === '') return;
     if (!recaptchaVerifierData) return;
     console.log('sending otp');
@@ -141,17 +142,23 @@ const LoginForm = () => {
       };
 
       storage.setJson(LocalStorageKey.LOGGEDIN_USER, lsLoggedInUser);
+
+      setAuthUser({
+        AuthUserAuthenticated: true,
+        AuthUserId: uId,
+        AuthUserRole: userType,
+      });
     } catch (error) {
       console.log(error);
     }
   }, []);
 
   const validateOtp = useCallback(async () => {
+    if (userType !== 'admin') return;
     if (!otp || otp.length < 6 || !final) return;
     try {
       const result = await final.confirm(otp);
       await otpSignInSuccess(result.user);
-      router.push('/');
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

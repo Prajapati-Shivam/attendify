@@ -23,7 +23,7 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
     ) {
       router.push('/login');
     }
-  }, [isLoading]);
+  }, [isLoading, authUser]);
 
   return <>{children}</>;
 };

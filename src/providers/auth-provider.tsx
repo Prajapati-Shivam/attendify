@@ -44,7 +44,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           LoggedInAuthUserType,
         );
 
-        if (!loggedInUserDoc) {
+        const loggedInUserData = loggedInUserDoc.docs[0]?.data();
+
+        if (!loggedInUserData) {
           console.log('loggedInUserDoc not found -> signing out');
           setAuthUser({
             AuthUserAuthenticated: false,
@@ -54,8 +56,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setIsLoading(false);
           return;
         }
-
-        const loggedInUserData = loggedInUserDoc.docs[0].data();
 
         // eslint-disable-next-line @typescript-eslint/naming-convention
         const _loggedInUser = firebaseDataToObject(
