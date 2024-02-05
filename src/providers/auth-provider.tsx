@@ -1,17 +1,19 @@
+/* eslint-disable no-underscore-dangle */
+
 'use client';
 
-import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
+import type { ILoggedInUsersCollection } from '@/@types/database';
 import type { LocalStorageLoggedInUserData } from '@/@types/enum';
 import { LocalStorageKey } from '@/@types/enum';
+import DbUser from '@/firebase_configs/DB/DbUser';
+import { firebaseDataToObject } from '@/lib/misc';
 import * as storage from '@/lib/Storage';
 import { useSessionStore } from '@/store';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { setAuthUser } = useSessionStore();
-
-  const router = useRouter();
 
   const fetchAuthUserData = async () => {
     const LocalUserLoggedInData: LocalStorageLoggedInUserData | null =
@@ -20,22 +22,64 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       );
 
     try {
-      console.log(LocalUserLoggedInData, 'here is data');
       if (LocalUserLoggedInData) {
-        console.log('dispatching');
-        const { LoggedInAuthUserType } = LocalUserLoggedInData;
+        const { LoggedInAuthUserType, LoggedInCrypt, LoggedInId } =
+          LocalUserLoggedInData;
+
+        if (!LoggedInAuthUserType || !LoggedInCrypt || !LoggedInId) {
+          console.log('Local storage not found');
+          setAuthUser({
+            AuthUserAuthenticated: false,
+            AuthUserId: '',
+            AuthUserRole: 'admin',
+          });
+          return;
+        }
+
+        const loggedInUserDoc = await DbUser.getUserLoggedInData(
+          LoggedInId,
+          LoggedInCrypt,
+          true,
+          LoggedInAuthUserType,
+        );
+
+        if (!loggedInUserDoc) {
+          console.log('loggedInUserDoc not found -> signing out');
+          setAuthUser({
+            AuthUserAuthenticated: false,
+            AuthUserId: '',
+            AuthUserRole: 'admin',
+          });
+          return;
+        }
+
+        const loggedInUserData = loggedInUserDoc.docs[0].data();
+
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        const _loggedInUser = firebaseDataToObject(
+          loggedInUserData,
+        ) as unknown as ILoggedInUsersCollection;
+
         setAuthUser({
-          AuthUserAuthenticated: true,
-          AuthUserRole: LoggedInAuthUserType,
+          AuthUserAuthenticated: _loggedInUser.IsLoggedIn,
+          AuthUserRole: _loggedInUser.LoggedInUserType,
+          AuthUserId: _loggedInUser.LoggedInUserId,
         });
-        router.push('/');
       } else {
         console.log('Local storage not found');
-        router.push('/login');
+        setAuthUser({
+          AuthUserAuthenticated: false,
+          AuthUserId: '',
+          AuthUserRole: 'admin',
+        });
       }
     } catch (error) {
       console.log(error, 'error');
-      router.push('/login');
+      setAuthUser({
+        AuthUserAuthenticated: false,
+        AuthUserId: '',
+        AuthUserRole: 'admin',
+      });
     }
   };
 

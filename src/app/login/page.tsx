@@ -1,6 +1,28 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
 import LoginForm from '@/components/login/LoginForm';
+import { useSessionStore } from '@/store';
 
 const LoginPage = () => {
+  const { authUser, isLoading } = useSessionStore();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (
+      authUser &&
+      authUser.AuthUserId &&
+      authUser.AuthUserAuthenticated &&
+      authUser.AuthUserRole
+    ) {
+      router.push('/');
+    }
+  }, [authUser]);
+
   return (
     <div className="flex flex-col items-center justify-between gap-y-5 p-8 md:flex-row md:p-12 lg:p-20">
       <div

@@ -6,6 +6,7 @@ import { Nunito } from 'next/font/google';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar';
+import ProtectedPage from '@/components/protected_page/ProtectedPage';
 import AuthProvider from '@/providers/auth-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 
@@ -31,10 +32,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
-            <Navbar />
-            <Sidebar />
-            <div className="min-h-[calc(100vh-60px)]">{children}</div>
-            <Footer />
+            <ProtectedPage>
+              <Navbar />
+              <Sidebar />
+              <div className="min-h-[calc(100vh-60px)]">{children}</div>
+              <Footer />
+            </ProtectedPage>
           </AuthProvider>
         </ThemeProvider>
       </body>
