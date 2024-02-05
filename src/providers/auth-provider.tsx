@@ -13,7 +13,7 @@ import * as storage from '@/lib/Storage';
 import { useSessionStore } from '@/store';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { setAuthUser, setIsLoading } = useSessionStore();
+  const { setAuthUser, setIsLoading, isLoading } = useSessionStore();
 
   const fetchAuthUserData = async () => {
     const LocalUserLoggedInData: LocalStorageLoggedInUserData | null =
@@ -90,6 +90,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     fetchAuthUserData();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        Loading
+      </div>
+    );
+  }
 
   return <>{children}</>;
 };
