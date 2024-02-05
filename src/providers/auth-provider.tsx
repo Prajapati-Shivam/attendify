@@ -13,7 +13,7 @@ import * as storage from '@/lib/Storage';
 import { useSessionStore } from '@/store';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { setAuthUser } = useSessionStore();
+  const { setAuthUser, setIsLoading } = useSessionStore();
 
   const fetchAuthUserData = async () => {
     const LocalUserLoggedInData: LocalStorageLoggedInUserData | null =
@@ -33,6 +33,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             AuthUserId: '',
             AuthUserRole: 'admin',
           });
+          setIsLoading(false);
           return;
         }
 
@@ -50,6 +51,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             AuthUserId: '',
             AuthUserRole: 'admin',
           });
+          setIsLoading(false);
           return;
         }
 
@@ -65,6 +67,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           AuthUserRole: _loggedInUser.LoggedInUserType,
           AuthUserId: _loggedInUser.LoggedInUserId,
         });
+        setIsLoading(false);
       } else {
         console.log('Local storage not found');
         setAuthUser({
@@ -72,6 +75,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           AuthUserId: '',
           AuthUserRole: 'admin',
         });
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error, 'error');

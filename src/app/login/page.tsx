@@ -21,7 +21,7 @@ const LoginPage = () => {
     ) {
       router.push('/');
     }
-  }, [authUser]);
+  }, [authUser, isLoading]);
 
   return (
     <div className="flex flex-col items-center justify-between gap-y-5 p-8 md:flex-row md:p-12 lg:p-20">
