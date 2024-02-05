@@ -7,8 +7,6 @@ interface IAuthUser {
 }
 
 interface SessionState {
-  component: string;
-  setComponent: (component: string) => void;
   authUser: IAuthUser;
   setAuthUser: (authUser: IAuthUser) => void;
   isLoading: boolean;
@@ -16,8 +14,6 @@ interface SessionState {
 }
 
 export const useSessionStore = create<SessionState>(set => ({
-  component: 'Classroom',
-  setComponent: (component: string) => set(state => ({ ...state, component })),
   authUser: {
     AuthUserAuthenticated: false,
     AuthUserRole: 'admin',
