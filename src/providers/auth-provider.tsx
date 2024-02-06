@@ -11,7 +11,6 @@ import DbUser from '@/firebase_configs/DB/DbUser';
 import { firebaseDataToObject } from '@/lib/misc';
 import * as storage from '@/lib/Storage';
 import { useSessionStore } from '@/store';
-import Loader from '@/components/Loader';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { setAuthUser, setIsLoading, isLoading } = useSessionStore();
@@ -85,6 +84,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         AuthUserId: '',
         AuthUserRole: 'admin',
       });
+      setIsLoading(false);
     }
   };
 
@@ -94,8 +94,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen mx-auto items-center justify-center">
-        <Loader title={"Please wait..."} description='Fetching your data'  />
+      <div className="flex h-screen items-center justify-center bg-surfaceLight dark:bg-surfaceDark">
+        <div className="text-4xl font-bold ">Welcome to My Website</div>
       </div>
     );
   }
