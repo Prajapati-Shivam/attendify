@@ -1,4 +1,12 @@
-import { collection, getDocs, limit, query, where } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  limit,
+  query,
+  where,
+} from 'firebase/firestore';
 
 import { CollectionName } from '@/@types/enum';
 
@@ -23,6 +31,11 @@ class DbUser {
     );
 
     return getDocs(loggedInQuery);
+  };
+
+  static deleteUserLoggedInDoc = async (loggedInId: string) => {
+    const loggedInRef = doc(db, CollectionName.loggedInUsers, loggedInId);
+    await deleteDoc(loggedInRef);
   };
 }
 

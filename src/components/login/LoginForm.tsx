@@ -68,7 +68,6 @@ const LoginForm = () => {
     if (userType !== 'admin') return;
     if (phoneNumber === '') return;
     if (!recaptchaVerifierData) return;
-    console.log('sending otp');
     signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifierData)
       .then(result => {
         setFinal(result);
@@ -107,11 +106,8 @@ const LoginForm = () => {
     const newUserDoc: IAdminsCollection = {
       AdminId: uId,
       AdminCreateTime: serverTimestamp(),
-      AdminInstituteName: '',
       AdminNameChangeTime: serverTimestamp(),
-      AdminPhone: phoneNumber,
-      AdminCountry: 'India',
-      AdminCountryCode: '+91',
+      AdminPhone: userPhone,
       AdminEmail: '',
       AdminFirstName: '',
       AdminLastName: '',

@@ -45,7 +45,7 @@ const links = [
 ];
 
 export function Sidebar() {
-  const { authUser } = useSessionStore();
+  const { authUser, userSignOut } = useSessionStore();
 
   const pathname = usePathname();
 
@@ -78,7 +78,10 @@ export function Sidebar() {
             </Link>
           ))}
           {authUser.AuthUserAuthenticated && (
-            <div className="flex cursor-pointer items-center space-x-4 rounded-r-full p-4 text-sky-900 transition-all duration-300 hover:bg-gray-200 hover:font-bold dark:text-sky-100 hover:dark:bg-gray-800">
+            <div
+              onClick={userSignOut}
+              className="flex cursor-pointer items-center space-x-4 rounded-r-full p-4 text-sky-900 transition-all duration-300 hover:bg-gray-200 hover:font-bold dark:text-sky-100 hover:dark:bg-gray-800"
+            >
               <span>
                 <LogOut />
               </span>
