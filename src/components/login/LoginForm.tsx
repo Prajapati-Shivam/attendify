@@ -68,7 +68,7 @@ const LoginForm = () => {
     if (userType !== 'admin') return;
     if (phoneNumber === '') return;
     if (!recaptchaVerifierData) return;
-    signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifierData)
+    signInWithPhoneNumber(auth, `+91${phoneNumber}`, recaptchaVerifierData)
       .then(result => {
         setFinal(result);
         setShow(true);

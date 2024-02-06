@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import InputWithTopHeader from '../common/inputs/InputWithTopHeader';
+
 interface LoginAdminProps {
   phoneNumber: string;
   setPhoneNumber: React.Dispatch<React.SetStateAction<string>>;
@@ -21,10 +23,9 @@ const LoginAdmin = ({
     <div className="flex flex-col gap-4">
       {!showOtpInput ? (
         <div className="flex flex-col gap-1">
-          <label htmlFor="phoneNumber">Phone number</label>
-          <input
-            type="text"
-            id="phoneNumber"
+          <InputWithTopHeader
+            label="Phone number"
+            leadingIcon={<div>+91</div>}
             value={phoneNumber}
             onChange={e => setPhoneNumber(e.target.value)}
           />
