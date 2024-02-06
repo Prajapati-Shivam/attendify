@@ -75,3 +75,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.notification {
+  animation: slideInRight 0.2s ease-out;
+}

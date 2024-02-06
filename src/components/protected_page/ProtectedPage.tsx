@@ -13,8 +13,6 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (isLoading) return;
 
-    console.log(authUser, 'authUser');
-
     if (
       !authUser ||
       !authUser.AuthUserAuthenticated ||

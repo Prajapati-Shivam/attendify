@@ -7,13 +7,16 @@ import React, { useEffect } from 'react';
 import type { ILoggedInUsersCollection } from '@/@types/database';
 import type { LocalStorageLoggedInUserData } from '@/@types/enum';
 import { LocalStorageKey } from '@/@types/enum';
+import Snackbar from '@/components/ui/snackbar';
 import DbUser from '@/firebase_configs/DB/DbUser';
 import { firebaseDataToObject } from '@/lib/misc';
 import * as storage from '@/lib/Storage';
-import { useSessionStore } from '@/store';
+import { useSessionStore, useUIStore } from '@/store';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { setAuthUser, setIsLoading, isLoading } = useSessionStore();
+
+  const { snackbar } = useUIStore();
 
   const fetchAuthUserData = async () => {
     const LocalUserLoggedInData: LocalStorageLoggedInUserData | null =
@@ -100,7 +103,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      {snackbar.open && <Snackbar />}
+    </>
+  );
 };
 
 export default AuthProvider;

@@ -2,9 +2,9 @@ import type { StateCreator } from 'zustand';
 
 interface ISnackbar {
   open: boolean;
-  message: string;
-  type: 'success' | 'error' | 'info';
-  autoClose: boolean;
+  message?: string;
+  type?: 'success' | 'error' | 'info';
+  autoClose?: boolean;
 }
 
 interface UIState {
