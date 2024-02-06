@@ -6,12 +6,15 @@ interface UserRadioProps {
   setValue: React.Dispatch<
     React.SetStateAction<'admin' | 'faculty' | 'student'>
   >;
+  disabled: boolean;
 }
 
-export function UserRadio({ setValue, value }: UserRadioProps) {
+export function UserRadio({ setValue, value, disabled }: UserRadioProps) {
   return (
     <RadioGroup
-      defaultValue="admin"
+      disabled={disabled}
+      value={value}
+      onValueChange={e => setValue(e as typeof value)}
       className="flex flex-col gap-x-4 sm:flex-row"
     >
       <label className="flex flex-1 cursor-pointer items-center space-x-2 rounded-md border border-indigo-500 bg-slate-100 p-4 dark:bg-slate-900">

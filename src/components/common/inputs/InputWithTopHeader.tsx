@@ -21,7 +21,7 @@ interface InputWithTopHeaderProps<FormFields extends Record<string, unknown>> {
   onTailIconClick?: () => void;
   register?: UseFormRegister<FormFields>;
   name?: Path<FormFields>;
-  errors?: Partial<DeepMap<FormFields, FieldError>>;
+  errors?: Partial<DeepMap<FormFields, FieldError>> | string;
   value?: string | number;
   onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
   disabled?: boolean;
@@ -51,7 +51,8 @@ const InputWithTopHeader = <FormFields extends Record<string, unknown>>({
   inputType = 'text',
   inputMaxLength,
 }: InputWithTopHeaderProps<FormFields>) => {
-  const errorMessage = errors && name && errors[name]?.message;
+  const errorMessage =
+    errors && typeof errors !== 'string' && name && errors[name]?.message;
 
   const hasError = !!(errors && errorMessage);
 
@@ -70,7 +71,7 @@ const InputWithTopHeader = <FormFields extends Record<string, unknown>>({
 
       <div
         className={`flex size-full items-center justify-center rounded border bg-surfaceLight  ${
-          hasError && errorMessage
+          (hasError && errorMessage) || (errors && typeof errors === 'string')
             ? 'border-textPrimaryRed'
             : 'border-inputBorderLight dark:border-inputBorderDark'
         } focus-within:ring-[2px] dark:bg-primaryVariantDark `}
@@ -146,6 +147,9 @@ const InputWithTopHeader = <FormFields extends Record<string, unknown>>({
         ) : null}
       </div>
       {hasError && errorMessage && <InputError errorMessage={errorMessage} />}
+      {errors && typeof errors === 'string' && (
+        <InputError errorMessage={errors} />
+      )}
     </div>
   );
 };
