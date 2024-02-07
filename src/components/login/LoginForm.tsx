@@ -21,7 +21,7 @@ const LoginForm = () => {
     <>
       <div className="size-full" id="recaptcha-container"></div>
 
-      <div className="flex flex-col gap-5 rounded-md bg-white bg-clip-padding p-5 opacity-50 shadow-md backdrop-blur-lg dark:bg-slate-800 lg:p-10">
+      <div className="flex flex-col gap-5 rounded-md bg-white p-5 shadow-md dark:bg-slate-800 sm:p-10">
         <UserRadio value={userType} setValue={setUserType} disabled={false} />
 
         {userType === 'admin' ? (

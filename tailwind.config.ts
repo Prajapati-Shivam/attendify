@@ -187,7 +187,8 @@ const config = {
         textSecondaryRed: '#FF6C00',
         textTertiaryRed: '#A30D11',
         textPrimaryGreen: '#23CFAB', // Todo
-        textPrimaryBlue: '#0E5FFF',
+        textPrimaryBlue: '#6366f1',
+        textSecondaryBlue: '#0E5FFF',
         textPrimaryOrange: '#f97316',
         textSecondaryOrange: '#fdba74',
         textPrimaryViolet: '#6200EE',
