@@ -34,24 +34,21 @@ export const createAuthSlice: StateCreator<AuthState> = set => ({
     );
 
     if (loggedInUser) {
-      set(state => ({ state, isLoading: true }));
+      set(state => ({
+        ...state,
+        authUser: {
+          AuthUserAuthenticated: false,
+          AuthUserId: '',
+          AuthUserRole: 'admin',
+        },
+      }));
       DbUser.deleteUserLoggedInDoc(loggedInUser.LoggedInId)
         .then(() => {
           storage.clear(LocalStorageKey.LOGGEDIN_USER);
-          set(state => ({
-            ...state,
-            isLoading: false,
-            authUser: {
-              AuthUserAuthenticated: false,
-              AuthUserId: '',
-              AuthUserRole: 'admin',
-            },
-          }));
         })
         .catch(error => {
           // eslint-disable-next-line no-console
           console.log(error);
-          set(state => ({ state, isLoading: true }));
         });
     }
   },

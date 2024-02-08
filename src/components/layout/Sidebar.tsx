@@ -9,7 +9,7 @@ import {
   ScrollText,
 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import {
   Sheet,
@@ -50,6 +50,8 @@ export function Sidebar() {
 
   const pathname = usePathname();
 
+  const router = useRouter();
+
   if (!authUser.AuthUserAuthenticated) return <div></div>;
 
   return (
@@ -82,7 +84,10 @@ export function Sidebar() {
           ))}
           {authUser.AuthUserAuthenticated && (
             <div
-              onClick={userSignOut}
+              onClick={() => {
+                userSignOut();
+                router.push('/login');
+              }}
               className="flex cursor-pointer items-center space-x-4 rounded-r-full p-4 text-sky-900 transition-all duration-300 hover:bg-gray-200 hover:font-bold dark:text-sky-100 hover:dark:bg-gray-800"
             >
               <span>
