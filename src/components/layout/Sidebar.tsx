@@ -18,6 +18,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { ConstAppDetails } from '@/constants/ConstAppDetails';
 import { useSessionStore } from '@/store';
 
 const links = [
@@ -60,7 +61,9 @@ export function Sidebar() {
       </SheetTrigger>
       <SheetContent side={'left'} className="w-[80%] p-0 sm:w-[300px]">
         <SheetHeader>
-          <SheetTitle className="p-4 text-2xl font-bold">Attendify</SheetTitle>
+          <SheetTitle className="p-4 text-2xl font-bold">
+            {ConstAppDetails.APP_NAME}
+          </SheetTitle>
         </SheetHeader>
         <div className="">
           {links.map(link => (

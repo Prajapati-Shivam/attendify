@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import type { ILoggedInUsersCollection } from '@/@types/database';
 import type { LocalStorageLoggedInUserData } from '@/@types/enum';
 import { LocalStorageKey } from '@/@types/enum';
+import SplashScreen from '@/components/splash_screen/SplashScreen';
 import Snackbar from '@/components/ui/snackbar';
 import DbUser from '@/firebase_configs/DB/DbUser';
 import { firebaseDataToObject } from '@/lib/misc';
@@ -96,11 +97,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-surfaceLight dark:bg-surfaceDark">
-        <div className="text-4xl font-bold ">Welcome to My Website</div>
-      </div>
-    );
+    return <SplashScreen />;
   }
 
   return (
