@@ -59,7 +59,7 @@ export function InstituteForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 border-2 border-white mt-10">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-10">
         <FormField
           control={form.control}
           name="firstName"
