@@ -2,6 +2,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   limit,
   query,
@@ -36,6 +37,24 @@ class DbUser {
   static deleteUserLoggedInDoc = async (loggedInId: string) => {
     const loggedInRef = doc(db, CollectionName.loggedInUsers, loggedInId);
     await deleteDoc(loggedInRef);
+  };
+
+  static getAdminById = (adminId: string) => {
+    const docRef = doc(db, CollectionName.admins, adminId);
+
+    return getDoc(docRef);
+  };
+
+  static getAdminInstitute = (adminId: string) => {
+    const docRef = collection(db, CollectionName.institute);
+
+    const docQuery = query(
+      docRef,
+      where('InstituteAdminId', '==', adminId),
+      limit(1),
+    );
+
+    return getDocs(docQuery);
   };
 }
 

@@ -1,6 +1,10 @@
 import type { StateCreator } from 'zustand';
 
-import type { ILoggedInUsersCollection } from '@/@types/database';
+import type {
+  IAdminsCollection,
+  IInstitutesCollection,
+  ILoggedInUsersCollection,
+} from '@/@types/database';
 import { LocalStorageKey } from '@/@types/enum';
 import DbUser from '@/firebase_configs/DB/DbUser';
 import * as storage from '@/lib/Storage';
@@ -17,6 +21,10 @@ interface AuthState {
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
   userSignOut: () => void;
+  admin: IAdminsCollection | null;
+  setAdmin: (admin: IAdminsCollection) => void;
+  institute: IInstitutesCollection | null;
+  setInstitute: (admin: IInstitutesCollection) => void;
 }
 
 export const createAuthSlice: StateCreator<AuthState> = set => ({
@@ -28,6 +36,12 @@ export const createAuthSlice: StateCreator<AuthState> = set => ({
   setAuthUser: data => set(state => ({ ...state, authUser: data })),
   isLoading: true,
   setIsLoading: loading => set(state => ({ ...state, isLoading: loading })),
+  admin: null,
+  setAdmin: admin => set(state => ({ ...state, admin })),
+  institute: null,
+  setInstitute: institute => set(state => ({ ...state, institute })),
+
+  // For logging out user
   userSignOut: () => {
     const loggedInUser: ILoggedInUsersCollection | null = storage.getJson(
       LocalStorageKey.LOGGEDIN_USER,

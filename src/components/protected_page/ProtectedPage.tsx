@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import { useSessionStore } from '@/store';
 
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
-  const { authUser, isLoading } = useSessionStore();
+  const { authUser, isLoading, institute } = useSessionStore();
 
   const router = useRouter();
 
@@ -20,6 +20,10 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
       !authUser.AuthUserRole
     ) {
       router.push('/login');
+    }
+
+    if (!institute) {
+      router.push('/institute');
     }
   }, [isLoading, authUser]);
 

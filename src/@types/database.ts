@@ -10,6 +10,17 @@ export interface IAdminsCollection {
   AdminNameChangeTime: Timestamp | FieldValue;
 }
 
+export interface IInstitutesCollection {
+  InstituteId: string;
+  InstituteName: string;
+  InstituteAddress: string;
+  InstituteAdminId: string;
+  InstitutePhone: string;
+  InstituteEmail?: string;
+  InstituteWebsite?: string;
+  InstituteAddedAt: Timestamp | FieldValue;
+}
+
 export interface IFacultiesCollection {
   FacultyId: string;
   FacultyFirstName: string;
@@ -43,16 +54,6 @@ export interface IStudentsCollection {
   StudentInstituteName: string;
   StudentCreateTime: Timestamp | FieldValue;
   StudentNameChangeTime: Timestamp | FieldValue;
-}
-
-export interface IInstitutesCollection {
-  InstituteId: string;
-  InstituteName: string;
-  InstituteAddress: string;
-  InstitutePhone: string;
-  InstituteEmail?: string;
-  InstituteWebsite?: string;
-  InstituteAddedAt: Timestamp | FieldValue;
 }
 
 export interface IClassesCollection {

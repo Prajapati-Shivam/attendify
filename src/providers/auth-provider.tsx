@@ -1,10 +1,15 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-underscore-dangle */
 
 'use client';
 
 import React, { useEffect } from 'react';
 
-import type { ILoggedInUsersCollection } from '@/@types/database';
+import type {
+  IAdminsCollection,
+  IInstitutesCollection,
+  ILoggedInUsersCollection,
+} from '@/@types/database';
 import type { LocalStorageLoggedInUserData } from '@/@types/enum';
 import { LocalStorageKey } from '@/@types/enum';
 import SplashScreen from '@/components/splash_screen/SplashScreen';
@@ -15,7 +20,8 @@ import * as storage from '@/lib/Storage';
 import { useSessionStore, useUIStore } from '@/store';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { setAuthUser, setIsLoading, isLoading } = useSessionStore();
+  const { setAuthUser, setIsLoading, isLoading, setAdmin, setInstitute } =
+    useSessionStore();
 
   const { snackbar } = useUIStore();
 
@@ -61,7 +67,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           return;
         }
 
-        // eslint-disable-next-line @typescript-eslint/naming-convention
         const _loggedInUser = firebaseDataToObject(
           loggedInUserData,
         ) as unknown as ILoggedInUsersCollection;
@@ -71,6 +76,33 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           AuthUserRole: _loggedInUser.LoggedInUserType,
           AuthUserId: _loggedInUser.LoggedInUserId,
         });
+
+        // Fetch admin data and store in zustand
+        const adminSnapshot = await DbUser.getAdminById(
+          _loggedInUser.LoggedInUserId,
+        );
+
+        const adminData = adminSnapshot.data();
+        if (adminData) {
+          const _adminData = firebaseDataToObject(
+            adminData,
+          ) as unknown as IAdminsCollection;
+          setAdmin(_adminData);
+        }
+
+        // Fetch institute data and store in zustand
+        const instituteSnapshot = await DbUser.getAdminInstitute(
+          _loggedInUser.LoggedInUserId,
+        );
+
+        const instituteData = instituteSnapshot.docs[0]?.data();
+        if (instituteData) {
+          const _instituteData = firebaseDataToObject(
+            instituteData,
+          ) as unknown as IInstitutesCollection;
+          setInstitute(_instituteData);
+        }
+
         setIsLoading(false);
       } else {
         console.log('Local storage not found');

@@ -19,7 +19,7 @@ import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
 import InputOtp from '@/components/common/inputs/InputOtp';
 import { Button } from '@/components/ui/button';
 import { auth, db } from '@/firebase_configs/config';
-import { getNewDocId } from '@/firebase_configs/DB/DbAuth';
+import { getNewDocId } from '@/firebase_configs/DB/utils';
 import * as storage from '@/lib/Storage';
 import { useSessionStore, useUIStore } from '@/store';
 
