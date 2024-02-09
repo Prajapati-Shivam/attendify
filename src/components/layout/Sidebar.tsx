@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import {
   Sheet,
@@ -20,6 +21,8 @@ import {
 } from '@/components/ui/sheet';
 import { ConstAppDetails } from '@/constants/ConstAppDetails';
 import { useSessionStore } from '@/store';
+
+import ConfirmDialog from '../common/dialogs/ConfirmDialog';
 
 const links = [
   {
@@ -51,6 +54,8 @@ export function Sidebar() {
   const pathname = usePathname();
 
   const router = useRouter();
+
+  const [logoutConfirmModal, setLogoutConfirmModal] = useState(false);
 
   if (!authUser.AuthUserAuthenticated) return <div></div>;
 
@@ -84,10 +89,7 @@ export function Sidebar() {
           ))}
           {authUser.AuthUserAuthenticated && (
             <div
-              onClick={() => {
-                userSignOut();
-                router.push('/login');
-              }}
+              onClick={() => setLogoutConfirmModal(true)}
               className="flex cursor-pointer items-center space-x-4 rounded-r-full p-4 text-sky-900 transition-all duration-300 hover:bg-gray-200 hover:font-bold dark:text-sky-100 hover:dark:bg-gray-800"
             >
               <span>
@@ -96,6 +98,16 @@ export function Sidebar() {
               <span>Logout</span>
             </div>
           )}
+          <ConfirmDialog
+            positiveCallback={() => {
+              userSignOut();
+              router.push('/login');
+            }}
+            open={logoutConfirmModal}
+            setOpened={setLogoutConfirmModal}
+          >
+            <div>Are you sure to logout?</div>
+          </ConfirmDialog>
         </div>
       </SheetContent>
     </Sheet>
