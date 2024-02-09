@@ -1,65 +1,65 @@
-"use client"
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
-    message: "First name must be at least 2 characters.",
+    message: 'First name must be at least 2 characters.',
   }),
   lastName: z.string().min(2, {
-    message: "Second name must be at least 2 characters.",
+    message: 'Second name must be at least 2 characters.',
   }),
   instituteName: z.string().min(2, {
-    message: "Institute name must be at least 2 characters.",
+    message: 'Institute name must be at least 2 characters.',
   }),
   instituteAddress: z.string().min(2, {
-    message: "Institute address must be at least 8 characters.",
+    message: 'Institute address must be at least 8 characters.',
   }),
   institutePhone: z.string().min(2, {
-    message: "Institute phone number must be at least 10 digits.",
+    message: 'Institute phone number must be at least 10 digits.',
   }),
   instituteEmail: z.string().optional(),
   instituteWebsite: z.string().optional(),
-})
+});
 
 export function InstituteForm() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      instituteName: "",
-      instituteAddress: "",
-      institutePhone: "",
-      instituteEmail: "",
-      instituteWebsite: "",
+      firstName: '',
+      lastName: '',
+      instituteName: '',
+      instituteAddress: '',
+      institutePhone: '',
+      instituteEmail: '',
+      instituteWebsite: '',
     },
-  })
+  });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    console.log(values);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-10">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-10 space-y-8">
         <FormField
           control={form.control}
           name="firstName"
@@ -175,5 +175,5 @@ export function InstituteForm() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }

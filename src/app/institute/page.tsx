@@ -1,9 +1,8 @@
-import { InstituteForm } from '@/components/institute/InstituteForm'
-import React from 'react'
+import React from 'react';
 
-type Props = {}
+import { InstituteForm } from '@/components/institute/InstituteForm';
 
-const Institute = (props: Props) => {
+const Institute = () => {
   return (
     <div className="h-max">
       <div className="px-5 py-8 sm:px-12 lg:px-20">
@@ -11,7 +10,7 @@ const Institute = (props: Props) => {
         <InstituteForm />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Institute
+export default Institute;
