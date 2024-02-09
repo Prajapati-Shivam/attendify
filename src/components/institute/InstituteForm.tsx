@@ -79,9 +79,6 @@ export function InstituteForm() {
                       className="border-inputBorderLight dark:border-inputBorderDark"
                     />
                   </FormControl>
-                  {/* <FormDescription>
-                    This is your public display name.
-                  </FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -101,9 +98,6 @@ export function InstituteForm() {
                       className="border-inputBorderLight dark:border-inputBorderDark"
                     />
                   </FormControl>
-                  {/* <FormDescription>
-                    This is your public display name.
-                  </FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -125,9 +119,6 @@ export function InstituteForm() {
                       className="border-inputBorderLight dark:border-inputBorderDark"
                     />
                   </FormControl>
-                  {/* <FormDescription>
-                    This is your public display name.
-                  </FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -147,9 +138,6 @@ export function InstituteForm() {
                       className="border-inputBorderLight dark:border-inputBorderDark"
                     />
                   </FormControl>
-                  {/* <FormDescription>
-                  This is your public display name.
-                </FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -172,9 +160,6 @@ export function InstituteForm() {
                       className="border-inputBorderLight dark:border-inputBorderDark"
                     />
                   </FormControl>
-                  {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -194,9 +179,6 @@ export function InstituteForm() {
                       className="border-inputBorderLight dark:border-inputBorderDark"
                     />
                   </FormControl>
-                  {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -211,15 +193,13 @@ export function InstituteForm() {
             <FormItem>
               <FormLabel>Institute Address</FormLabel>
               <FormControl>
-                <Input
+                <textarea
                   placeholder=""
+                  rows={3}
                   {...field}
-                  className="border-inputBorderLight dark:border-inputBorderDark"
-                />
+                  className="flex w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-inputBorderLight dark:border-inputBorderDark"
+                ></textarea>
               </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
