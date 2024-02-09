@@ -59,55 +59,151 @@ export function InstituteForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-10 space-y-8">
-        <FormField
-          control={form.control}
-          name="firstName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>First Name</FormLabel>
-              <FormControl>
-                <Input placeholder="" {...field} />
-              </FormControl>
-              {/* <FormDescription>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="mx-auto mt-5 w-[90%] rounded-md sm:w-[80%] md:w-[70%] lg:w-[50%] space-y-8 bg-surfaceLight dark:bg-slate-800 p-5 sm:p-10"
+      >
+        <h2 className="text-2xl sm:text-4xl font-semibold">Create Institute</h2>
+        <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-8">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark"
+                    />
+                  </FormControl>
+                  {/* <FormDescription>
+                    This is your public display name.
+                  </FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark"
+                    />
+                  </FormControl>
+                  {/* <FormDescription>
+                    This is your public display name.
+                  </FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col sm:flex-row justify-between gap-x-8">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="instituteName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Institute Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark"
+                    />
+                  </FormControl>
+                  {/* <FormDescription>
+                    This is your public display name.
+                  </FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="institutePhone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Institute Phone Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark"
+                    />
+                  </FormControl>
+                  {/* <FormDescription>
+                  This is your public display name.
+                </FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row justify-between gap-x-8">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="instituteEmail"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Institute Email (Optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark"
+                    />
+                  </FormControl>
+                  {/* <FormDescription>
                 This is your public display name.
               </FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="lastName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input placeholder="" {...field} />
-              </FormControl>
-              {/* <FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="instituteWebsite"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Institute Website (Optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark"
+                    />
+                  </FormControl>
+                  {/* <FormDescription>
                 This is your public display name.
               </FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="instituteName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Institute Name</FormLabel>
-              <FormControl>
-                <Input placeholder="" {...field} />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
         <FormField
           control={form.control}
           name="instituteAddress"
@@ -115,7 +211,11 @@ export function InstituteForm() {
             <FormItem>
               <FormLabel>Institute Address</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                <Input
+                  placeholder=""
+                  {...field}
+                  className="border-inputBorderLight dark:border-inputBorderDark"
+                />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name.
@@ -124,55 +224,7 @@ export function InstituteForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="institutePhone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Institute Phone Number</FormLabel>
-              <FormControl>
-                <Input placeholder="" {...field} />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="instituteEmail"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Institute Email (Optional)</FormLabel>
-              <FormControl>
-                <Input placeholder="" {...field} />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="instituteWebsite"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Institute Website (Optional)</FormLabel>
-              <FormControl>
-                <Input placeholder="" {...field} />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className='hover:bg-blueButtonHoverBg'>Submit</Button>
       </form>
     </Form>
   );
