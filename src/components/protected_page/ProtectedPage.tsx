@@ -22,7 +22,7 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
       router.push('/login');
     }
 
-    if (!institute) {
+    if (authUser.AuthUserAuthenticated && authUser.AuthUserRole === "admin" && !institute) {
       router.push('/institute');
     }
   }, [isLoading, authUser]);
