@@ -61,82 +61,128 @@ export function InstituteForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-auto mt-5 w-[90%] rounded-md sm:w-[80%] md:w-[70%] lg:w-[50%] space-y-8 bg-surfaceLight dark:bg-slate-800 p-5 sm:p-10"
+        className="mx-auto mt-5 w-full space-y-6 rounded-md bg-surfaceLight p-6 dark:bg-onSurfaceLight  md:max-w-3xl"
       >
-        <h2 className="text-2xl sm:text-4xl font-semibold">Create Institute</h2>
-        <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-8">
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+        <div className="text-2xl font-semibold sm:text-3xl">
+          Create Institute
         </div>
-        <div className="flex flex-col sm:flex-row justify-between gap-x-8">
-          <div className="flex-1">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder=""
+                    {...field}
+                    className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder=""
+                    {...field}
+                    className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />{' '}
+          <FormField
+            control={form.control}
+            name="instituteName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Institute Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder=""
+                    {...field}
+                    className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />{' '}
+          <FormField
+            control={form.control}
+            name="institutePhone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Institute Phone Number</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder=""
+                    {...field}
+                    className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />{' '}
+          <FormField
+            control={form.control}
+            name="instituteEmail"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Institute Email (Optional)</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder=""
+                    {...field}
+                    className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />{' '}
+          <FormField
+            control={form.control}
+            name="instituteWebsite"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Institute Website (Optional)</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder=""
+                    {...field}
+                    className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="col-span-1 md:col-span-2">
             <FormField
               control={form.control}
-              name="instituteName"
+              name="instituteAddress"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Institute Name</FormLabel>
+                  <FormLabel>Institute Address</FormLabel>
                   <FormControl>
-                    <Input
+                    <textarea
                       placeholder=""
+                      rows={3}
                       {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name="institutePhone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Institute Phone Number</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark"
-                    />
+                      className=" flex w-full rounded-md border border-inputBorderLight bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    ></textarea>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -145,66 +191,12 @@ export function InstituteForm() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-between gap-x-8">
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name="instituteEmail"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Institute Email (Optional)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name="instituteWebsite"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Institute Website (Optional)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
-        <FormField
-          control={form.control}
-          name="instituteAddress"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Institute Address</FormLabel>
-              <FormControl>
-                <textarea
-                  placeholder=""
-                  rows={3}
-                  {...field}
-                  className="flex w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-inputBorderLight dark:border-inputBorderDark"
-                ></textarea>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className='hover:bg-blueButtonHoverBg'>Submit</Button>
+        <Button
+          type="submit"
+          className="hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg"
+        >
+          Submit
+        </Button>
       </form>
     </Form>
   );
