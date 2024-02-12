@@ -6,12 +6,20 @@ import {
   getDocs,
   limit,
   query,
+  runTransaction,
+  serverTimestamp,
   where,
 } from 'firebase/firestore';
 
+import type {
+  IAdminsCollection,
+  IInstitutesCollection,
+} from '@/@types/database';
 import { CollectionName } from '@/@types/enum';
+import type { InstituteFormFields } from '@/components/institute/InstituteForm';
 
 import { db } from '../config';
+import { getNewDocId } from './utils';
 
 class DbUser {
   static getUserLoggedInData = async (
@@ -55,6 +63,42 @@ class DbUser {
     );
 
     return getDocs(docQuery);
+  };
+
+  static createNewInstitute = async (
+    data: InstituteFormFields,
+    adminId: string,
+  ) => {
+    const InstituteId = getNewDocId(CollectionName.institute);
+
+    const newInstitute: IInstitutesCollection = {
+      InstituteId,
+      InstituteName: data.instituteName,
+      InstituteAddress: data.instituteAddress,
+      InstituteAdminId: adminId,
+      InstitutePhone: data.institutePhone,
+      InstituteAddedAt: serverTimestamp(),
+      InstituteEmail: data.instituteEmail,
+      InstituteWebsite: data.instituteWebsite,
+    };
+
+    const adminUpdateData: Partial<IAdminsCollection> = {
+      AdminFirstName: data.firstName,
+      AdminLastName: data.lastName,
+      AdminNameChangeTime: serverTimestamp(),
+    };
+
+    await runTransaction(db, async transaction => {
+      const adminDocRef = doc(db, CollectionName.admins, adminId);
+
+      transaction.update(adminDocRef, adminUpdateData);
+
+      const instituteDocRef = doc(db, CollectionName.institute, InstituteId);
+
+      transaction.set(instituteDocRef, newInstitute);
+    });
+
+    return newInstitute;
   };
 }
 

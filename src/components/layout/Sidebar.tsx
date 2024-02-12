@@ -49,7 +49,7 @@ const links = [
 ];
 
 export function Sidebar() {
-  const { authUser, userSignOut } = useSessionStore();
+  const { authUser, userSignOut, institute } = useSessionStore();
 
   const pathname = usePathname();
 
@@ -57,7 +57,11 @@ export function Sidebar() {
 
   const [logoutConfirmModal, setLogoutConfirmModal] = useState(false);
 
-  if (!authUser.AuthUserAuthenticated) return <div></div>;
+  if (
+    !authUser.AuthUserAuthenticated ||
+    (authUser.AuthUserRole === 'admin' && !institute)
+  )
+    return <div></div>;
 
   return (
     <Sheet>

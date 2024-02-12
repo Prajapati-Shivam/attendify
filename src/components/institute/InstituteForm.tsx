@@ -1,6 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -14,8 +16,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import DbUser from '@/firebase_configs/DB/DbUser';
+import { useSessionStore, useUIStore } from '@/store';
 
-const formSchema = z.object({
+import LoaderDialog from '../common/dialogs/LoaderDialog';
+
+const instituteFormSchema = z.object({
   firstName: z.string().min(2, {
     message: 'First name must be at least 2 characters.',
   }),
@@ -35,10 +41,12 @@ const formSchema = z.object({
   instituteWebsite: z.string().optional(),
 });
 
+export type InstituteFormFields = z.infer<typeof instituteFormSchema>;
+
 export function InstituteForm() {
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<InstituteFormFields>({
+    resolver: zodResolver(instituteFormSchema),
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -50,12 +58,43 @@ export function InstituteForm() {
     },
   });
 
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+
+  const { setSnackbar } = useUIStore();
+
+  const { admin, setInstitute } = useSessionStore();
+
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: InstituteFormFields) => {
+    if (!admin) return;
+    try {
+      setLoading(true);
+
+      const institute = await DbUser.createNewInstitute(values, admin.AdminId);
+
+      setSnackbar({
+        open: true,
+        message: 'Institute created successfully',
+        type: 'success',
+      });
+      setInstitute(institute);
+      setLoading(false);
+      router.push('/');
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      setSnackbar({
+        open: true,
+        message: 'Something went wrong',
+        type: 'error',
+      });
+    }
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
-  }
+  };
 
   return (
     <Form {...form}>
@@ -64,7 +103,7 @@ export function InstituteForm() {
         className="mx-auto mt-5 w-full space-y-6 rounded-md bg-surfaceLight p-6 dark:bg-onSurfaceLight  md:max-w-3xl"
       >
         <div className="text-2xl font-semibold sm:text-3xl">
-          Create Institute
+          Institute Details
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <FormField
@@ -198,6 +237,11 @@ export function InstituteForm() {
           Submit
         </Button>
       </form>
+      <LoaderDialog
+        loading={loading}
+        title="Please wait..."
+        description="Creating your institute"
+      />
     </Form>
   );
 }
