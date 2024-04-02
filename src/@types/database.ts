@@ -1,4 +1,4 @@
-import type { FieldValue, Timestamp } from 'firebase/firestore';
+import type { FieldValue, GeoPoint, Timestamp } from 'firebase/firestore';
 
 export interface IAdminsCollection {
   AdminId: string;
@@ -89,6 +89,42 @@ export interface ISubjectsCollection {
   SubjectClassId: string;
   SubjectName: string;
   SubjectCreatedAt: Timestamp | FieldValue;
+}
+
+export interface ISessionsCollection {
+  SessionId: string;
+  SessionIsAttendanceSheetGenerated: boolean;
+  SessionClassId: string;
+  SessionClassName: string;
+  SessionClassArmId: string | null;
+  SessionClassArmName: string | null;
+  SessionFacultyId: string;
+  SessionFacultyName: string;
+  SessionSubjectId: string;
+  SessionSubjectName: string;
+  SessionStartTime: string; //* like 11:00 AM
+  SessionEndTime: string; //* like 01:00 PM
+  SessionDate: Timestamp | FieldValue;
+}
+
+export interface IAttendanceStudentList {
+  StudentId: string;
+  StudentName: string;
+  StudentIsPresent: boolean;
+  StudentMacAddress: string | null;
+}
+
+export interface IAttendanceCollection {
+  AttendanceId: string;
+  AttendanceSessionId: string;
+  AttendanceLocation: GeoPoint;
+  AttendanceStudentList: IAttendanceStudentList[];
+  AttendancePresentStudents: number;
+  AttendanceTotalStudents: number;
+  AttendanceClassId: string;
+  AttendanceClassArmId: string | null;
+  AttendanceCreatedAt: Timestamp | FieldValue;
+  AttendanceModifiedAt: Timestamp | FieldValue;
 }
 
 export interface ILoggedInUsersCollection {
