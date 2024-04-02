@@ -26,7 +26,7 @@ const LoginPage = () => {
   return (
     <div className="flex flex-col items-center justify-between gap-y-5 p-8 md:flex-row md:p-12 lg:p-20">
       <div
-        className="sm:-top-100 absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl"
+        className="sm:-top-96 absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl"
         aria-hidden="true"
       >
         <div
