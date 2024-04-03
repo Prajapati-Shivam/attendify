@@ -15,8 +15,7 @@ const LoaderDialog = ({
 }: LoaderDialogProps) => {
   return (
     <Dialog open={loading}>
-      <DialogContent className="flex w-full max-w-sm items-center gap-6 rounded bg-white px-6 py-4 shadow dark:bg-primaryVariantDark"
-      >
+      <DialogContent className="flex w-full max-w-sm items-center gap-6 rounded bg-white px-6 py-4 shadow dark:bg-primaryVariantDark">
         <Image src="/loading.gif" alt="loading" width={50} height={50} />
         <div className="flex flex-col">
           <div className="text-base font-bold">{title}</div>

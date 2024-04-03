@@ -117,7 +117,7 @@ const InputOtp = ({
             key={index}
             type="text"
             maxLength={1}
-            className="size-8 sm:size-11 appearance-none rounded-md border border-inputBorderLight text-center text-xl focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-inputBorderDark dark:bg-primaryVariantDark dark:text-textPrimaryDark"
+            className="size-8 appearance-none rounded-md border border-inputBorderLight text-center text-xl focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-inputBorderDark dark:bg-primaryVariantDark dark:text-textPrimaryDark sm:size-11"
             ref={inputRefs[index]}
             onChange={e => handleInputChange(e, index)}
             onInput={handleInput} // event listener to restrict input to numeric characters
