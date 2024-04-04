@@ -48,24 +48,16 @@ const LoginForm = () => {
               />
             </div>
             <div className="flex flex-col sm:flex-row">
-              <Button className="hover:bg-current/50 flex-1">Sign up</Button>
-              <span className="my-2 text-center sm:mx-2">or</span>
-              <Button className="hover:bg-current/90 flex-1 bg-black text-white">
-                Continue with Google
+              <Button className="flex-1 hover:bg-blueButtonHoverBg">
+                Sign up
               </Button>
             </div>
             <Link
-              href={'/forgot-password'}
+              href={'/forgot_password'}
               className="text-gray-500 dark:text-gray-300"
             >
               Forgot Password?
             </Link>
-            <div className="">
-              {"Don't have an account? "}
-              <Link href={'/register'} className="text-indigo-500">
-                Register
-              </Link>
-            </div>
           </>
         )}
       </div>
