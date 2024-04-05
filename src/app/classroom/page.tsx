@@ -1,18 +1,22 @@
-import { ClassroomDataTable } from '@/components/classroom/ClassroomDataTable';
-import { CreateClass } from '@/components/classroom/CreateClass';
+'use client';
 
-const classroom = 3;
+import Link from 'next/link';
+
+import { ClassroomDataTable } from '@/components/classroom/ClassroomDataTable';
+import { Button } from '@/components/ui/button';
+
 const Classroom = () => {
   return (
     <div className="h-max">
       <div className="px-5 py-8 sm:px-12 lg:px-20">
         <h2 className="text-2xl font-semibold text-indigo-500">Classroom</h2>
-        <CreateClass />
-        {classroom > 0 && (
-          <div className="mt-10 bg-white p-4 dark:bg-gray-800">
-            <ClassroomDataTable />
-          </div>
-        )}
+        {/* <CreateClass /> */}
+        <Button className="mt-5 hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg">
+          <Link href={'/create_classroom'}>Create Classroom</Link>
+        </Button>
+        <div className="mt-10 bg-white p-4 dark:bg-gray-800">
+          <ClassroomDataTable />
+        </div>
       </div>
     </div>
   );

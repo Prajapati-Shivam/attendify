@@ -114,14 +114,14 @@ const config = {
         primaryDark: '#000000', // primary color
         onPrimaryDark: '#FFFFFF', // not set    // color for items over primary color //not set
 
-        primaryVariantDark: '#3A3B3C',
+        primaryVariantDark: '#111827',
 
         secondaryDark: '#0E5FFF',
         onSecondaryDark: '#BFBFC0',
 
         secondaryVariantDark: '#FFFFFF',
 
-        surfaceDark: '#242526', // background colors of components like card, buttons, etc.
+        surfaceDark: '#1f2937', // background colors of components like card, buttons, etc.
         onSurfaceDark: '#E3E6EA', // text and icon colors of components like card, buttons, etc.
 
         backgroundDark: '#18191A', // page bg color
