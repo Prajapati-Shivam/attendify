@@ -2,10 +2,10 @@
 
 import {
   AreaChart,
-  ChevronRightCircle,
   FileSpreadsheet,
   GraduationCap,
   LogOut,
+  PanelRight,
   ScrollText,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -66,8 +66,8 @@ export function Sidebar() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <div className="absolute -left-5 top-20 cursor-pointer p-2">
-          <ChevronRightCircle size={35} />
+        <div className="absolute left-2 top-[10px] z-50 cursor-pointer p-2">
+          <PanelRight size={25} />
         </div>
       </SheetTrigger>
       <SheetContent side={'left'} className="w-[80%] p-0 sm:w-[300px]">

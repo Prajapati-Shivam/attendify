@@ -63,7 +63,10 @@ function CreateClassroomPage() {
           Create Classroom
         </h2>
         <Form {...form}>
-          <form className="mx-auto mt-5 w-full space-y-6 rounded-md bg-surfaceLight p-6 dark:bg-surfaceDark  md:max-w-3xl">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="mx-auto mt-5 w-full space-y-6 rounded-md bg-surfaceLight p-6 dark:bg-surfaceDark  md:max-w-3xl"
+          >
             <div className="text-2xl font-semibold sm:text-3xl">
               Class Details
             </div>
