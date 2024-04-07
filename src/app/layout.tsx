@@ -3,7 +3,6 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
 
-import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar';
 import ProtectedPage from '@/components/protected_page/ProtectedPage';
@@ -35,8 +34,7 @@ export default function RootLayout({
             <ProtectedPage>
               <Navbar />
               <Sidebar />
-              <div className="min-h-[calc(100vh-60px)]">{children}</div>
-              <Footer />
+              {children}
             </ProtectedPage>
           </AuthProvider>
         </ThemeProvider>

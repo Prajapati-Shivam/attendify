@@ -58,7 +58,7 @@ const config = {
         primaryLight: '#000000', // primary color
         onPrimaryLight: '#E7E7E7', // color for items over primary color
 
-        primaryVariantLight: '#C7C7C7',
+        primaryVariantLight: '#f3f4f6',
 
         secondaryLight: '#0E5FFF',
         onSecondaryLight: '#BFBFC0',

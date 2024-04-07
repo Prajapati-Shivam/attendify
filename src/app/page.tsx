@@ -7,7 +7,7 @@ const Dashboard = () => {
         <h2 className="text-2xl font-semibold text-indigo-500">Dashboard</h2>
         <p>This is dashboard page</p>
 
-        <div className="mt-10 bg-white p-4 dark:bg-gray-800">
+        <div className="mt-10 bg-white p-4 dark:bg-surfaceDark">
           <ClassroomDataTable />
         </div>
       </div>
