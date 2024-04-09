@@ -98,7 +98,10 @@ export function Sidebar() {
           <PanelRight size={25} />
         </div>
       </SheetTrigger>
-      <SheetContent side={'left'} className="w-[80%] p-0 sm:w-[300px]">
+      <SheetContent
+        side={'left'}
+        className="w-[80%] overflow-y-scroll p-0 sm:w-[300px]"
+      >
         <SheetHeader>
           <SheetTitle className="p-4 text-2xl font-bold">
             {ConstAppDetails.APP_NAME}
