@@ -72,7 +72,6 @@ export function InstituteForm() {
     institute
   ) {
     router.push('/');
-    return;
   }
 
   // 2. Define a submit handler.
