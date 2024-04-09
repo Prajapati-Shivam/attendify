@@ -64,7 +64,16 @@ export function InstituteForm() {
 
   const { setSnackbar } = useUIStore();
 
-  const { admin, setInstitute } = useSessionStore();
+  const { admin, authUser, institute, setInstitute } = useSessionStore();
+
+  if (
+    authUser.AuthUserAuthenticated &&
+    authUser.AuthUserRole === 'admin' &&
+    institute
+  ) {
+    router.push('/');
+    return;
+  }
 
   // 2. Define a submit handler.
   const onSubmit = async (values: InstituteFormFields) => {
@@ -72,14 +81,17 @@ export function InstituteForm() {
     try {
       setLoading(true);
 
-      const institute = await DbUser.createNewInstitute(values, admin.AdminId);
+      const newInstitute = await DbUser.createNewInstitute(
+        values,
+        admin.AdminId,
+      );
 
       setSnackbar({
         open: true,
         message: 'Institute created successfully',
         type: 'success',
       });
-      setInstitute(institute);
+      setInstitute(newInstitute);
       setLoading(false);
       router.push('/');
     } catch (error) {
@@ -100,7 +112,7 @@ export function InstituteForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-auto mt-5 w-full space-y-6 rounded-md bg-surfaceLight p-6 dark:bg-onSurfaceLight  md:max-w-3xl"
+        className="mx-auto mt-5 w-full space-y-6 rounded-md bg-surfaceLight p-6 dark:bg-surfaceDark  md:max-w-3xl"
       >
         <div className="text-2xl font-semibold sm:text-3xl">
           Institute Details
@@ -230,10 +242,7 @@ export function InstituteForm() {
           </div>
         </div>
 
-        <Button
-          type="submit"
-          className="hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg"
-        >
+        <Button type="submit" className="hover:bg-blueButtonHoverBg">
           Submit
         </Button>
       </form>
