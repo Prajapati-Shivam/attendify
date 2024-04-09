@@ -8,11 +8,13 @@ import {
   query,
   runTransaction,
   serverTimestamp,
+  setDoc,
   where,
 } from 'firebase/firestore';
 
 import type {
   IAdminsCollection,
+  ICoursesCollection,
   IInstitutesCollection,
 } from '@/@types/database';
 import { CollectionName } from '@/@types/enum';
@@ -99,6 +101,31 @@ class DbUser {
     });
 
     return newInstitute;
+  };
+
+  static createNewCourse = (
+    instituteId: string,
+    fullName: string,
+    shortName: string,
+  ) => {
+    const courseId = getNewDocId(CollectionName.courses);
+    const courseRef = doc(db, CollectionName.courses, courseId);
+
+    const newCourse: ICoursesCollection = {
+      CourseId: courseId,
+      CourseInstituteId: instituteId,
+      CourseFullName: fullName,
+      CourseShortName: shortName,
+      CourseCreatedAt: serverTimestamp(),
+    };
+
+    return setDoc(courseRef, newCourse);
+  };
+
+  static deleteCourse = (courseId: string) => {
+    const courseRef = doc(db, CollectionName.courses, courseId);
+
+    return deleteDoc(courseRef);
   };
 }
 
