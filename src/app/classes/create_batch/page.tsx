@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -72,7 +73,7 @@ function CreateBatchPage() {
       setLoading(false);
     }
   };
-
+  const router = useRouter();
   return (
     <div className="h-max">
       <div className="px-5 py-8 sm:px-12 lg:px-20">
