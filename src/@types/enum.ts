@@ -7,6 +7,7 @@ export enum CollectionName {
   attendances = 'Attendances',
   loggedInUsers = 'LoggedInUsers',
   institute = 'Institute',
+  courses = 'Courses',
 }
 
 export const LocalStorageKey = {
