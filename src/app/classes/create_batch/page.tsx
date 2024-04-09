@@ -1,10 +1,12 @@
 'use client';
 
-// import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ArrowLeft } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -15,6 +17,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+// import DbClass from '@/firebase_configs/DB/DbClass';
+import { useSessionStore, useUIStore } from '@/store';
 
 const createBatchSchema = z.object({
   batchName: z.string().min(2, {
@@ -44,18 +48,41 @@ function CreateBatchPage() {
     },
   });
 
-  // const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const { setSnackbar } = useUIStore();
+  const { institute } = useSessionStore();
   const onSubmit = async (values: CreateBatchFields) => {
-    if (form.formState.isValid) {
-      console.log(values);
+    if (!institute) return;
+    try {
+      setLoading(true);
+      // await DbClass.createClass(values, institute?.InstituteId);
+      setSnackbar({
+        open: true,
+        message: 'Batch created successfully',
+        type: 'success',
+      });
+    } catch (error) {
+      console.log(error);
+      setSnackbar({
+        open: true,
+        message: 'Something went wrong',
+        type: 'error',
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="h-max">
       <div className="px-5 py-8 sm:px-12 lg:px-20">
-        <h2 className="text-2xl font-semibold text-indigo-500">Create Batch</h2>
+        <div
+          onClick={() => router.push('/classes')}
+          className="flex cursor-pointer items-center gap-2 text-2xl font-semibold text-indigo-500"
+        >
+          <ArrowLeft />
+          <span>Create Classroom</span>
+        </div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -142,11 +169,11 @@ function CreateBatchPage() {
               Submit
             </Button>
           </form>
-          {/* <LoaderDialog
+          <LoaderDialog
             loading={loading}
             title="Please wait..."
             description="Creating your institute"
-          /> */}
+          />
         </Form>
       </div>
     </div>
