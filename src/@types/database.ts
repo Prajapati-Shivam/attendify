@@ -57,7 +57,6 @@ export interface IStudentsCollection {
   StudentCourseStartYear: Timestamp | FieldValue; //* remove time from this date
   StudentCourseEndYear: Timestamp | FieldValue; //* remove time from this date
   StudentInstituteId: string;
-  StudentInstituteName: string;
   StudentCreateTime: Timestamp | FieldValue;
   StudentNameChangeTime: Timestamp | FieldValue;
 }

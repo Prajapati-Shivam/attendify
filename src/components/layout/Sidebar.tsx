@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { FaPeopleGroup } from 'react-icons/fa6';
 import { MdOutlineMeetingRoom, MdOutlineSubject } from 'react-icons/md';
+import { SiGotomeeting } from 'react-icons/si';
 
 import {
   Sheet,
@@ -47,6 +48,11 @@ const links = [
     name: 'Classes',
     logo: <GraduationCap />,
     route: '/classes',
+  },
+  {
+    name: 'Courses',
+    logo: <SiGotomeeting />,
+    route: '/courses',
   },
   {
     name: 'Students',
