@@ -29,10 +29,7 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
       !institute
     ) {
       router.push('/institute');
-      return;
     }
-
-    router.push('/');
   }, [isLoading, authUser, institute]);
 
   return <>{children}</>;
