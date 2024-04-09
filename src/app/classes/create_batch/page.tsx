@@ -18,6 +18,15 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 // import DbClass from '@/firebase_configs/DB/DbClass';
 import { useSessionStore, useUIStore } from '@/store';
 
@@ -28,13 +37,18 @@ const createBatchSchema = z.object({
   batchClassName: z.string().min(2, {
     message: 'Batch class name must be at least 2 character.',
   }),
-  startYear: z.string().min(4, {
-    message: 'Start year must be valid year.',
-  }),
-  endYear: z.string().min(4, {
-    message: 'End year must be valid year.',
-  }),
+  startYear: z.string(),
+  endYear: z.string(),
 });
+
+const generateYears = () => {
+  const years = [];
+  const currentYear = new Date().getFullYear();
+  for (let i = currentYear; i >= 2010; i -= 1) {
+    years.push(i);
+  }
+  return years;
+};
 
 export type CreateBatchFields = z.infer<typeof createBatchSchema>;
 
@@ -56,7 +70,9 @@ function CreateBatchPage() {
     if (!institute) return;
     try {
       setLoading(true);
+      throw new Error('Not implemented');
       // await DbClass.createClass(values, institute?.InstituteId);
+      console.log(values);
       setSnackbar({
         open: true,
         message: 'Batch created successfully',
@@ -82,7 +98,7 @@ function CreateBatchPage() {
           className="flex cursor-pointer items-center gap-2 text-2xl font-semibold text-indigo-500"
         >
           <ArrowLeft />
-          <span>Create Classroom</span>
+          <span>Classroom</span>
         </div>
         <Form {...form}>
           <form
@@ -134,11 +150,26 @@ function CreateBatchPage() {
                   <FormItem>
                     <FormLabel>Start Year</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select year" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Year</SelectLabel>
+                            {generateYears().map(year => (
+                              <SelectItem key={year} value={year.toString()}>
+                                {year}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -151,11 +182,26 @@ function CreateBatchPage() {
                   <FormItem>
                     <FormLabel>End Year</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select year" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Year</SelectLabel>
+                            {generateYears().map(year => (
+                              <SelectItem key={year} value={year.toString()}>
+                                {year}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -173,7 +219,7 @@ function CreateBatchPage() {
           <LoaderDialog
             loading={loading}
             title="Please wait..."
-            description="Creating your institute"
+            description="Creating your batch"
           />
         </Form>
       </div>
