@@ -11,6 +11,7 @@ import {
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { FaPeopleGroup } from 'react-icons/fa6';
 
 import {
   Sheet,
@@ -34,6 +35,11 @@ const links = [
     name: 'Classes',
     logo: <GraduationCap />,
     route: '/classes',
+  },
+  {
+    name: 'Students',
+    logo: <FaPeopleGroup className="text-lg" />,
+    route: '/students',
   },
   {
     name: 'Attendance Sheet',
@@ -87,7 +93,9 @@ export function Sidebar() {
                   : 'hover:bg-gray-200 hover:dark:bg-gray-800'
               }`}
             >
-              <span>{link.logo}</span>
+              <span className="flex w-6 items-center justify-center">
+                {link.logo}
+              </span>
               <span>{link.name}</span>
             </Link>
           ))}
