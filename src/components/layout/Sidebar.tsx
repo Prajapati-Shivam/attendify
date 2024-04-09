@@ -11,7 +11,9 @@ import {
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { FaChalkboardTeacher } from 'react-icons/fa';
 import { FaPeopleGroup } from 'react-icons/fa6';
+import { MdOutlineMeetingRoom, MdOutlineSubject } from 'react-icons/md';
 
 import {
   Sheet,
@@ -32,6 +34,16 @@ const links = [
     route: '/',
   },
   {
+    name: 'Sessions',
+    logo: <MdOutlineMeetingRoom className="text-xl" />,
+    route: '/sessions',
+  },
+  {
+    name: 'Attendance Sheet',
+    logo: <FileSpreadsheet />,
+    route: '/attendance_sheet',
+  },
+  {
     name: 'Classes',
     logo: <GraduationCap />,
     route: '/classes',
@@ -42,11 +54,15 @@ const links = [
     route: '/students',
   },
   {
-    name: 'Attendance Sheet',
-    logo: <FileSpreadsheet />,
-    route: '/attendance_sheet',
+    name: 'Faculties',
+    logo: <FaChalkboardTeacher className="text-lg" />,
+    route: '/faculties',
   },
-
+  {
+    name: 'Subjects',
+    logo: <MdOutlineSubject className="text-lg" />,
+    route: '/subjects',
+  },
   {
     name: 'Report',
     logo: <ScrollText />,
