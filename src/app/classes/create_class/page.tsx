@@ -2,7 +2,9 @@
 
 // import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { HiArrowCircleLeft } from 'react-icons/hi';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -15,6 +17,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import DbClass from '@/firebase_configs/DB/DbClass';
+import { useSessionStore } from '@/store';
 
 const createClassSchema = z.object({
   className: z.string().min(2, {
@@ -25,12 +29,6 @@ const createClassSchema = z.object({
   }),
   endYear: z.string().min(4, {
     message: 'End year must be valid year.',
-  }),
-  armCount: z.number().min(1, {
-    message: 'Arm count must be at least 1.',
-  }),
-  studentCount: z.number().min(1, {
-    message: 'Student count must be at least 1.',
   }),
 });
 
@@ -43,25 +41,34 @@ function CreateClassroomPage() {
       className: '',
       startYear: '',
       endYear: '',
-      armCount: 1,
-      studentCount: 1,
     },
   });
 
   // const [loading, setLoading] = useState(false);
 
+  const { institute } = useSessionStore();
+
   const onSubmit = async (values: CreateClassFields) => {
-    if (form.formState.isValid) {
-      console.log(values);
+    if (!institute) return;
+    try {
+      await DbClass.createClass(values, institute?.InstituteId);
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  const router = useRouter();
 
   return (
     <div className="h-max">
       <div className="px-5 py-8 sm:px-12 lg:px-20">
-        <h2 className="text-2xl font-semibold text-indigo-500">
-          Create Classroom
-        </h2>
+        <div
+          onClick={() => router.push('/classes')}
+          className="flex cursor-pointer items-center gap-2 text-2xl font-semibold text-indigo-500"
+        >
+          <HiArrowCircleLeft />
+          <span>Create Classroom</span>
+        </div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -90,29 +97,13 @@ function CreateClassroomPage() {
               />
               <FormField
                 control={form.control}
-                name="studentCount"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Student Count</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
                 name="startYear"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Start Year</FormLabel>
                     <FormControl>
                       <Input
+                        type="date"
                         placeholder=""
                         {...field}
                         className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
@@ -130,6 +121,7 @@ function CreateClassroomPage() {
                     <FormLabel>End Year</FormLabel>
                     <FormControl>
                       <Input
+                        type="date"
                         placeholder=""
                         {...field}
                         className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
@@ -139,23 +131,6 @@ function CreateClassroomPage() {
                   </FormItem>
                 )}
               />{' '}
-              <FormField
-                control={form.control}
-                name="armCount"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Arm Count</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
 
             <Button
