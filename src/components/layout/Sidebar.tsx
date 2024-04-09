@@ -31,9 +31,9 @@ const links = [
     route: '/',
   },
   {
-    name: 'Classroom',
+    name: 'Classes',
     logo: <GraduationCap />,
-    route: '/classroom',
+    route: '/classes',
   },
   {
     name: 'Attendance Sheet',

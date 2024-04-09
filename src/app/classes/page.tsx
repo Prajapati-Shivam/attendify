@@ -12,7 +12,7 @@ const Classroom = () => {
         <h2 className="text-2xl font-semibold text-indigo-500">Classroom</h2>
         {/* <CreateClass /> */}
         <Button className="mt-5 hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg">
-          <Link href={'/create_classroom'}>Create Classroom</Link>
+          <Link href={'/classes/create_class'}>Create Classroom</Link>
         </Button>
         <div className="mt-10 bg-white p-4 dark:bg-gray-800">
           <ClassroomDataTable />
