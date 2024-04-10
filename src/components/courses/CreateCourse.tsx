@@ -50,7 +50,9 @@ export function CreateCourse() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="hover:bg-blueButtonHoverBg">Create Course</Button>
+        <Button className="mt-5 hover:bg-blueButtonHoverBg">
+          Create Course
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
