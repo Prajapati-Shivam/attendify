@@ -18,6 +18,7 @@ import { SiGotomeeting } from 'react-icons/si';
 
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -107,22 +108,23 @@ export function Sidebar() {
             {ConstAppDetails.APP_NAME}
           </SheetTitle>
         </SheetHeader>
-        <div className="">
+        <div>
           {links.map(link => (
-            <Link
-              href={link.route}
-              key={link.name}
-              className={`flex cursor-pointer items-center space-x-4 rounded-r-full p-4 text-sky-900 transition-all duration-300  hover:font-bold  dark:text-sky-100 ${
-                pathname === link.route
-                  ? 'bg-gray-200 font-bold text-indigo-600 dark:bg-gray-800'
-                  : 'hover:bg-gray-200 hover:dark:bg-gray-800'
-              }`}
-            >
-              <span className="flex w-6 items-center justify-center">
-                {link.logo}
-              </span>
-              <span>{link.name}</span>
-            </Link>
+            <SheetClose asChild key={link.name}>
+              <Link
+                href={link.route}
+                className={`flex cursor-pointer items-center space-x-4 rounded-r-full p-4 text-sky-900 transition-all duration-300  hover:font-bold  dark:text-sky-100 ${
+                  pathname === link.route
+                    ? 'bg-gray-200 font-bold text-indigo-600 dark:bg-gray-800'
+                    : 'hover:bg-gray-200 hover:dark:bg-gray-800'
+                }`}
+              >
+                <span className="flex w-6 items-center justify-center">
+                  {link.logo}
+                </span>
+                <span>{link.name}</span>
+              </Link>
+            </SheetClose>
           ))}
           {authUser.AuthUserAuthenticated && (
             <div
