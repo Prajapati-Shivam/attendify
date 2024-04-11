@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -22,8 +23,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import DbClass from '@/firebase_configs/DB/DbClass';
+import { errorHandler } from '@/lib/CustomError';
+import { showSnackbar } from '@/lib/TsxUtils';
+import { useSessionStore } from '@/store';
 
-// import LoaderDialog from '../common/dialogs/LoaderDialog';
+import LoaderDialog from '../common/dialogs/LoaderDialog';
 
 const courseFormSchema = z.object({
   fullName: z.string().min(4, {
@@ -35,6 +40,7 @@ const courseFormSchema = z.object({
 });
 
 export type CourseFormFields = z.infer<typeof courseFormSchema>;
+
 export function CreateCourse() {
   const form = useForm<CourseFormFields>({
     resolver: zodResolver(courseFormSchema),
@@ -44,8 +50,27 @@ export function CreateCourse() {
     },
   });
 
+  const [loading, setLoading] = useState(false);
+
+  const { institute } = useSessionStore();
+
   const onSubmit = async (data: CourseFormFields) => {
-    console.log(data);
+    if (!institute) return;
+    try {
+      setLoading(true);
+      await DbClass.createNewCourse(
+        institute.InstituteId,
+        data.fullName,
+        data.shortName,
+      );
+
+      setLoading(false);
+      showSnackbar({ message: 'Course created successfully', type: 'success' });
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      errorHandler(error);
+    }
   };
   return (
     <Dialog>
@@ -57,9 +82,6 @@ export function CreateCourse() {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create Course</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
         </DialogHeader>
         <Form {...form}>
           <form
@@ -100,18 +122,14 @@ export function CreateCourse() {
                 </FormItem>
               )}
             />
+            <DialogFooter>
+              <Button type="submit" className="hover:bg-blueButtonHoverBg">
+                Create
+              </Button>
+            </DialogFooter>
           </form>
-          {/* <LoaderDialog
-              loading={loading}
-              title="Please wait..."
-              description="Creating your institute"
-            /> */}
+          <LoaderDialog loading={loading} title="Loading..." />
         </Form>
-        <DialogFooter>
-          <Button type="submit" className="hover:bg-blueButtonHoverBg">
-            Create
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
