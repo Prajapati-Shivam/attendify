@@ -24,3 +24,11 @@ export interface LocalStorageLoggedInUserData {
   LoggedInCrypt: string;
   LoggedInAuthUserType: 'admin' | 'faculty' | 'student';
 }
+
+export const DisplayCount = {
+  COURSE_LIST: 20,
+} as const;
+
+export const REACT_QUERY_KEYS = {
+  COURSE_LIST: 'course-list',
+} as const;
