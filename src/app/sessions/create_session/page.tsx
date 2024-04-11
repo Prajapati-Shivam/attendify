@@ -8,6 +8,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
+import FacultyInput from '@/components/common/inputs/FacultyInput';
+import SubjectInput from '@/components/common/inputs/SubjectInput';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -118,11 +120,7 @@ function CreateSessionPage() {
                   <FormItem>
                     <FormLabel>Faculty Name</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
+                      <FacultyInput field={field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -135,11 +133,7 @@ function CreateSessionPage() {
                   <FormItem>
                     <FormLabel>Subject Name</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
+                      <SubjectInput field={field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
