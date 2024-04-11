@@ -1,7 +1,9 @@
 import './globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
+import { ToastContainer } from 'react-toastify';
 
 import Navbar from '@/components/layout/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar';
@@ -35,6 +37,7 @@ export default function RootLayout({
               <Navbar />
               <Sidebar />
               {children}
+              <ToastContainer />
             </ProtectedPage>
           </AuthProvider>
         </ThemeProvider>

@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -63,7 +64,6 @@ export function CreateCourse() {
         data.fullName,
         data.shortName,
       );
-
       setLoading(false);
       showSnackbar({ message: 'Course created successfully', type: 'success' });
     } catch (error) {
@@ -123,9 +123,11 @@ export function CreateCourse() {
               )}
             />
             <DialogFooter>
-              <Button type="submit" className="hover:bg-blueButtonHoverBg">
-                Create
-              </Button>
+              <DialogClose asChild>
+                <Button type="submit" className="hover:bg-blueButtonHoverBg">
+                  Create
+                </Button>
+              </DialogClose>
             </DialogFooter>
           </form>
           <LoaderDialog loading={loading} title="Loading..." />
