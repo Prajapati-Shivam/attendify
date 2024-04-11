@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import SelectYear from '@/components/classroom/SelectYear';
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,15 +19,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 // import DbClass from '@/firebase_configs/DB/DbClass';
 import { useSessionStore, useUIStore } from '@/store';
 
@@ -40,15 +32,6 @@ const createBatchSchema = z.object({
   startYear: z.string(),
   endYear: z.string(),
 });
-
-const generateYears = () => {
-  const years = [];
-  const currentYear = new Date().getFullYear();
-  for (let i = currentYear; i >= 2010; i -= 1) {
-    years.push(i);
-  }
-  return years;
-};
 
 export type CreateBatchFields = z.infer<typeof createBatchSchema>;
 
@@ -70,7 +53,6 @@ function CreateBatchPage() {
     if (!institute) return;
     try {
       setLoading(true);
-      throw new Error('Not implemented');
       // await DbClass.createClass(values, institute?.InstituteId);
       console.log(values);
       setSnackbar({
@@ -150,26 +132,7 @@ function CreateBatchPage() {
                   <FormItem>
                     <FormLabel>Start Year</FormLabel>
                     <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select year" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>Year</SelectLabel>
-                            {generateYears().map(year => (
-                              <SelectItem key={year} value={year.toString()}>
-                                {year}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
+                      <SelectYear field={field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -182,26 +145,7 @@ function CreateBatchPage() {
                   <FormItem>
                     <FormLabel>End Year</FormLabel>
                     <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select year" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>Year</SelectLabel>
-                            {generateYears().map(year => (
-                              <SelectItem key={year} value={year.toString()}>
-                                {year}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
+                      <SelectYear field={field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
