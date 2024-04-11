@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Dialog, DialogContent } from '../../ui/dialog';
+import { AlertDialog, AlertDialogContent } from '@/components/ui/alert-dialog';
 
 interface LoaderDialogProps {
   title?: string;
@@ -14,8 +14,8 @@ const LoaderDialog = ({
   loading,
 }: LoaderDialogProps) => {
   return (
-    <Dialog open={loading}>
-      <DialogContent className="flex w-full max-w-sm items-center gap-6 rounded bg-white px-6 py-4 shadow dark:bg-primaryVariantDark">
+    <AlertDialog open={loading}>
+      <AlertDialogContent className="flex w-full max-w-sm items-center gap-6 rounded bg-white px-6 py-4 shadow dark:bg-primaryVariantDark">
         <Image src="/loading.gif" alt="loading" width={50} height={50} />
         <div className="flex flex-col">
           <div className="text-base font-bold">{title}</div>
@@ -23,8 +23,8 @@ const LoaderDialog = ({
             {description}
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 
