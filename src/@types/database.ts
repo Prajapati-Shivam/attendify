@@ -65,6 +65,7 @@ export interface IClassesCollection {
   ClassId: string;
   ClassInstituteId: string;
   ClassName: string;
+  ClassCourseId: string;
   ClassAcademicStartYear: Timestamp | FieldValue;
   ClassAcademicEndYear: Timestamp | FieldValue;
   ClassArmCount: number;
@@ -85,7 +86,7 @@ export interface IClassArmsCollection {
 
 export interface ISubjectsCollection {
   SubjectId: string;
-  SubjectClassId: string;
+  SubjectCourseId: string;
   SubjectName: string;
   SubjectCreatedAt: Timestamp | FieldValue;
 }
