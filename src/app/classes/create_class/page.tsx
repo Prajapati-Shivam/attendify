@@ -19,7 +19,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import DbClass from '@/firebase_configs/DB/DbClass';
-import { useSessionStore, useUIStore } from '@/store';
+import { errorHandler } from '@/lib/CustomError';
+import { showSnackbar } from '@/lib/TsxUtils';
+import { useSessionStore } from '@/store';
 
 const createClassSchema = z.object({
   className: z.string().min(2, {
@@ -47,8 +49,6 @@ function CreateClassroomPage() {
 
   const [loading, setLoading] = useState(false);
 
-  const { setSnackbar } = useUIStore();
-
   const { institute } = useSessionStore();
 
   const onSubmit = async (values: CreateClassFields) => {
@@ -56,18 +56,13 @@ function CreateClassroomPage() {
     try {
       setLoading(true);
       await DbClass.createClass(values, institute?.InstituteId);
-      setSnackbar({
-        open: true,
-        message: 'Class created successfully',
+      showSnackbar({
+        message: 'Classroom created successfully',
         type: 'success',
       });
     } catch (error) {
       console.log(error);
-      setSnackbar({
-        open: true,
-        message: 'Something went wrong',
-        type: 'error',
-      });
+      errorHandler(error);
     } finally {
       setLoading(false);
     }

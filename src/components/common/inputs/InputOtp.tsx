@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { useUIStore } from '@/store';
+import { showSnackbar } from '@/lib/TsxUtils';
 
 interface InputOtpProps {
   title: string;
@@ -20,8 +20,6 @@ const InputOtp = ({
   setShow,
   isChangeReq = true,
 }: InputOtpProps) => {
-  const { setSnackbar } = useUIStore();
-
   const inputRefs = [
     useRef<HTMLInputElement>(null),
     useRef<HTMLInputElement>(null),
@@ -53,20 +51,16 @@ const InputOtp = ({
       attemptsLeftRef.current -= 1;
       resendOtp();
       setSeconds(30);
-      setSnackbar({
+      showSnackbar({
         message: `${attemptsLeftRef.current} login attempts left`,
         type: 'info',
-        open: true,
-        autoClose: true,
       });
       // Resend OTP logic here
     } else {
       // No attempts left
-      setSnackbar({
-        message: 'No attempts left, please try after sometime',
+      showSnackbar({
+        message: 'No attempts left, please try again after sometime',
         type: 'error',
-        open: true,
-        autoClose: true,
       });
     }
   };
@@ -140,11 +134,9 @@ const InputOtp = ({
             if (!isResendOtpDisabled && attemptsLeftRef.current > 0) {
               handleResendOTP();
             } else if (attemptsLeftRef.current === 0) {
-              setSnackbar({
-                message: 'No attempts left, please try after sometime',
+              showSnackbar({
+                message: 'No attempts left, please try again after sometime',
                 type: 'error',
-                open: true,
-                autoClose: true,
               });
             }
           }}

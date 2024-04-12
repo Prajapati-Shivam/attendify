@@ -17,7 +17,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import DbUser from '@/firebase_configs/DB/DbUser';
-import { useSessionStore, useUIStore } from '@/store';
+import { errorHandler } from '@/lib/CustomError';
+import { showSnackbar } from '@/lib/TsxUtils';
+import { useSessionStore } from '@/store';
 
 import LoaderDialog from '../common/dialogs/LoaderDialog';
 
@@ -62,8 +64,6 @@ export function InstituteForm() {
 
   const [loading, setLoading] = useState(false);
 
-  const { setSnackbar } = useUIStore();
-
   const { admin, authUser, institute, setInstitute } = useSessionStore();
 
   if (
@@ -85,8 +85,7 @@ export function InstituteForm() {
         admin.AdminId,
       );
 
-      setSnackbar({
-        open: true,
+      showSnackbar({
         message: 'Institute created successfully',
         type: 'success',
       });
@@ -95,12 +94,7 @@ export function InstituteForm() {
       router.push('/');
     } catch (error) {
       setLoading(false);
-      console.log(error);
-      setSnackbar({
-        open: true,
-        message: 'Something went wrong',
-        type: 'error',
-      });
+      errorHandler(error);
     }
     // Do something with the form values.
     // ✅ This will be type-safe and validated.

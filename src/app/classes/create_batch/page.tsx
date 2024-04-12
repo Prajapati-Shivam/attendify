@@ -19,8 +19,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { errorHandler } from '@/lib/CustomError';
+import { showSnackbar } from '@/lib/TsxUtils';
 // import DbClass from '@/firebase_configs/DB/DbClass';
-import { useSessionStore, useUIStore } from '@/store';
+import { useSessionStore } from '@/store';
 
 const createBatchSchema = z.object({
   batchName: z.string().min(2, {
@@ -47,7 +49,6 @@ function CreateBatchPage() {
   });
 
   const [loading, setLoading] = useState(false);
-  const { setSnackbar } = useUIStore();
   const { institute } = useSessionStore();
   const onSubmit = async (values: CreateBatchFields) => {
     if (!institute) return;
@@ -55,18 +56,13 @@ function CreateBatchPage() {
       setLoading(true);
       // await DbClass.createClass(values, institute?.InstituteId);
       console.log(values);
-      setSnackbar({
-        open: true,
+      showSnackbar({
         message: 'Batch created successfully',
         type: 'success',
       });
     } catch (error) {
       console.log(error);
-      setSnackbar({
-        open: true,
-        message: 'Something went wrong',
-        type: 'error',
-      });
+      errorHandler(error);
     } finally {
       setLoading(false);
     }

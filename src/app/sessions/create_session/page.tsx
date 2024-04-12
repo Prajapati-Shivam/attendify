@@ -20,7 +20,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useSessionStore, useUIStore } from '@/store';
+import { errorHandler } from '@/lib/CustomError';
+import { showSnackbar } from '@/lib/TsxUtils';
+import { useSessionStore } from '@/store';
 
 const createSessionSchema = z.object({
   sessionClassName: z.string().min(2).max(50),
@@ -48,8 +50,6 @@ function CreateSessionPage() {
 
   const [loading, setLoading] = useState(false);
 
-  const { setSnackbar } = useUIStore();
-
   const { institute } = useSessionStore();
 
   const onSubmit = async (values: CreateSessionFields) => {
@@ -58,20 +58,14 @@ function CreateSessionPage() {
       setLoading(true);
       // implement create session logic here
       console.log(values);
-      setSnackbar({
-        open: true,
-        message: 'Session created successfully',
+      showSnackbar({
+        message: 'Classroom created successfully',
         type: 'success',
       });
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      setSnackbar({
-        open: true,
-        message: 'Something went wrong',
-        type: 'error',
-      });
-    } finally {
-      setLoading(false);
+      errorHandler(error);
     }
   };
 

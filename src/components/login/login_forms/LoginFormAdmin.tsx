@@ -21,14 +21,13 @@ import { Button } from '@/components/ui/button';
 import { auth, db } from '@/firebase_configs/config';
 import { getNewDocId } from '@/firebase_configs/DB/utils';
 import * as storage from '@/lib/Storage';
-import { useSessionStore, useUIStore } from '@/store';
+import { showSnackbar } from '@/lib/TsxUtils';
+import { useSessionStore } from '@/store';
 
 import InputWithTopHeader from '../../common/inputs/InputWithTopHeader';
 
 const LoginFormAdmin = () => {
   const { setAuthUser } = useSessionStore();
-
-  const { setSnackbar } = useUIStore();
 
   const [error, setError] = useState('');
 
@@ -86,9 +85,7 @@ const LoginFormAdmin = () => {
         setShow(true);
         setIsSendOtpDisabled(false);
         setLoading(false);
-        setSnackbar({
-          open: true,
-          autoClose: true,
+        showSnackbar({
           message: 'OTP sent successfully',
           type: 'success',
         });
@@ -101,16 +98,12 @@ const LoginFormAdmin = () => {
           error instanceof FirebaseError &&
           error.code === 'auth/too-many-requests'
         ) {
-          setSnackbar({
-            open: true,
-            autoClose: true,
+          showSnackbar({
             message: 'Your quota exceeded, please try after sometime',
             type: 'error',
           });
         } else {
-          setSnackbar({
-            open: true,
-            autoClose: true,
+          showSnackbar({
             message: 'Something went wrong',
             type: 'error',
           });
@@ -138,17 +131,13 @@ const LoginFormAdmin = () => {
             error instanceof FirebaseError &&
             error.code === 'auth/too-many-requests'
           ) {
-            setSnackbar({
-              open: true,
-              autoClose: true,
+            showSnackbar({
               message: 'Your quota exceeded, please try after sometime',
               type: 'error',
             });
           } else {
-            setSnackbar({
-              open: true,
-              autoClose: true,
-              message: 'Something went wrong',
+            showSnackbar({
+              message: 'Something wnet wrong',
               type: 'error',
             });
           }
@@ -161,10 +150,8 @@ const LoginFormAdmin = () => {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
-      setSnackbar({
-        open: true,
-        autoClose: true,
-        message: 'Something went wrong',
+      showSnackbar({
+        message: 'Something wnet wrong',
         type: 'error',
       });
       recaptchaVerifierData?.clear();
@@ -257,24 +244,18 @@ const LoginFormAdmin = () => {
       console.log(error);
       setLoading(false);
       if (error.response && error.response.status === 404) {
-        setSnackbar({
-          open: true,
-          autoClose: true,
+        showSnackbar({
           message: 'Wrong OTP',
           type: 'error',
         });
       } else if (error.response && error.response.status === 403) {
-        setSnackbar({
-          open: true,
-          autoClose: true,
+        showSnackbar({
           message: 'Otp expired',
           type: 'error',
         });
       } else {
-        setSnackbar({
-          open: true,
-          autoClose: true,
-          message: 'Wrong OTo',
+        showSnackbar({
+          message: 'Wrong OTP',
           type: 'error',
         });
       }
