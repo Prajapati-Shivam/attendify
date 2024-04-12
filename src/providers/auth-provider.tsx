@@ -3,7 +3,6 @@
 
 'use client';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 
 import type {
@@ -21,14 +20,6 @@ import * as storage from '@/lib/Storage';
 import { useSessionStore, useUIStore } from '@/store';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        gcTime: Number.POSITIVE_INFINITY,
-      },
-    },
-  });
-
   const { setAuthUser, setIsLoading, isLoading, setAdmin, setInstitute } =
     useSessionStore();
 
@@ -142,10 +133,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       {children}
       {snackbar.open && <Snackbar />}
-    </QueryClientProvider>
+    </>
   );
 };
 

@@ -1,14 +1,15 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { REACT_QUERY_KEYS } from '@/@types/enum';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -51,9 +52,13 @@ export function CreateCourse() {
     },
   });
 
+  const [opened, setOpened] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
   const { institute } = useSessionStore();
+
+  const queryClient = useQueryClient();
 
   const onSubmit = async (data: CourseFormFields) => {
     if (!institute) return;
@@ -64,7 +69,11 @@ export function CreateCourse() {
         data.fullName,
         data.shortName,
       );
+      await queryClient.invalidateQueries({
+        queryKey: [REACT_QUERY_KEYS.COURSE_LIST],
+      });
       setLoading(false);
+      setOpened(false);
       showSnackbar({ message: 'Course created successfully', type: 'success' });
     } catch (error) {
       setLoading(false);
@@ -73,7 +82,7 @@ export function CreateCourse() {
     }
   };
   return (
-    <Dialog>
+    <Dialog open={opened} onOpenChange={setOpened}>
       <DialogTrigger asChild>
         <Button className="mt-5 hover:bg-blueButtonHoverBg">
           Create Course
@@ -123,11 +132,9 @@ export function CreateCourse() {
               )}
             />
             <DialogFooter>
-              <DialogClose asChild>
-                <Button type="submit" className="hover:bg-blueButtonHoverBg">
-                  Create
-                </Button>
-              </DialogClose>
+              <Button type="submit" className="hover:bg-blueButtonHoverBg">
+                Create
+              </Button>
             </DialogFooter>
           </form>
           <LoaderDialog loading={loading} title="Loading..." />

@@ -19,6 +19,9 @@ import DbClass from '@/firebase_configs/DB/DbClass';
 import { formatDate } from '@/lib/misc';
 import { useSessionStore } from '@/store';
 
+import NoSearchResult from '../common/NoSearchResult';
+import TableShimmer from '../common/shimmer/TableShimmer';
+
 export function CourseList() {
   const { institute } = useSessionStore();
 
@@ -50,6 +53,7 @@ export function CourseList() {
       return null;
     },
     initialPageParam: null as null | DocumentData,
+    enabled: true,
   });
 
   const [data, setData] = useState<ICoursesCollection[]>(() => {
@@ -67,6 +71,7 @@ export function CourseList() {
 
   // we are looping through the snapshot returned by react-query and converting them to data
   useEffect(() => {
+    console.log(snapshotData, 'here');
     if (snapshotData) {
       const docData: ICoursesCollection[] = [];
       snapshotData.pages?.forEach(page => {
@@ -101,7 +106,9 @@ export function CourseList() {
       <TableBody>
         {data.length === 0 && !isLoading ? (
           <TableRow>
-            <TableCell colSpan={7}>No result found</TableCell>
+            <TableCell colSpan={7}>
+              <NoSearchResult />
+            </TableCell>
           </TableRow>
         ) : (
           data.map((course, idx) => {
@@ -121,7 +128,7 @@ export function CourseList() {
           <TableCell colSpan={7}>
             {(isLoading || isFetchingNextPage) &&
               Array.from({ length: 10 }).map((_, idx) => (
-                <div key={idx}>Loading</div>
+                <TableShimmer key={idx} />
               ))}
           </TableCell>
         </TableRow>
