@@ -1,13 +1,12 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import PageContainer from '@/components/common/Containers/PageContainer';
+import PageHeader from '@/components/common/Containers/PageHeader';
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
 import { Button } from '@/components/ui/button';
 import {
@@ -74,17 +73,9 @@ function CreateClassroomPage() {
     }
   };
 
-  const router = useRouter();
-
   return (
     <PageContainer>
-      <div
-        onClick={() => router.push('/classes')}
-        className="flex cursor-pointer items-center gap-2 text-2xl font-semibold text-indigo-500"
-      >
-        <ArrowLeft />
-        <span>Create Classroom</span>
-      </div>
+      <PageHeader route="classes">Create Classroom</PageHeader>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

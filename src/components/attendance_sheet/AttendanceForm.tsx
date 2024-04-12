@@ -8,7 +8,7 @@ import { Button } from '../ui/button';
 const AttendanceForm = () => {
   return (
     // Create form with dropdown menu for Classroom, subject and date
-    <div className="rounded-md bg-white p-4 dark:bg-gray-800">
+    <div className="mt-5 flex flex-col rounded-md bg-white p-4 dark:bg-gray-800 sm:flex-row">
       <form action="" className="flex gap-5">
         <SelectClassroom />
         <SelectSubject />

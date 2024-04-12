@@ -1,13 +1,12 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { HiArrowCircleLeft } from 'react-icons/hi';
 import { z } from 'zod';
 
 import PageContainer from '@/components/common/Containers/PageContainer';
+import PageHeader from '@/components/common/Containers/PageHeader';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -40,8 +39,6 @@ const createStudentSchema = z.object({
 export type CreateStudentFields = z.infer<typeof createStudentSchema>;
 
 const CreateStudent = () => {
-  const router = useRouter();
-
   const form = useForm<CreateStudentFields>({
     resolver: zodResolver(createStudentSchema),
   });
@@ -51,13 +48,7 @@ const CreateStudent = () => {
   };
   return (
     <PageContainer>
-      <div
-        onClick={() => router.push('/students')}
-        className="flex cursor-pointer items-center gap-2 text-2xl font-semibold text-indigo-500"
-      >
-        <HiArrowCircleLeft />
-        <span>Create Student</span>
-      </div>
+      <PageHeader route="students">Create Student</PageHeader>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
