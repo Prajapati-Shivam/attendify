@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { HiArrowCircleLeft } from 'react-icons/hi';
 import { z } from 'zod';
 
+import PageContainer from '@/components/common/Containers/PageContainer';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -49,87 +50,85 @@ const CreateStudent = () => {
     console.log(data);
   };
   return (
-    <div className="h-max">
-      <div className="px-5 py-8 sm:px-12 lg:px-20">
-        <div
-          onClick={() => router.push('/students')}
-          className="flex cursor-pointer items-center gap-2 text-2xl font-semibold text-indigo-500"
-        >
-          <HiArrowCircleLeft />
-          <span>Create Student</span>
-        </div>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mx-auto mt-5 w-full space-y-6 rounded-md bg-surfaceLight p-6 dark:bg-surfaceDark  md:max-w-3xl"
-          >
-            <div className="text-2xl font-semibold sm:text-3xl">
-              Class Details
-            </div>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="StudentFullName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Full Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="StudentRollNo"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Roll No</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />{' '}
-              <FormField
-                control={form.control}
-                name="StudentUniqueId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Unique Id</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <Button
-              type="submit"
-              className="hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg"
-            >
-              Submit
-            </Button>
-          </form>
-        </Form>
+    <PageContainer>
+      <div
+        onClick={() => router.push('/students')}
+        className="flex cursor-pointer items-center gap-2 text-2xl font-semibold text-indigo-500"
+      >
+        <HiArrowCircleLeft />
+        <span>Create Student</span>
       </div>
-    </div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="mx-auto mt-5 w-full space-y-6 rounded-md bg-surfaceLight p-6 dark:bg-surfaceDark  md:max-w-3xl"
+        >
+          <div className="text-2xl font-semibold sm:text-3xl">
+            Class Details
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="StudentFullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="StudentRollNo"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Roll No</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />{' '}
+            <FormField
+              control={form.control}
+              name="StudentUniqueId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Unique Id</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Button
+            type="submit"
+            className="hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg"
+          >
+            Submit
+          </Button>
+        </form>
+      </Form>
+    </PageContainer>
   );
 };
 

@@ -1,14 +1,13 @@
 import React from 'react';
 
+import PageContainer from '@/components/common/Containers/PageContainer';
 import { InstituteForm } from '@/components/institute/InstituteForm';
 
 const Institute = () => {
   return (
-    <div className="h-max">
-      <div className="px-5 py-8 sm:px-12 lg:px-20">
-        <InstituteForm />
-      </div>
-    </div>
+    <PageContainer>
+      <InstituteForm />
+    </PageContainer>
   );
 };
 

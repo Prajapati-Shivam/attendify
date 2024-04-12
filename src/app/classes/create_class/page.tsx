@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import PageContainer from '@/components/common/Containers/PageContainer';
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
 import { Button } from '@/components/ui/button';
 import {
@@ -76,94 +77,92 @@ function CreateClassroomPage() {
   const router = useRouter();
 
   return (
-    <div className="h-max">
-      <div className="px-5 py-8 sm:px-12 lg:px-20">
-        <div
-          onClick={() => router.push('/classes')}
-          className="flex cursor-pointer items-center gap-2 text-2xl font-semibold text-indigo-500"
-        >
-          <ArrowLeft />
-          <span>Create Classroom</span>
-        </div>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mx-auto mt-5 w-full space-y-6 rounded-md bg-surfaceLight p-6 dark:bg-surfaceDark  md:max-w-3xl"
-          >
-            <div className="text-2xl font-semibold sm:text-3xl">
-              Class Details
-            </div>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="className"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Class Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="startYear"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Start Year</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />{' '}
-              <FormField
-                control={form.control}
-                name="endYear"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>End Year</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />{' '}
-            </div>
-
-            <Button
-              type="submit"
-              className="hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg"
-            >
-              Submit
-            </Button>
-          </form>
-          <LoaderDialog
-            loading={loading}
-            title="Please wait..."
-            description="Creating classroom."
-          />
-        </Form>
+    <PageContainer>
+      <div
+        onClick={() => router.push('/classes')}
+        className="flex cursor-pointer items-center gap-2 text-2xl font-semibold text-indigo-500"
+      >
+        <ArrowLeft />
+        <span>Create Classroom</span>
       </div>
-    </div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="mx-auto mt-5 w-full space-y-6 rounded-md bg-surfaceLight p-6 dark:bg-surfaceDark  md:max-w-3xl"
+        >
+          <div className="text-2xl font-semibold sm:text-3xl">
+            Class Details
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="className"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Class Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="startYear"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Start Year</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />{' '}
+            <FormField
+              control={form.control}
+              name="endYear"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>End Year</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />{' '}
+          </div>
+
+          <Button
+            type="submit"
+            className="hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg"
+          >
+            Submit
+          </Button>
+        </form>
+        <LoaderDialog
+          loading={loading}
+          title="Please wait..."
+          description="Creating classroom."
+        />
+      </Form>
+    </PageContainer>
   );
 }
 
