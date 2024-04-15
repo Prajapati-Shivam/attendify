@@ -88,3 +88,17 @@
 .notification {
   animation: slideInRight 0.2s ease-out;
 }
+
+.sidebar-scrollbar::-webkit-scrollbar {
+  display: block;
+  background-color: #ffffff00;
+  background-color: #051e34b3;
+  width: 8px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #8a9bb2;
+  border-radius: 8px;
+  border: 2px solid #262f3d;
+  cursor: pointer;
+}

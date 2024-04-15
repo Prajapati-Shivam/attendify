@@ -101,7 +101,7 @@ export function Sidebar() {
       </SheetTrigger>
       <SheetContent
         side={'left'}
-        className="w-[80%] overflow-y-scroll p-0 sm:w-[300px]"
+        className="sidebar-scrollbar w-[80%] overflow-auto p-0 pb-12 sm:w-[300px]"
       >
         <SheetHeader>
           <SheetTitle className="p-4 text-2xl font-bold">
