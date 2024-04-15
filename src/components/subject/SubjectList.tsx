@@ -27,7 +27,7 @@ import LoaderDialog from '../common/dialogs/LoaderDialog';
 import NoSearchResult from '../common/NoSearchResult';
 import TableShimmer from '../common/shimmer/TableShimmer';
 
-export function CourseList() {
+export function SubjectList() {
   const { institute } = useSessionStore();
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const {
@@ -125,8 +125,8 @@ export function CourseList() {
       <TableHeader>
         <TableRow>
           <TableHead className="w-[120px]">SR No.</TableHead>
-          <TableHead>Course Name</TableHead>
-          <TableHead>Course Code</TableHead>
+          <TableHead>Subject Name</TableHead>
+          <TableHead>Course</TableHead>
           <TableHead>Created At</TableHead>
           <TableHead className="text-right"></TableHead>
         </TableRow>
@@ -159,7 +159,7 @@ export function CourseList() {
                   open={deleteConfirm}
                   setOpened={setDeleteConfirm}
                 >
-                  <div>Are you sure you want to delete this course?</div>
+                  <div>Are you sure you want to delete this subject?</div>
                 </ConfirmDialog>
               </TableRow>
             );
