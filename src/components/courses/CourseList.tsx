@@ -1,8 +1,9 @@
 'use client';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import type { DocumentData } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
+import { FaRegTrashAlt } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
 
 import type { ICoursesCollection } from '@/@types/database';
@@ -16,9 +17,12 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import DbClass from '@/firebase_configs/DB/DbClass';
+import { errorHandler } from '@/lib/CustomError';
 import { formatDate } from '@/lib/misc';
+import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
+import LoaderDialog from '../common/dialogs/LoaderDialog';
 import NoSearchResult from '../common/NoSearchResult';
 import TableShimmer from '../common/shimmer/TableShimmer';
 
@@ -71,7 +75,6 @@ export function CourseList() {
 
   // we are looping through the snapshot returned by react-query and converting them to data
   useEffect(() => {
-    console.log(snapshotData, 'here');
     if (snapshotData) {
       const docData: ICoursesCollection[] = [];
       snapshotData.pages?.forEach(page => {
@@ -93,6 +96,29 @@ export function CourseList() {
       fetchNextPage();
     }
   }, [fetchNextPage, inView, hasNextPage, isFetching]);
+
+  const [loading, setLoading] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const onDelete = async (courseId: string) => {
+    try {
+      setLoading(true);
+
+      await DbClass.deleteCourse(courseId);
+      await queryClient.invalidateQueries({
+        queryKey: [REACT_QUERY_KEYS.COURSE_LIST],
+      });
+
+      showSnackbar({ message: 'Course deleted successfully', type: 'success' });
+
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
+      errorHandler(err);
+    }
+  };
   return (
     <Table>
       <TableHeader>
@@ -100,7 +126,8 @@ export function CourseList() {
           <TableHead className="w-[120px]">SR No.</TableHead>
           <TableHead>Course Name</TableHead>
           <TableHead>Course Code</TableHead>
-          <TableHead className="text-right">Created At</TableHead>
+          <TableHead>Created At</TableHead>
+          <TableHead className="text-right"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -117,8 +144,14 @@ export function CourseList() {
                 <TableCell className="font-medium">{idx + 1}.</TableCell>
                 <TableCell>{course.CourseFullName}</TableCell>
                 <TableCell>{course.CourseShortName}</TableCell>
-                <TableCell className="text-right">
+                <TableCell>
                   {formatDate(course.CourseCreatedAt, 'DD/MM/YY')}
+                </TableCell>
+                <TableCell className="flex justify-end text-right">
+                  <FaRegTrashAlt
+                    onClick={() => onDelete(course.CourseId)}
+                    className="cursor-pointer text-xl text-textPrimaryRed"
+                  />
                 </TableCell>
               </TableRow>
             );
@@ -133,6 +166,7 @@ export function CourseList() {
           </TableCell>
         </TableRow>
       </TableBody>
+      <LoaderDialog loading={loading} title="Loading..." />
     </Table>
   );
 }
