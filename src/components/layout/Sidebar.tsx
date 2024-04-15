@@ -95,7 +95,7 @@ export function Sidebar() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <div className="absolute left-2 top-[10px] z-50 cursor-pointer p-2">
+        <div className="fixed left-2 top-2 z-50 cursor-pointer p-2">
           <PanelRight size={25} />
         </div>
       </SheetTrigger>
