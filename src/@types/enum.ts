@@ -32,3 +32,7 @@ export const DisplayCount = {
 export const REACT_QUERY_KEYS = {
   COURSE_LIST: 'course-list',
 } as const;
+
+export const MinimumQueryCharacter = {
+  COURSE_LIST: 1,
+};

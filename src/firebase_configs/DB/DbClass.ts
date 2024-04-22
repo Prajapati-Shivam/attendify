@@ -7,12 +7,15 @@ import {
   collection,
   deleteDoc,
   doc,
+  endAt,
   getDocs,
   limit,
+  orderBy,
   query,
   serverTimestamp,
   setDoc,
   startAfter,
+  startAt,
   where,
 } from 'firebase/firestore';
 
@@ -71,16 +74,27 @@ class DbClass {
     instituteId,
     lastDoc,
     lmt,
+    searchQuery,
   }: {
     instituteId: string;
     lmt?: number | null;
     lastDoc?: DocumentData | null;
+    searchQuery?: string | null;
   }) => {
     const courseRef = collection(db, CollectionName.courses);
 
     let queryParams: QueryConstraint[] = [
       where('CourseInstituteId', '==', instituteId),
     ];
+
+    if (searchQuery) {
+      queryParams = [
+        ...queryParams,
+        orderBy('CourseShortName'),
+        startAt(searchQuery),
+        endAt(`${searchQuery}\uF8FF`),
+      ];
+    }
 
     if (lastDoc) {
       queryParams = [...queryParams, startAfter(lastDoc)];
