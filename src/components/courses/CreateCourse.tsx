@@ -17,6 +17,14 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
+import {
   Form,
   FormControl,
   FormField,
@@ -44,6 +52,7 @@ const courseFormSchema = z.object({
 export type CourseFormFields = z.infer<typeof courseFormSchema>;
 
 export function CreateCourse() {
+  const [open, setOpen] = useState(false);
   const form = useForm<CourseFormFields>({
     resolver: zodResolver(courseFormSchema),
     defaultValues: {
@@ -81,21 +90,87 @@ export function CreateCourse() {
       errorHandler(error);
     }
   };
+
+  if (window.innerWidth > 640) {
+    return (
+      <Dialog open={opened} onOpenChange={setOpened}>
+        <DialogTrigger asChild>
+          <Button className="mt-5 hover:bg-blueButtonHoverBg">
+            Create Course
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Create Course</DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-y-4"
+            >
+              <FormField
+                control={form.control}
+                name="fullName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Course Full Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder=""
+                        {...field}
+                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="shortName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Course Short Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder=""
+                        {...field}
+                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter>
+                <Button type="submit" className="hover:bg-blueButtonHoverBg">
+                  Create
+                </Button>
+              </DialogFooter>
+            </form>
+            <LoaderDialog loading={loading} title="Loading..." />
+          </Form>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   return (
-    <Dialog open={opened} onOpenChange={setOpened}>
-      <DialogTrigger asChild>
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
         <Button className="mt-5 hover:bg-blueButtonHoverBg">
           Create Course
         </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Create Course</DialogTitle>
-        </DialogHeader>
+      </DrawerTrigger>
+      <DrawerContent className="sm:max-w-[425px]">
+        <DrawerHeader>
+          <DrawerTitle>Create Course</DrawerTitle>
+          <DrawerClose />
+        </DrawerHeader>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-4"
+            className="flex flex-col gap-y-4 px-4"
           >
             <FormField
               control={form.control}
@@ -131,15 +206,13 @@ export function CreateCourse() {
                 </FormItem>
               )}
             />
-            <DialogFooter>
-              <Button type="submit" className="hover:bg-blueButtonHoverBg">
-                Create
-              </Button>
-            </DialogFooter>
+            <Button type="submit" className="w-full hover:bg-blueButtonHoverBg">
+              Create
+            </Button>
           </form>
           <LoaderDialog loading={loading} title="Loading..." />
         </Form>
-      </DialogContent>
-    </Dialog>
+      </DrawerContent>
+    </Drawer>
   );
 }

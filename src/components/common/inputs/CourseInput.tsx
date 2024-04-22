@@ -29,7 +29,6 @@ const courses = [
   { value: 'course4', label: 'Course 4' },
   { value: 'course5', label: 'Course 5' },
 ];
-]
 
 const FacultyInput = (props: Props) => {
   const [open, setOpen] = React.useState(false);
