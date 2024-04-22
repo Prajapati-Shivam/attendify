@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -23,12 +23,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import useFetchCourses from '@/hooks/fetch/useFetchCourses';
 import { errorHandler } from '@/lib/CustomError';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
 import LoaderDialog from '../common/dialogs/LoaderDialog';
-import CourseInput from '../common/inputs/CourseInput';
+import InputAutoComplete from '../common/inputs/InputAutoComplete';
 
 const subjectFormSchema = z.object({
   subjectCourse: z.string().min(2, {
@@ -73,6 +74,25 @@ export function CreateSubject() {
       errorHandler(error);
     }
   };
+
+  const [selectedCourse, setSelectedCourse] = useState('');
+
+  const { data } = useFetchCourses({
+    limit: 5,
+  });
+
+  useEffect(() => {
+    console.log(selectedCourse);
+    const course = data.find(c => c.CourseShortName === selectedCourse);
+
+    if (course) {
+      console.log(course, 'course');
+      form.setValue('subjectCourse', course.CourseId);
+    }
+  }, [selectedCourse]);
+
+  console.log(form.watch('subjectCourse'), 'corsref');
+
   return (
     <Dialog open={opened} onOpenChange={setOpened}>
       <DialogTrigger asChild>
@@ -92,11 +112,20 @@ export function CreateSubject() {
             <FormField
               control={form.control}
               name="subjectCourse"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Subject Course</FormLabel>
                   <FormControl>
-                    <CourseInput field={field} />
+                    <InputAutoComplete
+                      data={data.map(res => {
+                        return {
+                          label: res.CourseShortName,
+                          value: res.CourseShortName,
+                        };
+                      })}
+                      setValue={setSelectedCourse}
+                      value={selectedCourse}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
