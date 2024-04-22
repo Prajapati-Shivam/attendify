@@ -55,7 +55,7 @@ const CreateStudent = () => {
           className="mx-auto mt-5 w-full space-y-6 rounded-md bg-surfaceLight p-6 dark:bg-surfaceDark  md:max-w-3xl"
         >
           <div className="text-2xl font-semibold sm:text-3xl">
-            Class Details
+            Student Details
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <FormField
@@ -64,6 +64,57 @@ const CreateStudent = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="StudentPhone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="StudentEmail"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="StudentPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
                       placeholder=""
@@ -98,6 +149,95 @@ const CreateStudent = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Unique Id</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* select input will used later */}
+            <FormField
+              control={form.control}
+              name="StudentCourseId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Course</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* select input will used later */}
+            <FormField
+              control={form.control}
+              name="StudentClassId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Class</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="StudentCourseStartYear"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Course Start Year</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="StudentCourseEndYear"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Course End Year</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="StudentClassArmId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Batch</FormLabel>
                   <FormControl>
                     <Input
                       placeholder=""
