@@ -35,6 +35,8 @@ const ConfirmDialog = ({
         {children}
         <DialogFooter>
           <Button
+            variant="outline"
+            className="mr-2 hover:border-blueButtonHoverBg"
             onClick={() => {
               setOpened(false);
               // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -45,12 +47,13 @@ const ConfirmDialog = ({
           </Button>
 
           <Button
+            className="hover:bg-blueButtonHoverBg"
             onClick={() => {
               setOpened(false);
               positiveCallback();
             }}
           >
-            Ok
+            Okay
           </Button>
         </DialogFooter>
       </DialogContent>
