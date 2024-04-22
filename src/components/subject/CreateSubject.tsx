@@ -15,6 +15,14 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
+import {
   Form,
   FormControl,
   FormField,
@@ -73,21 +81,81 @@ export function CreateSubject() {
       errorHandler(error);
     }
   };
+  if (window.innerWidth > 640) {
+    return (
+      <Dialog open={opened} onOpenChange={setOpened}>
+        <DialogTrigger asChild>
+          <Button className="mt-5 hover:bg-blueButtonHoverBg">
+            Create Subject
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Create Subject</DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-y-4"
+            >
+              <FormField
+                control={form.control}
+                name="subjectCourse"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Subject Course</FormLabel>
+                    <FormControl>
+                      <CourseInput field={field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="subjectName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Subject Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder=""
+                        {...field}
+                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter>
+                <Button type="submit" className="hover:bg-blueButtonHoverBg">
+                  Create
+                </Button>
+              </DialogFooter>
+            </form>
+            <LoaderDialog loading={loading} title="Loading..." />
+          </Form>
+        </DialogContent>
+      </Dialog>
+    );
+  }
   return (
-    <Dialog open={opened} onOpenChange={setOpened}>
-      <DialogTrigger asChild>
+    <Drawer open={opened} onOpenChange={setOpened}>
+      <DrawerTrigger asChild>
         <Button className="mt-5 hover:bg-blueButtonHoverBg">
           Create Subject
         </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Create Subject</DialogTitle>
-        </DialogHeader>
+      </DrawerTrigger>
+      <DrawerContent className="sm:max-w-[425px]">
+        <DrawerHeader>
+          <DrawerTitle>Create Subject</DrawerTitle>
+          <DrawerClose />
+        </DrawerHeader>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-4"
+            className="flex flex-col gap-y-4 px-4"
           >
             <FormField
               control={form.control}
@@ -127,7 +195,7 @@ export function CreateSubject() {
           </form>
           <LoaderDialog loading={loading} title="Loading..." />
         </Form>
-      </DialogContent>
-    </Dialog>
+      </DrawerContent>
+    </Drawer>
   );
 }
