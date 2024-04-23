@@ -35,7 +35,7 @@ const CourseInput = (props: Props) => {
         <SelectGroup>
           <SelectLabel>Course</SelectLabel>
           {courses.map(item => (
-            <SelectItem key={item.id} value={item.name}>
+            <SelectItem key={item.id} value={item.id.toString()}>
               {item.name}
             </SelectItem>
           ))}

@@ -8,6 +8,7 @@ import { z } from 'zod';
 import PageContainer from '@/components/common/Containers/PageContainer';
 import PageHeader from '@/components/common/Containers/PageHeader';
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
+import CourseInput from '@/components/common/inputs/CourseInput';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -18,19 +19,21 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import DbClass from '@/firebase_configs/DB/DbClass';
 import { errorHandler } from '@/lib/CustomError';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
 const createClassSchema = z.object({
-  className: z.string().min(2, {
+  ClassName: z.string().min(2, {
     message: 'Class name must be at least 2 characters.',
   }),
-  startYear: z.string().min(4, {
+  ClassCourseId: z.string().min(1, {
+    message: 'Course name is required.',
+  }),
+  ClassAcademicStartYear: z.string().min(4, {
     message: 'Start year must be valid year.',
   }),
-  endYear: z.string().min(4, {
+  ClassAcademicEndYear: z.string().min(4, {
     message: 'End year must be valid year.',
   }),
 });
@@ -41,9 +44,10 @@ function CreateClassroomPage() {
   const form = useForm<CreateClassFields>({
     resolver: zodResolver(createClassSchema),
     defaultValues: {
-      className: '',
-      startYear: '',
-      endYear: '',
+      ClassName: '',
+      ClassCourseId: '',
+      ClassAcademicStartYear: '',
+      ClassAcademicEndYear: '',
     },
   });
 
@@ -55,7 +59,8 @@ function CreateClassroomPage() {
     if (!institute) return;
     try {
       setLoading(true);
-      await DbClass.createClass(values, institute?.InstituteId);
+      console.log(values);
+      // await DbClass.createClass(values, institute?.InstituteId);
       showSnackbar({
         message: 'Classroom created successfully',
         type: 'success',
@@ -82,7 +87,7 @@ function CreateClassroomPage() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <FormField
               control={form.control}
-              name="className"
+              name="ClassName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Class Name</FormLabel>
@@ -99,7 +104,20 @@ function CreateClassroomPage() {
             />
             <FormField
               control={form.control}
-              name="startYear"
+              name="ClassCourseId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Course Name</FormLabel>
+                  <FormControl>
+                    <CourseInput field={field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="ClassAcademicStartYear"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Start Year</FormLabel>
@@ -117,7 +135,7 @@ function CreateClassroomPage() {
             />{' '}
             <FormField
               control={form.control}
-              name="endYear"
+              name="ClassAcademicEndYear"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>End Year</FormLabel>
