@@ -25,12 +25,12 @@ import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
 const createSessionSchema = z.object({
-  sessionClassName: z.string().min(2).max(50),
-  sessionFacultyName: z.string().min(2).max(50),
-  sessionSubjectName: z.string().min(2).max(50),
-  sessionStartTime: z.string(),
-  sessionEndTime: z.string(),
-  sessionDate: z.string(),
+  SessionClassName: z.string().min(2).max(50),
+  SessionFacultyName: z.string().min(2).max(50),
+  SessionSubjectName: z.string().min(2).max(50),
+  SessionStartTime: z.string(),
+  SessionEndTime: z.string(),
+  SessionDate: z.string(),
 });
 
 export type CreateSessionFields = z.infer<typeof createSessionSchema>;
@@ -39,12 +39,12 @@ function CreateSessionPage() {
   const form = useForm<CreateSessionFields>({
     resolver: zodResolver(createSessionSchema),
     defaultValues: {
-      sessionClassName: '',
-      sessionFacultyName: '',
-      sessionSubjectName: '',
-      sessionStartTime: '',
-      sessionEndTime: '',
-      sessionDate: '',
+      SessionClassName: '',
+      SessionFacultyName: '',
+      SessionSubjectName: '',
+      SessionStartTime: '',
+      SessionEndTime: '',
+      SessionDate: '',
     },
   });
 
@@ -59,7 +59,7 @@ function CreateSessionPage() {
       // implement create session logic here
       console.log(values);
       showSnackbar({
-        message: 'Classroom created successfully',
+        message: 'Session created successfully',
         type: 'success',
       });
       setLoading(false);
@@ -83,7 +83,7 @@ function CreateSessionPage() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <FormField
               control={form.control}
-              name="sessionClassName"
+              name="SessionClassName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Session Name</FormLabel>
@@ -100,7 +100,7 @@ function CreateSessionPage() {
             />
             <FormField
               control={form.control}
-              name="sessionFacultyName"
+              name="SessionFacultyName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Faculty Name</FormLabel>
@@ -113,7 +113,7 @@ function CreateSessionPage() {
             />{' '}
             <FormField
               control={form.control}
-              name="sessionSubjectName"
+              name="SessionSubjectName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Subject Name</FormLabel>
@@ -126,7 +126,25 @@ function CreateSessionPage() {
             />{' '}
             <FormField
               control={form.control}
-              name="sessionStartTime"
+              name="SessionDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Date</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      placeholder=""
+                      {...field}
+                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="SessionStartTime"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Start Time</FormLabel>
@@ -141,10 +159,10 @@ function CreateSessionPage() {
                   <FormMessage />
                 </FormItem>
               )}
-            />{' '}
+            />
             <FormField
               control={form.control}
-              name="sessionEndTime"
+              name="SessionEndTime"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>End Time</FormLabel>
@@ -159,7 +177,7 @@ function CreateSessionPage() {
                   <FormMessage />
                 </FormItem>
               )}
-            />{' '}
+            />
           </div>
 
           <Button
