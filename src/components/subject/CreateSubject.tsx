@@ -81,6 +81,7 @@ export function CreateSubject() {
       errorHandler(error);
     }
   };
+
   if (window.innerWidth > 640) {
     return (
       <Dialog open={opened} onOpenChange={setOpened}>
