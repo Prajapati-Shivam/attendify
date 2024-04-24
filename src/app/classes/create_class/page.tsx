@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -9,6 +10,7 @@ import PageContainer from '@/components/common/Containers/PageContainer';
 import PageHeader from '@/components/common/Containers/PageHeader';
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
 import CourseInput from '@/components/common/inputs/CourseInput';
+import { InputDatePicker } from '@/components/common/inputs/InputDatePicker';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -19,6 +21,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import DbClass from '@/firebase_configs/DB/DbClass';
 import { errorHandler } from '@/lib/CustomError';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
@@ -30,12 +33,8 @@ const createClassSchema = z.object({
   ClassCourseId: z.string().min(1, {
     message: 'Course name is required.',
   }),
-  ClassAcademicStartYear: z.string().min(4, {
-    message: 'Start year must be valid year.',
-  }),
-  ClassAcademicEndYear: z.string().min(4, {
-    message: 'End year must be valid year.',
-  }),
+  ClassAcademicStartYear: z.date(),
+  ClassAcademicEndYear: z.date(),
 });
 
 export type CreateClassFields = z.infer<typeof createClassSchema>;
@@ -43,28 +42,27 @@ export type CreateClassFields = z.infer<typeof createClassSchema>;
 function CreateClassroomPage() {
   const form = useForm<CreateClassFields>({
     resolver: zodResolver(createClassSchema),
-    defaultValues: {
-      ClassName: '',
-      ClassCourseId: '',
-      ClassAcademicStartYear: '',
-      ClassAcademicEndYear: '',
-    },
   });
 
   const [loading, setLoading] = useState(false);
 
   const { institute } = useSessionStore();
 
+  const router = useRouter();
+
   const onSubmit = async (values: CreateClassFields) => {
     if (!institute) return;
     try {
       setLoading(true);
       console.log(values);
-      // await DbClass.createClass(values, institute?.InstituteId);
+      await DbClass.createClass(values, institute?.InstituteId);
+      setLoading(false);
+      form.reset();
       showSnackbar({
         message: 'Classroom created successfully',
         type: 'success',
       });
+      router.push('/classes');
     } catch (error) {
       console.log(error);
       errorHandler(error);
@@ -122,11 +120,9 @@ function CreateClassroomPage() {
                 <FormItem>
                   <FormLabel>Start Year</FormLabel>
                   <FormControl>
-                    <Input
-                      type="date"
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    <InputDatePicker
+                      date={field.value}
+                      setDate={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -140,11 +136,9 @@ function CreateClassroomPage() {
                 <FormItem>
                   <FormLabel>End Year</FormLabel>
                   <FormControl>
-                    <Input
-                      type="date"
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    <InputDatePicker
+                      date={field.value}
+                      setDate={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />

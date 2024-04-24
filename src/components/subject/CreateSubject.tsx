@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -46,9 +46,6 @@ const subjectFormSchema = z.object({
   subjectClassId: z.string().min(2, {
     message: 'Subject class must be at least 2 characters.',
   }),
-  subjectClassName: z.string().min(2, {
-    message: 'Subject class must be at least 2 characters.',
-  }),
   subjectName: z.string().min(3, {
     message: 'Subject name must be at least 3 characters.',
   }),
@@ -59,11 +56,6 @@ export type SubjectFormFields = z.infer<typeof subjectFormSchema>;
 export function CreateSubject() {
   const form = useForm<SubjectFormFields>({
     resolver: zodResolver(subjectFormSchema),
-    defaultValues: {
-      subjectClassId: '',
-      subjectName: '',
-      subjectClassName: '',
-    },
   });
 
   const [opened, setOpened] = useState(false);
@@ -101,17 +93,6 @@ export function CreateSubject() {
     }
   };
 
-  const classId = form.watch('subjectClassId');
-
-  useEffect(() => {
-    const selectedClass = classes.find(c => c.ClassId === classId);
-    if (selectedClass) {
-      form.setValue('subjectClassName', selectedClass.ClassName);
-    } else {
-      form.setValue('subjectClassName', '');
-    }
-  }, [classId]);
-
   if (window.innerWidth > 640) {
     return (
       <Dialog open={opened} onOpenChange={setOpened}>
@@ -131,7 +112,7 @@ export function CreateSubject() {
             >
               <FormField
                 control={form.control}
-                name="subjectClassName"
+                name="subjectClassId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Subject Class</FormLabel>
@@ -197,7 +178,7 @@ export function CreateSubject() {
           >
             <FormField
               control={form.control}
-              name="subjectClassName"
+              name="subjectClassId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Subject Class</FormLabel>

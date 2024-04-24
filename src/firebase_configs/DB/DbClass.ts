@@ -13,6 +13,7 @@ import {
   limit,
   orderBy,
   query,
+  runTransaction,
   serverTimestamp,
   setDoc,
   startAfter,
@@ -40,15 +41,13 @@ class DbClass {
       ClassId: classId,
       ClassInstituteId: instituteId,
       ClassName: data.ClassName,
-      ClassAcademicStartYear: new Date(
-        data.ClassAcademicStartYear,
-      ) as unknown as Timestamp,
-      ClassAcademicEndYear: new Date(
-        data.ClassAcademicEndYear,
-      ) as unknown as Timestamp,
+      ClassAcademicStartYear:
+        data.ClassAcademicStartYear as unknown as Timestamp,
+      ClassAcademicEndYear: data.ClassAcademicEndYear as unknown as Timestamp,
       ClassArmCount: 0,
       ClassStudentsCount: 0,
-      ClassCourseId: '',
+      ClassSubjectsCount: 0,
+      ClassCourseId: data.ClassCourseId,
       ClassCreatedAt: serverTimestamp(),
     };
 
@@ -171,16 +170,26 @@ class DbClass {
     const subjectId = getNewDocId(CollectionName.subjects);
     const subjectRef = doc(db, CollectionName.subjects, subjectId);
 
-    const newSubject: ISubjectsCollection = {
-      SubjectId: subjectId,
-      SubjectClassId: data.subjectClassId,
-      SubjectClassName: data.subjectClassName,
-      SubjectInstituteId: instituteId,
-      SubjectName: data.subjectName,
-      SubjectCreatedAt: serverTimestamp(),
-    };
+    await runTransaction(db, async transaction => {
+      const classRef = doc(db, CollectionName.classes, data.subjectClassId);
+      const classSnapshot = await transaction.get(classRef);
+      const classData = classSnapshot.data() as IClassesCollection;
 
-    return setDoc(subjectRef, newSubject);
+      const newSubject: ISubjectsCollection = {
+        SubjectId: subjectId,
+        SubjectClassId: data.subjectClassId,
+        SubjectClassName: classData.ClassName,
+        SubjectInstituteId: instituteId,
+        SubjectName: data.subjectName,
+        SubjectCreatedAt: serverTimestamp(),
+      };
+
+      transaction.update(classRef, {
+        ClassSubjectsCount: classData.ClassSubjectsCount + 1,
+      });
+
+      transaction.set(subjectRef, newSubject);
+    });
   };
 
   static deleteSubject = async (subjectId: string) => {

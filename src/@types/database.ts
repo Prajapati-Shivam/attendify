@@ -70,6 +70,7 @@ export interface IClassesCollection {
   ClassAcademicEndYear: Timestamp | FieldValue;
   ClassArmCount?: number;
   ClassStudentsCount: number;
+  ClassSubjectsCount: number;
   ClassCreatedAt: Timestamp | FieldValue;
 }
 
