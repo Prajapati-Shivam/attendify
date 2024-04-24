@@ -2,6 +2,7 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import type { DocumentData } from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -90,7 +91,7 @@ export function StudentList() {
       fetchNextPage();
     }
   }, [fetchNextPage, inView, hasNextPage, isFetching]);
-
+  const navigate = useRouter();
   return (
     <Table>
       <TableHeader>
@@ -113,7 +114,13 @@ export function StudentList() {
             .sort((a, b) => Number(a.StudentRollNo) - Number(b.StudentRollNo))
             .map(student => {
               return (
-                <TableRow key={student.StudentId}>
+                <TableRow
+                  key={student.StudentId}
+                  onClick={() => {
+                    navigate.push(`/students/${student.StudentId}`);
+                  }}
+                  className="cursor-pointer transition-colors duration-200 ease-in-out hover:bg-[#303f54]"
+                >
                   <TableCell className="font-medium">
                     {student.StudentRollNo}
                   </TableCell>
