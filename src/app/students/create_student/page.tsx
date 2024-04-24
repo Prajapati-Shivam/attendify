@@ -1,12 +1,18 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { REACT_QUERY_KEYS } from '@/@types/enum';
 import PageContainer from '@/components/common/Containers/PageContainer';
 import PageHeader from '@/components/common/Containers/PageHeader';
+import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
+import { InputDatePicker } from '@/components/common/inputs/InputDatePicker';
+import InputSelect from '@/components/common/inputs/InputSelect';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -18,6 +24,12 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ConstRegex } from '@/constants/ConstRegex';
+import DbStudent from '@/firebase_configs/DB/DbStudent';
+import useFetchClasses from '@/hooks/fetch/useFetchClasses';
+import useFetchCourses from '@/hooks/fetch/useFetchCourses';
+import { errorHandler } from '@/lib/CustomError';
+import { showSnackbar } from '@/lib/TsxUtils';
+import { useSessionStore } from '@/store';
 
 const createStudentSchema = z.object({
   StudentFullName: z.string().min(3, { message: 'This field is required' }),
@@ -28,7 +40,7 @@ const createStudentSchema = z.object({
     .regex(ConstRegex.EMAIL_OPTIONAL),
   StudentPassword: z.string().min(3, { message: 'This field is required' }),
   StudentUniqueId: z.string().min(3, { message: 'This field is required' }),
-  StudentRollNo: z.string().min(3, { message: 'This field is required' }),
+  StudentRollNo: z.string().min(1, { message: 'This field is required' }),
   StudentCourseId: z.string().min(3, { message: 'This field is required' }), //* Use select input to select from existing course and store its id
   StudentClassId: z.string().min(3, { message: 'This field is required' }), //* Use select input to select from existing class and store its id
   StudentClassArmId: z.string().nullable().optional(),
@@ -43,9 +55,42 @@ const CreateStudent = () => {
     resolver: zodResolver(createStudentSchema),
   });
 
+  const { institute } = useSessionStore();
+
+  const [loading, setLoading] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const router = useRouter();
+
   const onSubmit = async (data: CreateStudentFields) => {
-    console.log(data);
+    if (!institute) return;
+    try {
+      setLoading(true);
+
+      await DbStudent.createStudent(data, institute.InstituteId);
+
+      await queryClient.invalidateQueries({
+        queryKey: [REACT_QUERY_KEYS.STUDENT_LIST],
+      });
+
+      showSnackbar({
+        message: 'Student created successfully',
+        type: 'success',
+      });
+
+      setLoading(false);
+
+      router.push('/students');
+    } catch (error) {
+      console.log(error);
+      errorHandler(error);
+    }
   };
+
+  const { data: classes } = useFetchClasses({});
+  const { data: courses } = useFetchCourses({});
+
   return (
     <PageContainer>
       <PageHeader route="students">Create Student</PageHeader>
@@ -168,10 +213,16 @@ const CreateStudent = () => {
                 <FormItem>
                   <FormLabel>Course</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    <InputSelect
+                      data={courses.map(res => {
+                        return {
+                          label: res.CourseShortName,
+                          value: res.CourseId,
+                        };
+                      })}
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select Course"
                     />
                   </FormControl>
                   <FormMessage />
@@ -186,10 +237,16 @@ const CreateStudent = () => {
                 <FormItem>
                   <FormLabel>Class</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    <InputSelect
+                      data={classes.map(res => {
+                        return {
+                          label: res.ClassName,
+                          value: res.ClassId,
+                        };
+                      })}
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select Class"
                     />
                   </FormControl>
                   <FormMessage />
@@ -203,11 +260,9 @@ const CreateStudent = () => {
                 <FormItem>
                   <FormLabel>Course Start Year</FormLabel>
                   <FormControl>
-                    <Input
-                      type="date"
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    <InputDatePicker
+                      date={field.value}
+                      setDate={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -221,11 +276,9 @@ const CreateStudent = () => {
                 <FormItem>
                   <FormLabel>Course End Year</FormLabel>
                   <FormControl>
-                    <Input
-                      type="date"
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    <InputDatePicker
+                      date={field.value}
+                      setDate={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -241,7 +294,8 @@ const CreateStudent = () => {
                   <FormControl>
                     <Input
                       placeholder=""
-                      {...field}
+                      onChange={field.onChange}
+                      value={field.value || ''}
                       className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
                     />
                   </FormControl>
@@ -259,6 +313,7 @@ const CreateStudent = () => {
           </Button>
         </form>
       </Form>
+      <LoaderDialog loading={loading} title="Creating student..." />
     </PageContainer>
   );
 };

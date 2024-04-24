@@ -45,20 +45,20 @@ export interface ICoursesCollection {
 export interface IStudentsCollection {
   StudentId: string;
   StudentFullName: string;
+  StudentNameSearchIndex: string[];
   StudentPhone: string;
   StudentEmail: string; //* This will be used by student to login
   StudentPassword: string; //* This will be used by student to login
   StudentUniqueId: string;
   StudentRollNo: string;
   StudentCourseId: string;
-  StudentCourseName: string;
   StudentClassId: string;
   StudentClassArmId: string | null;
   StudentCourseStartYear: Timestamp | FieldValue; //* remove time from this date
   StudentCourseEndYear: Timestamp | FieldValue; //* remove time from this date
   StudentInstituteId: string;
   StudentCreateTime: Timestamp | FieldValue;
-  StudentNameChangeTime: Timestamp | FieldValue;
+  StudentModifiedAt: Timestamp | FieldValue;
 }
 
 export interface IClassesCollection {

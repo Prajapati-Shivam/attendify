@@ -30,16 +30,19 @@ export const DisplayCount = {
   COURSE_LIST: 20,
   SUBJECT_LIST: 20,
   CLASS_LIST: 20,
+  STUDENT_LIST: 20,
 } as const;
 
 export const REACT_QUERY_KEYS = {
   COURSE_LIST: 'course-list',
   SUBJECT_LIST: 'subject-list',
   CLASS_LIST: 'class-list',
+  STUDENT_LIST: 'student-list',
 } as const;
 
 export const MinimumQueryCharacter = {
   COURSE_LIST: 1,
   SUBJECT_LIST: 1,
   CLASS_LIST: 1,
+  STUDENT_LIST: 1,
 };
