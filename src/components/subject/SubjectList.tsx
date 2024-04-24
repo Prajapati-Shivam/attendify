@@ -131,7 +131,7 @@ export function SubjectList() {
         <TableRow>
           <TableHead className="w-[120px]">SR No.</TableHead>
           <TableHead>Subject Name</TableHead>
-          <TableHead>Course</TableHead>
+          <TableHead>Class</TableHead>
           <TableHead>Created At</TableHead>
           <TableHead className="text-right"></TableHead>
         </TableRow>
@@ -146,14 +146,14 @@ export function SubjectList() {
         ) : (
           data
             .sort((a, b) =>
-              a.SubjectCourseName.localeCompare(b.SubjectCourseName),
+              a.SubjectClassName.localeCompare(b.SubjectClassName),
             )
             .map((subject, idx) => {
               return (
                 <TableRow key={subject.SubjectId}>
                   <TableCell className="font-medium">{idx + 1}.</TableCell>
                   <TableCell>{subject.SubjectName}</TableCell>
-                  <TableCell>{subject.SubjectCourseName}</TableCell>
+                  <TableCell>{subject.SubjectClassName}</TableCell>
                   <TableCell>
                     {formatDate(subject.SubjectCreatedAt, 'DD/MM/YY')}
                   </TableCell>

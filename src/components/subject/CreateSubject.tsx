@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -34,19 +34,23 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import DbClass from '@/firebase_configs/DB/DbClass';
+import useFetchClasses from '@/hooks/fetch/useFetchClasses';
 import { errorHandler } from '@/lib/CustomError';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
 import LoaderDialog from '../common/dialogs/LoaderDialog';
-import CourseInput from '../common/inputs/CourseInput';
+import InputSelect from '../common/inputs/InputSelect';
 
 const subjectFormSchema = z.object({
-  subjectCourse: z.string().min(2, {
-    message: 'Subject course must be at least 2 characters.',
+  subjectClassId: z.string().min(2, {
+    message: 'Subject class must be at least 2 characters.',
   }),
-  subjectName: z.string().min(4, {
-    message: 'Subject name must be at least 4 characters.',
+  subjectClassName: z.string().min(2, {
+    message: 'Subject class must be at least 2 characters.',
+  }),
+  subjectName: z.string().min(3, {
+    message: 'Subject name must be at least 3 characters.',
   }),
 });
 
@@ -56,8 +60,9 @@ export function CreateSubject() {
   const form = useForm<SubjectFormFields>({
     resolver: zodResolver(subjectFormSchema),
     defaultValues: {
-      subjectCourse: '',
+      subjectClassId: '',
       subjectName: '',
+      subjectClassName: '',
     },
   });
 
@@ -69,16 +74,14 @@ export function CreateSubject() {
 
   const queryClient = useQueryClient();
 
+  const { data: classes } = useFetchClasses({});
+
   const onSubmit = async (data: SubjectFormFields) => {
     if (!institute) return;
     try {
       setLoading(true);
 
-      await DbClass.createSubject({
-        instituteId: institute.InstituteId,
-        courseId: data.subjectCourse,
-        subjectName: data.subjectName,
-      });
+      await DbClass.createSubject(institute.InstituteId, data);
 
       await queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.SUBJECT_LIST],
@@ -97,6 +100,17 @@ export function CreateSubject() {
       errorHandler(error);
     }
   };
+
+  const classId = form.watch('subjectClassId');
+
+  useEffect(() => {
+    const selectedClass = classes.find(c => c.ClassId === classId);
+    if (selectedClass) {
+      form.setValue('subjectClassName', selectedClass.ClassName);
+    } else {
+      form.setValue('subjectClassName', '');
+    }
+  }, [classId]);
 
   if (window.innerWidth > 640) {
     return (
@@ -117,12 +131,19 @@ export function CreateSubject() {
             >
               <FormField
                 control={form.control}
-                name="subjectCourse"
+                name="subjectClassName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Subject Course</FormLabel>
+                    <FormLabel>Subject Class</FormLabel>
                     <FormControl>
-                      <CourseInput field={field} />
+                      <InputSelect
+                        data={classes.map(res => {
+                          return { label: res.ClassName, value: res.ClassId };
+                        })}
+                        onChange={field.onChange}
+                        value={field.value}
+                        placeholder="Subject class"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -176,12 +197,19 @@ export function CreateSubject() {
           >
             <FormField
               control={form.control}
-              name="subjectCourse"
+              name="subjectClassName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subject Course</FormLabel>
+                  <FormLabel>Subject Class</FormLabel>
                   <FormControl>
-                    <CourseInput field={field} />
+                    <InputSelect
+                      data={classes.map(res => {
+                        return { label: res.ClassName, value: res.ClassId };
+                      })}
+                      onChange={field.onChange}
+                      value={field.value}
+                      placeholder="Subject class"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -27,6 +27,7 @@ import type {
 } from '@/@types/database';
 import { CollectionName } from '@/@types/enum';
 import type { CreateClassFields } from '@/app/classes/create_class/page';
+import type { SubjectFormFields } from '@/components/subject/CreateSubject';
 
 import { db } from '../config';
 import { getNewDocId } from './utils';
@@ -52,6 +53,44 @@ class DbClass {
     };
 
     return setDoc(docRef, newClass);
+  };
+
+  static getClasses = ({
+    instituteId,
+    lastDoc,
+    lmt,
+    searchQuery,
+  }: {
+    instituteId: string;
+    lmt?: number | null;
+    lastDoc?: DocumentData | null;
+    searchQuery?: string | null;
+  }) => {
+    const courseRef = collection(db, CollectionName.classes);
+
+    let queryParams: QueryConstraint[] = [
+      where('ClassInstituteId', '==', instituteId),
+    ];
+
+    if (searchQuery) {
+      queryParams = [
+        ...queryParams,
+        orderBy('ClassName'),
+        startAt(searchQuery),
+        endAt(`${searchQuery}\uF8FF`),
+      ];
+    }
+
+    if (lastDoc) {
+      queryParams = [...queryParams, startAfter(lastDoc)];
+    }
+
+    if (lmt) {
+      queryParams = [...queryParams, limit(lmt)];
+    }
+    const courseQuery = query(courseRef, ...queryParams);
+
+    return getDocs(courseQuery);
   };
 
   static createNewCourse = (
@@ -125,27 +164,19 @@ class DbClass {
     return snapshot.data() as ICoursesCollection;
   };
 
-  static createSubject = async ({
-    courseId,
-    instituteId,
-    subjectName,
-  }: {
-    instituteId: string;
-    courseId: string;
-    subjectName: string;
-  }) => {
+  static createSubject = async (
+    instituteId: string,
+    data: SubjectFormFields,
+  ) => {
     const subjectId = getNewDocId(CollectionName.subjects);
     const subjectRef = doc(db, CollectionName.subjects, subjectId);
 
-    const courseData = await this.getCourseById(courseId);
-    const { CourseShortName } = courseData;
-
     const newSubject: ISubjectsCollection = {
       SubjectId: subjectId,
-      SubjectCourseId: courseId,
-      SubjectCourseName: CourseShortName,
+      SubjectClassId: data.subjectClassId,
+      SubjectClassName: data.subjectClassName,
       SubjectInstituteId: instituteId,
-      SubjectName: subjectName,
+      SubjectName: data.subjectName,
       SubjectCreatedAt: serverTimestamp(),
     };
 
