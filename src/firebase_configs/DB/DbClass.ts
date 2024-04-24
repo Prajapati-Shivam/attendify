@@ -38,9 +38,13 @@ class DbClass {
     const newClass: IClassesCollection = {
       ClassId: classId,
       ClassInstituteId: instituteId,
-      ClassName: data.className,
-      ClassAcademicStartYear: new Date(data.startYear) as unknown as Timestamp,
-      ClassAcademicEndYear: new Date(data.endYear) as unknown as Timestamp,
+      ClassName: data.ClassName,
+      ClassAcademicStartYear: new Date(
+        data.ClassAcademicStartYear,
+      ) as unknown as Timestamp,
+      ClassAcademicEndYear: new Date(
+        data.ClassAcademicEndYear,
+      ) as unknown as Timestamp,
       ClassArmCount: 0,
       ClassStudentsCount: 0,
       ClassCourseId: '',
