@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
 
-import type { ICoursesCollection } from '@/@types/database';
+import type { ISubjectsCollection } from '@/@types/database';
 import { DisplayCount, REACT_QUERY_KEYS } from '@/@types/enum';
 import {
   Table,
@@ -39,10 +39,10 @@ export function SubjectList() {
     isFetching,
     error,
   } = useInfiniteQuery({
-    queryKey: [REACT_QUERY_KEYS.COURSE_LIST, institute!.InstituteId],
+    queryKey: [REACT_QUERY_KEYS.SUBJECT_LIST, institute!.InstituteId],
     queryFn: async ({ pageParam }) => {
-      const snapshot = await DbClass.getCourses({
-        lmt: DisplayCount.COURSE_LIST,
+      const snapshot = await DbClass.getSubjects({
+        lmt: DisplayCount.SUBJECT_LIST,
         lastDoc: pageParam,
         instituteId: institute!.InstituteId,
       });
@@ -52,7 +52,7 @@ export function SubjectList() {
       if (lastPage?.length === 0) {
         return null;
       }
-      if (lastPage?.length === DisplayCount.COURSE_LIST) {
+      if (lastPage?.length === DisplayCount.SUBJECT_LIST) {
         return lastPage.at(-1);
       }
       return null;
@@ -61,10 +61,10 @@ export function SubjectList() {
     enabled: true,
   });
 
-  const [data, setData] = useState<ICoursesCollection[]>(() => {
+  const [data, setData] = useState<ISubjectsCollection[]>(() => {
     if (snapshotData) {
       return snapshotData.pages.flatMap(page =>
-        page.map(doc => doc.data() as ICoursesCollection),
+        page.map(doc => doc.data() as ISubjectsCollection),
       );
     }
     return [];
@@ -77,10 +77,11 @@ export function SubjectList() {
   // we are looping through the snapshot returned by react-query and converting them to data
   useEffect(() => {
     if (snapshotData) {
-      const docData: ICoursesCollection[] = [];
+      console.log(snapshotData, 'here');
+      const docData: ISubjectsCollection[] = [];
       snapshotData.pages?.forEach(page => {
         page?.forEach(doc => {
-          const datum = doc.data() as ICoursesCollection;
+          const datum = doc.data() as ISubjectsCollection;
           docData.push(datum);
         });
       });
@@ -102,16 +103,20 @@ export function SubjectList() {
 
   const queryClient = useQueryClient();
 
-  const onDelete = async (courseId: string) => {
+  const onDelete = async (subjectId: string) => {
     try {
       setLoading(true);
 
-      await DbClass.deleteCourse(courseId);
+      await DbClass.deleteSubject(subjectId);
+
       await queryClient.invalidateQueries({
-        queryKey: [REACT_QUERY_KEYS.COURSE_LIST],
+        queryKey: [REACT_QUERY_KEYS.SUBJECT_LIST],
       });
 
-      showSnackbar({ message: 'Course deleted successfully', type: 'success' });
+      showSnackbar({
+        message: 'Subject deleted successfully',
+        type: 'success',
+      });
 
       setLoading(false);
     } catch (err) {
@@ -139,31 +144,35 @@ export function SubjectList() {
             </TableCell>
           </TableRow>
         ) : (
-          data.map((course, idx) => {
-            return (
-              <TableRow key={course.CourseId}>
-                <TableCell className="font-medium">{idx + 1}.</TableCell>
-                <TableCell>{course.CourseFullName}</TableCell>
-                <TableCell>{course.CourseShortName}</TableCell>
-                <TableCell>
-                  {formatDate(course.CourseCreatedAt, 'DD/MM/YY')}
-                </TableCell>
-                <TableCell className="flex justify-end text-right">
-                  <FaRegTrashAlt
-                    onClick={() => setDeleteConfirm(true)}
-                    className="cursor-pointer text-xl text-textPrimaryRed"
-                  />
-                </TableCell>
-                <ConfirmDialog
-                  positiveCallback={() => onDelete(course.CourseId)}
-                  open={deleteConfirm}
-                  setOpened={setDeleteConfirm}
-                >
-                  <div>Are you sure you want to delete this subject?</div>
-                </ConfirmDialog>
-              </TableRow>
-            );
-          })
+          data
+            .sort((a, b) =>
+              a.SubjectCourseName.localeCompare(b.SubjectCourseName),
+            )
+            .map((subject, idx) => {
+              return (
+                <TableRow key={subject.SubjectId}>
+                  <TableCell className="font-medium">{idx + 1}.</TableCell>
+                  <TableCell>{subject.SubjectName}</TableCell>
+                  <TableCell>{subject.SubjectCourseName}</TableCell>
+                  <TableCell>
+                    {formatDate(subject.SubjectCreatedAt, 'DD/MM/YY')}
+                  </TableCell>
+                  <TableCell className="flex justify-end text-right">
+                    <FaRegTrashAlt
+                      onClick={() => setDeleteConfirm(true)}
+                      className="cursor-pointer text-xl text-textPrimaryRed"
+                    />
+                  </TableCell>
+                  <ConfirmDialog
+                    positiveCallback={() => onDelete(subject.SubjectId)}
+                    open={deleteConfirm}
+                    setOpened={setDeleteConfirm}
+                  >
+                    <div>Are you sure you want to delete this subject?</div>
+                  </ConfirmDialog>
+                </TableRow>
+              );
+            })
         )}
         <TableRow ref={ref}>
           <TableCell colSpan={7}>

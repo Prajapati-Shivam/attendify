@@ -8,6 +8,7 @@ import {
   deleteDoc,
   doc,
   endAt,
+  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -19,7 +20,11 @@ import {
   where,
 } from 'firebase/firestore';
 
-import type { IClassesCollection, ICoursesCollection } from '@/@types/database';
+import type {
+  IClassesCollection,
+  ICoursesCollection,
+  ISubjectsCollection,
+} from '@/@types/database';
 import { CollectionName } from '@/@types/enum';
 import type { CreateClassFields } from '@/app/classes/create_class/page';
 
@@ -104,6 +109,89 @@ class DbClass {
       queryParams = [...queryParams, limit(lmt)];
     }
     const courseQuery = query(courseRef, ...queryParams);
+
+    return getDocs(courseQuery);
+  };
+
+  static getCourseById = async (courseId: string) => {
+    const courseRef = doc(db, CollectionName.courses, courseId);
+
+    const snapshot = await getDoc(courseRef);
+
+    return snapshot.data() as ICoursesCollection;
+  };
+
+  static createSubject = async ({
+    courseId,
+    instituteId,
+    subjectName,
+  }: {
+    instituteId: string;
+    courseId: string;
+    subjectName: string;
+  }) => {
+    const subjectId = getNewDocId(CollectionName.subjects);
+    const subjectRef = doc(db, CollectionName.subjects, subjectId);
+
+    const courseData = await this.getCourseById(courseId);
+    const { CourseShortName } = courseData;
+
+    const newSubject: ISubjectsCollection = {
+      SubjectId: subjectId,
+      SubjectCourseId: courseId,
+      SubjectCourseName: CourseShortName,
+      SubjectInstituteId: instituteId,
+      SubjectName: subjectName,
+      SubjectCreatedAt: serverTimestamp(),
+    };
+
+    return setDoc(subjectRef, newSubject);
+  };
+
+  static deleteSubject = async (subjectId: string) => {
+    try {
+      const subjectRef = doc(db, CollectionName.subjects, subjectId);
+      await deleteDoc(subjectRef);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  static getSubjects = ({
+    instituteId,
+    lastDoc,
+    lmt,
+    searchQuery,
+  }: {
+    instituteId: string;
+    lmt?: number | null;
+    lastDoc?: DocumentData | null;
+    searchQuery?: string | null;
+  }) => {
+    const subjectRef = collection(db, CollectionName.subjects);
+
+    let queryParams: QueryConstraint[] = [
+      where('SubjectInstituteId', '==', instituteId),
+    ];
+
+    if (searchQuery) {
+      queryParams = [
+        ...queryParams,
+        orderBy('SubjectName'),
+        startAt(searchQuery),
+        endAt(`${searchQuery}\uF8FF`),
+      ];
+    }
+
+    if (lastDoc) {
+      queryParams = [...queryParams, startAfter(lastDoc)];
+    }
+
+    if (lmt) {
+      queryParams = [...queryParams, limit(lmt)];
+    }
+    const courseQuery = query(subjectRef, ...queryParams);
 
     return getDocs(courseQuery);
   };

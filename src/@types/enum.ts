@@ -2,6 +2,7 @@ export enum CollectionName {
   admins = 'Admins',
   classes = 'Classes',
   students = 'Students',
+  subjects = 'Subjects',
   faculties = 'Faculties',
   lectures = 'Lectures',
   attendances = 'Attendances',
@@ -27,12 +28,15 @@ export interface LocalStorageLoggedInUserData {
 
 export const DisplayCount = {
   COURSE_LIST: 20,
+  SUBJECT_LIST: 20,
 } as const;
 
 export const REACT_QUERY_KEYS = {
   COURSE_LIST: 'course-list',
+  SUBJECT_LIST: 'subject-list',
 } as const;
 
 export const MinimumQueryCharacter = {
   COURSE_LIST: 1,
+  SUBJECT_LIST: 1,
 };
