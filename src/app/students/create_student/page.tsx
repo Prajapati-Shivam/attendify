@@ -74,6 +74,8 @@ const CreateStudent = () => {
         queryKey: [REACT_QUERY_KEYS.STUDENT_LIST],
       });
 
+      form.reset();
+
       showSnackbar({
         message: 'Student created successfully',
         type: 'success',
