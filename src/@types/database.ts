@@ -87,6 +87,8 @@ export interface IClassArmsCollection {
 export interface ISubjectsCollection {
   SubjectId: string;
   SubjectCourseId: string;
+  SubjectCourseName: string;
+  SubjectInstituteId: string;
   SubjectName: string;
   SubjectCreatedAt: Timestamp | FieldValue;
 }

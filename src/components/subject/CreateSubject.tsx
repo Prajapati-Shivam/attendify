@@ -1,10 +1,12 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { REACT_QUERY_KEYS } from '@/@types/enum';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -31,6 +33,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import DbClass from '@/firebase_configs/DB/DbClass';
 import { errorHandler } from '@/lib/CustomError';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
@@ -64,11 +67,24 @@ export function CreateSubject() {
 
   const { institute } = useSessionStore();
 
+  const queryClient = useQueryClient();
+
   const onSubmit = async (data: SubjectFormFields) => {
     if (!institute) return;
     try {
       setLoading(true);
-      console.log(data);
+
+      await DbClass.createSubject({
+        instituteId: institute.InstituteId,
+        courseId: data.subjectCourse,
+        subjectName: data.subjectName,
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: [REACT_QUERY_KEYS.SUBJECT_LIST],
+      });
+
+      form.reset();
       setLoading(false);
       setOpened(false);
       showSnackbar({
@@ -81,6 +97,7 @@ export function CreateSubject() {
       errorHandler(error);
     }
   };
+
   if (window.innerWidth > 640) {
     return (
       <Dialog open={opened} onOpenChange={setOpened}>
