@@ -287,7 +287,7 @@ const CreateStudent = () => {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="StudentClassArmId"
               render={({ field }) => (
@@ -304,7 +304,7 @@ const CreateStudent = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
           </div>
 
           <Button

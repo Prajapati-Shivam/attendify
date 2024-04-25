@@ -119,7 +119,7 @@ export function StudentList() {
                   onClick={() => {
                     navigate.push(`/students/${student.StudentId}`);
                   }}
-                  className="cursor-pointer transition-colors duration-200 ease-in-out hover:bg-[#303f54]"
+                  className="cursor-pointer transition-colors duration-200 ease-in-out hover:bg-gray-200 hover:dark:bg-gray-700"
                 >
                   <TableCell className="font-medium">
                     {student.StudentRollNo}
