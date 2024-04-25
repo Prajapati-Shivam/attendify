@@ -163,6 +163,14 @@ class DbClass {
     return snapshot.data() as ICoursesCollection;
   };
 
+  static getClassById = async (classId: string) => {
+    const courseRef = doc(db, CollectionName.classes, classId);
+
+    const snapshot = await getDoc(courseRef);
+
+    return snapshot.data() as IClassesCollection;
+  };
+
   static createSubject = async (
     instituteId: string,
     data: SubjectFormFields,

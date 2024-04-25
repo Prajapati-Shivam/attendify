@@ -6,6 +6,7 @@ import type {
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   limit,
   query,
@@ -117,6 +118,12 @@ class DbStudent {
     const studentQuery = query(studentRef, ...queryParams);
 
     return getDocs(studentQuery);
+  };
+
+  static getStudentById = async (studentId: string) => {
+    const studentRef = doc(db, CollectionName.students, studentId);
+    const snapshot = await getDoc(studentRef);
+    return snapshot.data() as IStudentsCollection;
   };
 }
 
