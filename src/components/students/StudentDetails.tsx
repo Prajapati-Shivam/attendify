@@ -1,11 +1,15 @@
 'use client';
 
 import { Edit, Trash2 } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 
 import type { StudentsCollection } from '@/app/students/[slug]/page';
+import { errorHandler } from '@/lib/CustomError';
 import { formatDate } from '@/lib/misc';
+import { showSnackbar } from '@/lib/TsxUtils';
 
+import ConfirmDialog from '../common/dialogs/ConfirmDialog';
+import LoaderDialog from '../common/dialogs/LoaderDialog';
 import { Button } from '../ui/button';
 
 interface StudentDetailsProps {
@@ -13,6 +17,29 @@ interface StudentDetailsProps {
 }
 
 const StudentDetails = ({ studentData }: StudentDetailsProps) => {
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const onDelete = async (studentId: string) => {
+    try {
+      setLoading(true);
+
+      // await DbClass.deleteCourse(courseId);
+      // await queryClient.invalidateQueries({
+      //   queryKey: [REACT_QUERY_KEYS.COURSE_LIST],
+      // });
+      console.log('Student deleted ', studentId);
+      showSnackbar({
+        message: 'Student deleted successfully',
+        type: 'success',
+      });
+
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
+      errorHandler(err);
+    }
+  };
   return (
     <div className="p-4">
       <div>
@@ -89,13 +116,21 @@ const StudentDetails = ({ studentData }: StudentDetailsProps) => {
             <span>Edit</span>
           </span>
         </Button>
-        <Button variant={'destructive'}>
+        <Button variant={'destructive'} onClick={() => setDeleteConfirm(true)}>
           <span className="flex items-center justify-center gap-x-2 px-4">
             <Trash2 size={20} />
             <span>Delete</span>
           </span>
         </Button>
       </div>
+      <ConfirmDialog
+        positiveCallback={() => onDelete(studentData.StudentId)}
+        open={deleteConfirm}
+        setOpened={setDeleteConfirm}
+      >
+        <div>Are you sure you want to delete this student?</div>
+      </ConfirmDialog>
+      <LoaderDialog loading={loading} title="Loading..." />
     </div>
   );
 };
