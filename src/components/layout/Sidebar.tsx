@@ -3,18 +3,19 @@
 import {
   AreaChart,
   FileSpreadsheet,
-  GraduationCap,
+  GraduationCapIcon,
+  Hourglass,
+  LayoutList,
+  LibraryBig,
   LogOut,
-  PanelRight,
+  PanelRightClose,
+  Presentation,
   ScrollText,
+  Users,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { FaChalkboardTeacher } from 'react-icons/fa';
-import { FaPeopleGroup } from 'react-icons/fa6';
-import { MdOutlineMeetingRoom, MdOutlineSubject } from 'react-icons/md';
-import { SiGotomeeting } from 'react-icons/si';
 
 import {
   Sheet,
@@ -37,7 +38,7 @@ const links = [
   },
   {
     name: 'Sessions',
-    logo: <MdOutlineMeetingRoom className="text-xl" />,
+    logo: <Hourglass />,
     route: '/sessions',
   },
   {
@@ -47,27 +48,27 @@ const links = [
   },
   {
     name: 'Classes',
-    logo: <GraduationCap />,
+    logo: <Presentation />,
     route: '/classes',
   },
   {
     name: 'Courses',
-    logo: <SiGotomeeting />,
+    logo: <LayoutList />,
     route: '/courses',
   },
   {
     name: 'Students',
-    logo: <FaPeopleGroup className="text-lg" />,
+    logo: <GraduationCapIcon />,
     route: '/students',
   },
   {
     name: 'Faculties',
-    logo: <FaChalkboardTeacher className="text-lg" />,
+    logo: <Users />,
     route: '/faculties',
   },
   {
     name: 'Subjects',
-    logo: <MdOutlineSubject className="text-lg" />,
+    logo: <LibraryBig />,
     route: '/subjects',
   },
   {
@@ -96,7 +97,7 @@ export function Sidebar() {
     <Sheet>
       <SheetTrigger asChild>
         <div className="fixed left-2 top-2 z-50 cursor-pointer p-2">
-          <PanelRight size={25} />
+          <PanelRightClose size={25} />
         </div>
       </SheetTrigger>
       <SheetContent
