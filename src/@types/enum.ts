@@ -9,6 +9,7 @@ export enum CollectionName {
   loggedInUsers = 'LoggedInUsers',
   institute = 'Institute',
   courses = 'Courses',
+  sessions = 'Sessions',
 }
 
 export const LocalStorageKey = {

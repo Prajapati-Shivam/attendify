@@ -96,18 +96,20 @@ export interface ISubjectsCollection {
 
 export interface ISessionsCollection {
   SessionId: string;
+  SessionInstituteId: string;
   SessionIsAttendanceSheetGenerated: boolean;
   SessionClassId: string;
   SessionClassName: string;
-  SessionClassArmId: string | null;
-  SessionClassArmName: string | null;
+  SessionClassArmId?: string | null;
+  SessionClassArmName?: string | null;
   SessionFacultyId: string;
   SessionFacultyName: string;
   SessionSubjectId: string;
   SessionSubjectName: string;
-  SessionStartTime: string; //* like 11:00 AM
-  SessionEndTime: string; //* like 01:00 PM
+  SessionStartTime: string; //* like 11:00
+  SessionEndTime: string; //* like 13:00
   SessionDate: Timestamp | FieldValue;
+  SessionCreatedAt: Timestamp | FieldValue;
 }
 
 export interface IAttendanceStudentList {

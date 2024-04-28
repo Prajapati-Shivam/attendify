@@ -215,11 +215,13 @@ class DbClass {
     lastDoc,
     lmt,
     searchQuery,
+    classId,
   }: {
     instituteId: string;
     lmt?: number | null;
     lastDoc?: DocumentData | null;
     searchQuery?: string | null;
+    classId?: string;
   }) => {
     const subjectRef = collection(db, CollectionName.subjects);
 
@@ -234,6 +236,10 @@ class DbClass {
         startAt(searchQuery),
         endAt(`${searchQuery}\uF8FF`),
       ];
+    }
+
+    if (classId) {
+      queryParams = [...queryParams, where('SubjectClassId', '==', classId)];
     }
 
     if (lastDoc) {

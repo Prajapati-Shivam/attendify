@@ -1,15 +1,16 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import PageContainer from '@/components/common/Containers/PageContainer';
 import PageHeader from '@/components/common/Containers/PageHeader';
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
-import FacultyInput from '@/components/common/inputs/FacultyInput';
-import SubjectInput from '@/components/common/inputs/SubjectInput';
+import { InputDatePicker } from '@/components/common/inputs/InputDatePicker';
+import InputSelect from '@/components/common/inputs/InputSelect';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -20,17 +21,24 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import DbSession from '@/firebase_configs/DB/DbSession';
+import useFetchClasses from '@/hooks/fetch/useFetchClasses';
+import useFetchFaculties from '@/hooks/fetch/useFetchFaculties';
+import useFetchSubjects from '@/hooks/fetch/useFetchSubjects';
 import { errorHandler } from '@/lib/CustomError';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
 const createSessionSchema = z.object({
-  SessionClassName: z.string().min(2).max(50),
-  SessionFacultyName: z.string().min(2).max(50),
-  SessionSubjectName: z.string().min(2).max(50),
+  SessionClassName: z.string().min(2),
+  SessionClassId: z.string().min(2),
+  SessionFacultyName: z.string().min(2),
+  SessionFacultyId: z.string().min(2),
+  SessionSubjectName: z.string().min(2),
+  SessionSubjectId: z.string().min(2),
   SessionStartTime: z.string(),
   SessionEndTime: z.string(),
-  SessionDate: z.string(),
+  SessionDate: z.date(),
 });
 
 export type CreateSessionFields = z.infer<typeof createSessionSchema>;
@@ -38,31 +46,80 @@ export type CreateSessionFields = z.infer<typeof createSessionSchema>;
 function CreateSessionPage() {
   const form = useForm<CreateSessionFields>({
     resolver: zodResolver(createSessionSchema),
-    defaultValues: {
-      SessionClassName: '',
-      SessionFacultyName: '',
-      SessionSubjectName: '',
-      SessionStartTime: '',
-      SessionEndTime: '',
-      SessionDate: '',
-    },
   });
 
   const [loading, setLoading] = useState(false);
 
   const { institute } = useSessionStore();
 
-  const onSubmit = async (values: CreateSessionFields) => {
+  const { data: faculties } = useFetchFaculties({});
+
+  const { data: classes } = useFetchClasses({});
+
+  const { data: subjects } = useFetchSubjects({
+    classId: form.watch('SessionClassId'),
+  });
+
+  const [classId, subjectId, facultyId] = form.watch([
+    'SessionClassId',
+    'SessionSubjectId',
+    'SessionFacultyId',
+  ]);
+
+  useEffect(() => {
+    if (classId) {
+      const selectedClassName = classes.find(
+        res => res.ClassId === classId,
+      )?.ClassName;
+
+      form.setValue('SessionClassName', selectedClassName || '');
+    } else {
+      form.setValue('SessionClassName', '');
+    }
+  }, [classId]);
+
+  useEffect(() => {
+    if (subjectId) {
+      const selectedSubjectName = subjects.find(
+        res => res.SubjectId === subjectId,
+      )?.SubjectName;
+
+      form.setValue('SessionSubjectName', selectedSubjectName || '');
+    } else {
+      form.setValue('SessionSubjectName', '');
+    }
+  }, [subjectId]);
+
+  useEffect(() => {
+    if (facultyId) {
+      const selectedFaculty = faculties.find(
+        res => res.FacultyId === facultyId,
+      );
+
+      const selectedFacultyName = `${selectedFaculty?.FacultyFirstName} ${selectedFaculty?.FacultyLastName}`;
+
+      form.setValue('SessionFacultyName', selectedFacultyName);
+    } else {
+      form.setValue('SessionFacultyName', '');
+    }
+  }, [facultyId]);
+
+  const router = useRouter();
+
+  const onSubmit = async (data: CreateSessionFields) => {
     if (!institute) return;
     try {
       setLoading(true);
-      // implement create session logic here
-      console.log(values);
+
+      await DbSession.createSession(institute.InstituteId, data);
+
       showSnackbar({
         message: 'Session created successfully',
         type: 'success',
       });
       setLoading(false);
+
+      router.push('/sessions');
     } catch (error) {
       console.log(error);
       errorHandler(error);
@@ -83,15 +140,21 @@ function CreateSessionPage() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <FormField
               control={form.control}
-              name="SessionClassName"
+              name="SessionClassId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Session Name</FormLabel>
+                  <FormLabel>Class</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    <InputSelect
+                      data={classes.map(res => {
+                        return {
+                          label: res.ClassName,
+                          value: res.ClassId,
+                        };
+                      })}
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select ClassName"
                     />
                   </FormControl>
                   <FormMessage />
@@ -100,30 +163,51 @@ function CreateSessionPage() {
             />
             <FormField
               control={form.control}
-              name="SessionFacultyName"
+              name="SessionSubjectId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Subject</FormLabel>
+                  <FormControl>
+                    <InputSelect
+                      data={subjects.map(res => {
+                        return {
+                          label: res.SubjectName,
+                          value: res.SubjectId,
+                        };
+                      })}
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select Subject"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="SessionFacultyId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Faculty Name</FormLabel>
                   <FormControl>
-                    <FacultyInput field={field} />
+                    <InputSelect
+                      data={faculties.map(res => {
+                        return {
+                          label: `${res.FacultyFirstName} ${res.FacultyLastName}`,
+                          value: res.FacultyId,
+                        };
+                      })}
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select Faculty"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            />{' '}
-            <FormField
-              control={form.control}
-              name="SessionSubjectName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subject Name</FormLabel>
-                  <FormControl>
-                    <SubjectInput field={field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />{' '}
+            />
+
             <FormField
               control={form.control}
               name="SessionDate"
@@ -131,11 +215,9 @@ function CreateSessionPage() {
                 <FormItem>
                   <FormLabel>Date</FormLabel>
                   <FormControl>
-                    <Input
-                      type="date"
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                    <InputDatePicker
+                      date={field.value}
+                      setDate={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
