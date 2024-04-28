@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -19,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ConstRegex } from '@/constants/ConstRegex';
+import DbFaculty from '@/firebase_configs/DB/DbFaculty';
 import { errorHandler } from '@/lib/CustomError';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
@@ -52,16 +54,19 @@ function CreateFacultyPage() {
 
   const { institute } = useSessionStore();
 
+  const router = useRouter();
+
   const onSubmit = async (values: CreateFacultyFields) => {
-    console.log(values);
     if (!institute) return;
     try {
       setLoading(true);
-      // await DbClass.create(values, institute?.InstituteId);
+      await DbFaculty.createFaculty(institute.InstituteId, values);
       showSnackbar({
-        message: 'Classroom created successfully',
+        message: 'Faculty created successfully',
         type: 'success',
       });
+      setLoading(false);
+      router.push('/faculties');
     } catch (error) {
       console.log(error);
       errorHandler(error);
