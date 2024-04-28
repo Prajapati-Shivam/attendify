@@ -19,7 +19,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ConstRegex } from '@/constants/ConstRegex';
-import DbClass from '@/firebase_configs/DB/DbClass';
 import { errorHandler } from '@/lib/CustomError';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
@@ -54,10 +53,11 @@ function CreateFacultyPage() {
   const { institute } = useSessionStore();
 
   const onSubmit = async (values: CreateFacultyFields) => {
+    console.log(values);
     if (!institute) return;
     try {
       setLoading(true);
-      await DbClass.createClass(values, institute?.InstituteId);
+      // await DbClass.create(values, institute?.InstituteId);
       showSnackbar({
         message: 'Classroom created successfully',
         type: 'success',
