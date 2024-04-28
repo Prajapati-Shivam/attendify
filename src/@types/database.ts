@@ -30,8 +30,8 @@ export interface IFacultiesCollection {
   FacultyEmail: string; //* This will be used by faculty to login
   FacultyPassword: string; //* This will be used by faculty to login
   FacultyInstituteId: string;
-  FacultyCreateTime: Timestamp | FieldValue;
-  FacultyNameChangeTime: Timestamp | FieldValue;
+  FacultyCreatedAt: Timestamp | FieldValue;
+  FacultyModifiedAt: Timestamp | FieldValue;
 }
 
 export interface ICoursesCollection {

@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
 
-import type { ICoursesCollection } from '@/@types/database';
+import type { IFacultiesCollection } from '@/@types/database';
 import { DisplayCount, REACT_QUERY_KEYS } from '@/@types/enum';
 import {
   Table,
@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import DbClass from '@/firebase_configs/DB/DbClass';
+import DbFaculty from '@/firebase_configs/DB/DbFaculty';
 import { errorHandler } from '@/lib/CustomError';
 import { formatDate } from '@/lib/misc';
 import { showSnackbar } from '@/lib/TsxUtils';
@@ -39,10 +39,10 @@ export function FacultyList() {
     isFetching,
     error,
   } = useInfiniteQuery({
-    queryKey: [REACT_QUERY_KEYS.COURSE_LIST, institute!.InstituteId],
+    queryKey: [REACT_QUERY_KEYS.FACULTY_LIST, institute!.InstituteId],
     queryFn: async ({ pageParam }) => {
-      const snapshot = await DbClass.getCourses({
-        lmt: DisplayCount.COURSE_LIST,
+      const snapshot = await DbFaculty.getFaculties({
+        lmt: DisplayCount.FACULTY_LIST,
         lastDoc: pageParam,
         instituteId: institute!.InstituteId,
       });
@@ -52,7 +52,7 @@ export function FacultyList() {
       if (lastPage?.length === 0) {
         return null;
       }
-      if (lastPage?.length === DisplayCount.COURSE_LIST) {
+      if (lastPage?.length === DisplayCount.FACULTY_LIST) {
         return lastPage.at(-1);
       }
       return null;
@@ -61,10 +61,10 @@ export function FacultyList() {
     enabled: true,
   });
 
-  const [data, setData] = useState<ICoursesCollection[]>(() => {
+  const [data, setData] = useState<IFacultiesCollection[]>(() => {
     if (snapshotData) {
       return snapshotData.pages.flatMap(page =>
-        page.map(doc => doc.data() as ICoursesCollection),
+        page.map(doc => doc.data() as IFacultiesCollection),
       );
     }
     return [];
@@ -77,10 +77,10 @@ export function FacultyList() {
   // we are looping through the snapshot returned by react-query and converting them to data
   useEffect(() => {
     if (snapshotData) {
-      const docData: ICoursesCollection[] = [];
+      const docData: IFacultiesCollection[] = [];
       snapshotData.pages?.forEach(page => {
         page?.forEach(doc => {
-          const datum = doc.data() as ICoursesCollection;
+          const datum = doc.data() as IFacultiesCollection;
           docData.push(datum);
         });
       });
@@ -106,9 +106,10 @@ export function FacultyList() {
     try {
       setLoading(true);
 
-      await DbClass.deleteCourse(courseId);
+      await DbFaculty.deleteFaculty(courseId);
+
       await queryClient.invalidateQueries({
-        queryKey: [REACT_QUERY_KEYS.COURSE_LIST],
+        queryKey: [REACT_QUERY_KEYS.FACULTY_LIST],
       });
 
       showSnackbar({
@@ -130,7 +131,7 @@ export function FacultyList() {
           <TableHead className="w-[120px]">First Name</TableHead>
           <TableHead>Last Name</TableHead>
           <TableHead>Email</TableHead>
-          <TableHead>Enrolled in</TableHead>
+          <TableHead>Created At</TableHead>
           <TableHead className="text-right"></TableHead>
         </TableRow>
       </TableHeader>
@@ -142,14 +143,14 @@ export function FacultyList() {
             </TableCell>
           </TableRow>
         ) : (
-          data.map((course, idx) => {
+          data.map((faculty, idx) => {
             return (
-              <TableRow key={course.CourseId}>
+              <TableRow key={faculty.FacultyId}>
                 <TableCell className="font-medium">{idx + 1}.</TableCell>
-                <TableCell>{course.CourseFullName}</TableCell>
-                <TableCell>{course.CourseShortName}</TableCell>
+                <TableCell>{faculty.FacultyFirstName}</TableCell>
+                <TableCell>{faculty.FacultyLastName}</TableCell>
                 <TableCell>
-                  {formatDate(course.CourseCreatedAt, 'DD/MM/YY')}
+                  {formatDate(faculty.FacultyCreatedAt, 'DD/MM/YY')}
                 </TableCell>
                 <TableCell className="flex justify-end text-right">
                   <FaRegTrashAlt
@@ -158,11 +159,11 @@ export function FacultyList() {
                   />
                 </TableCell>
                 <ConfirmDialog
-                  positiveCallback={() => onDelete(course.CourseId)}
+                  positiveCallback={() => onDelete(faculty.FacultyId)}
                   open={deleteConfirm}
                   setOpened={setDeleteConfirm}
                 >
-                  <div>Are you sure you want to delete this course?</div>
+                  <div>Are you sure you want to delete this faculty?</div>
                 </ConfirmDialog>
               </TableRow>
             );
@@ -171,7 +172,7 @@ export function FacultyList() {
         <TableRow ref={ref}>
           <TableCell colSpan={7}>
             {(isLoading || isFetchingNextPage) &&
-              Array.from({ length: 10 }).map((_, idx) => (
+              Array.from({ length: 5 }).map((_, idx) => (
                 <TableShimmer key={idx} />
               ))}
           </TableCell>

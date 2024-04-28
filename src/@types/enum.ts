@@ -31,6 +31,7 @@ export const DisplayCount = {
   SUBJECT_LIST: 20,
   CLASS_LIST: 20,
   STUDENT_LIST: 20,
+  FACULTY_LIST: 20,
 } as const;
 
 export const REACT_QUERY_KEYS = {
@@ -38,6 +39,7 @@ export const REACT_QUERY_KEYS = {
   SUBJECT_LIST: 'subject-list',
   CLASS_LIST: 'class-list',
   STUDENT_LIST: 'student-list',
+  FACULTY_LIST: 'faculty-list',
 } as const;
 
 export const MinimumQueryCharacter = {
@@ -45,4 +47,5 @@ export const MinimumQueryCharacter = {
   SUBJECT_LIST: 1,
   CLASS_LIST: 1,
   STUDENT_LIST: 1,
+  FACULTY_LIST: 1,
 };

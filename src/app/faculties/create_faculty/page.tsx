@@ -1,11 +1,13 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { REACT_QUERY_KEYS } from '@/@types/enum';
 import PageContainer from '@/components/common/Containers/PageContainer';
 import PageHeader from '@/components/common/Containers/PageHeader';
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
@@ -56,11 +58,16 @@ function CreateFacultyPage() {
 
   const router = useRouter();
 
+  const queryClient = useQueryClient();
+
   const onSubmit = async (values: CreateFacultyFields) => {
     if (!institute) return;
     try {
       setLoading(true);
       await DbFaculty.createFaculty(institute.InstituteId, values);
+      await queryClient.invalidateQueries({
+        queryKey: [REACT_QUERY_KEYS.FACULTY_LIST],
+      });
       showSnackbar({
         message: 'Faculty created successfully',
         type: 'success',
