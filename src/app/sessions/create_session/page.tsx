@@ -1,11 +1,13 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { REACT_QUERY_KEYS } from '@/@types/enum';
 import PageContainer from '@/components/common/Containers/PageContainer';
 import PageHeader from '@/components/common/Containers/PageHeader';
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
@@ -104,6 +106,8 @@ function CreateSessionPage() {
     }
   }, [facultyId]);
 
+  const queryClient = useQueryClient();
+
   const router = useRouter();
 
   const onSubmit = async (data: CreateSessionFields) => {
@@ -113,10 +117,15 @@ function CreateSessionPage() {
 
       await DbSession.createSession(institute.InstituteId, data);
 
+      await queryClient.invalidateQueries({
+        queryKey: [REACT_QUERY_KEYS.SESSION_LIST],
+      });
+
       showSnackbar({
         message: 'Session created successfully',
         type: 'success',
       });
+      form.reset();
       setLoading(false);
 
       router.push('/sessions');

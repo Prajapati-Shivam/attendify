@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
 
-import type { ICoursesCollection } from '@/@types/database';
+import type { ISessionsCollection } from '@/@types/database';
 import { DisplayCount, REACT_QUERY_KEYS } from '@/@types/enum';
 import {
   Table,
@@ -16,9 +16,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import DbClass from '@/firebase_configs/DB/DbClass';
+import DbSession from '@/firebase_configs/DB/DbSession';
 import { errorHandler } from '@/lib/CustomError';
-import { formatDate } from '@/lib/misc';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
@@ -39,10 +38,10 @@ export function SessionList() {
     isFetching,
     error,
   } = useInfiniteQuery({
-    queryKey: [REACT_QUERY_KEYS.COURSE_LIST, institute!.InstituteId],
+    queryKey: [REACT_QUERY_KEYS.SESSION_LIST, institute!.InstituteId],
     queryFn: async ({ pageParam }) => {
-      const snapshot = await DbClass.getCourses({
-        lmt: DisplayCount.COURSE_LIST,
+      const snapshot = await DbSession.getSessions({
+        lmt: DisplayCount.SESSION_LIST,
         lastDoc: pageParam,
         instituteId: institute!.InstituteId,
       });
@@ -52,7 +51,7 @@ export function SessionList() {
       if (lastPage?.length === 0) {
         return null;
       }
-      if (lastPage?.length === DisplayCount.COURSE_LIST) {
+      if (lastPage?.length === DisplayCount.SESSION_LIST) {
         return lastPage.at(-1);
       }
       return null;
@@ -61,10 +60,10 @@ export function SessionList() {
     enabled: true,
   });
 
-  const [data, setData] = useState<ICoursesCollection[]>(() => {
+  const [data, setData] = useState<ISessionsCollection[]>(() => {
     if (snapshotData) {
       return snapshotData.pages.flatMap(page =>
-        page.map(doc => doc.data() as ICoursesCollection),
+        page.map(doc => doc.data() as ISessionsCollection),
       );
     }
     return [];
@@ -77,10 +76,10 @@ export function SessionList() {
   // we are looping through the snapshot returned by react-query and converting them to data
   useEffect(() => {
     if (snapshotData) {
-      const docData: ICoursesCollection[] = [];
+      const docData: ISessionsCollection[] = [];
       snapshotData.pages?.forEach(page => {
         page?.forEach(doc => {
-          const datum = doc.data() as ICoursesCollection;
+          const datum = doc.data() as ISessionsCollection;
           docData.push(datum);
         });
       });
@@ -106,9 +105,9 @@ export function SessionList() {
     try {
       setLoading(true);
 
-      await DbClass.deleteCourse(courseId);
+      await DbSession.deleteSession(courseId);
       await queryClient.invalidateQueries({
-        queryKey: [REACT_QUERY_KEYS.COURSE_LIST],
+        queryKey: [REACT_QUERY_KEYS.SESSION_LIST],
       });
 
       showSnackbar({
@@ -128,9 +127,9 @@ export function SessionList() {
       <TableHeader>
         <TableRow>
           <TableHead className="w-[120px]">SR No.</TableHead>
-          <TableHead>Session Name</TableHead>
-          <TableHead>Faculty Name</TableHead>
+          <TableHead>Class Name</TableHead>
           <TableHead>Subject Name</TableHead>
+          <TableHead>Faculty Name</TableHead>
           <TableHead className="text-right"></TableHead>
         </TableRow>
       </TableHeader>
@@ -142,15 +141,13 @@ export function SessionList() {
             </TableCell>
           </TableRow>
         ) : (
-          data.map((course, idx) => {
+          data.map((session, idx) => {
             return (
-              <TableRow key={course.CourseId}>
+              <TableRow key={session.SessionId}>
                 <TableCell className="font-medium">{idx + 1}.</TableCell>
-                <TableCell>{course.CourseFullName}</TableCell>
-                <TableCell>{course.CourseShortName}</TableCell>
-                <TableCell>
-                  {formatDate(course.CourseCreatedAt, 'DD/MM/YY')}
-                </TableCell>
+                <TableCell>{session.SessionClassName}</TableCell>
+                <TableCell>{session.SessionSubjectName}</TableCell>
+                <TableCell>{session.SessionFacultyName}</TableCell>
                 <TableCell className="flex justify-end text-right">
                   <FaRegTrashAlt
                     onClick={() => setDeleteConfirm(true)}
@@ -158,11 +155,11 @@ export function SessionList() {
                   />
                 </TableCell>
                 <ConfirmDialog
-                  positiveCallback={() => onDelete(course.CourseId)}
+                  positiveCallback={() => onDelete(session.SessionId)}
                   open={deleteConfirm}
                   setOpened={setDeleteConfirm}
                 >
-                  <div>Are you sure you want to delete this course?</div>
+                  <div>Are you sure you want to delete this session?</div>
                 </ConfirmDialog>
               </TableRow>
             );

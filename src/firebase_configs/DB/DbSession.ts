@@ -1,5 +1,21 @@
-import type { Timestamp } from 'firebase/firestore';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import type {
+  DocumentData,
+  QueryConstraint,
+  Timestamp,
+} from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  serverTimestamp,
+  setDoc,
+  startAfter,
+  where,
+} from 'firebase/firestore';
 
 import type { ISessionsCollection } from '@/@types/database';
 import { CollectionName } from '@/@types/enum';
@@ -43,6 +59,40 @@ class DbSession {
     };
 
     return setDoc(sessionRef, newSession);
+  };
+
+  static getSessions = ({
+    instituteId,
+    lastDoc,
+    lmt,
+  }: {
+    instituteId: string;
+    lmt?: number | null;
+    lastDoc?: DocumentData | null;
+  }) => {
+    const sessionRef = collection(db, CollectionName.sessions);
+
+    let queryParams: QueryConstraint[] = [
+      where('SessionInstituteId', '==', instituteId),
+      orderBy('SessionDate', 'desc'),
+    ];
+
+    if (lastDoc) {
+      queryParams = [...queryParams, startAfter(lastDoc)];
+    }
+
+    if (lmt) {
+      queryParams = [...queryParams, limit(lmt)];
+    }
+    const sessionQuery = query(sessionRef, ...queryParams);
+
+    return getDocs(sessionQuery);
+  };
+
+  static deleteSession = (sessionId: string) => {
+    const sessionRef = doc(db, CollectionName.sessions, sessionId);
+
+    return deleteDoc(sessionRef);
   };
 }
 
