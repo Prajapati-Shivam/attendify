@@ -128,9 +128,9 @@ export function FacultyList() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[120px]">First Name</TableHead>
+          <TableHead className="w-[120px]">SR No.</TableHead>
+          <TableHead>First Name</TableHead>
           <TableHead>Last Name</TableHead>
-          <TableHead>Email</TableHead>
           <TableHead>Created At</TableHead>
           <TableHead className="text-right"></TableHead>
         </TableRow>

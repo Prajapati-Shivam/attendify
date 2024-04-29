@@ -10,9 +10,11 @@ const Faculties = () => {
   return (
     <PageContainer>
       <PageHeader>Faculties</PageHeader>
-      <Button className="mr-4 mt-5 hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg">
-        <Link href={'/faculties/create_faculty'}>Create Faculty</Link>
-      </Button>
+      <Link href={'/faculties/create_faculty'}>
+        <Button className="mr-4 mt-5 hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg">
+          Create Faculty
+        </Button>
+      </Link>
       <div className="mt-10 bg-white p-4 dark:bg-surfaceDark">
         <FacultyList />
       </div>

@@ -10,9 +10,11 @@ const Session = () => {
   return (
     <PageContainer>
       <PageHeader>Sessions</PageHeader>
-      <Button className="mt-5 hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg">
-        <Link href={'/sessions/create_session'}>Create Session</Link>
-      </Button>
+      <Link href={'/sessions/create_session'}>
+        <Button className="mt-5 hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg">
+          Create Session
+        </Button>
+      </Link>
       <div className="mt-10 bg-white p-4 dark:bg-surfaceDark">
         <SessionList />
       </div>
