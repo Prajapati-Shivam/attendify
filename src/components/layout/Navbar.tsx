@@ -12,7 +12,9 @@ const Navbar = () => {
   const { authUser, institute } = useSessionStore();
   return (
     <div className="sticky top-0 z-50 flex h-[60px] w-full items-center justify-between bg-white px-5 py-2 shadow-md dark:bg-gray-950 sm:px-12 lg:px-20">
-      <div className="ml-8 text-2xl font-bold leading-relaxed sm:ml-0">
+      <div
+        className={`${authUser.AuthUserAuthenticated ? 'ml-8' : 'ml-0'} text-2xl font-bold leading-relaxed sm:ml-0`}
+      >
         {ConstAppDetails.APP_NAME}
       </div>
       <div className="flex items-center gap-x-3 sm:gap-x-5">

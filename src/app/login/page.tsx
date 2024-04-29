@@ -41,7 +41,7 @@ const LoginPage = () => {
               }}
             />
           </div>
-          <div className="flex flex-1 flex-col gap-10 pr-0 sm:pr-5">
+          <div className="flex flex-1 flex-col gap-5 pr-0 sm:gap-10 sm:pr-5">
             <div className="text-4xl font-bold sm:text-6xl">
               <h1 className="text-black dark:text-white">Attendance</h1>
               <h2 className="text-3xl text-sky-900 dark:text-sky-200 sm:text-5xl">
