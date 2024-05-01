@@ -95,8 +95,8 @@ export function StudentList() {
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[120px]">Roll No.</TableHead>
+        <TableRow className="text-nowrap">
+          <TableHead>Roll No.</TableHead>
           <TableHead>Student Name</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Phone</TableHead>
@@ -121,9 +121,7 @@ export function StudentList() {
                   }}
                   className="cursor-pointer transition-colors duration-200 ease-in-out hover:bg-gray-200 hover:dark:bg-gray-700"
                 >
-                  <TableCell className="font-medium">
-                    {student.StudentRollNo}
-                  </TableCell>
+                  <TableCell>{student.StudentRollNo}</TableCell>
                   <TableCell>{student.StudentFullName}</TableCell>
                   <TableCell>{student.StudentEmail}</TableCell>
                   <TableCell>{student.StudentPhone}</TableCell>

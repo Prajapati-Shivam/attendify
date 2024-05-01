@@ -36,7 +36,7 @@ const ConfirmDialog = ({
         <DialogFooter>
           <Button
             variant="outline"
-            className="mr-2 hover:border-blueButtonHoverBg"
+            className="mt-4 hover:border-blueButtonHoverBg sm:mr-2 sm:mt-0"
             onClick={() => {
               setOpened(false);
               // eslint-disable-next-line @typescript-eslint/no-unused-expressions

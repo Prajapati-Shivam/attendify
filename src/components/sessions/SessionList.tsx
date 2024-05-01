@@ -125,8 +125,8 @@ export function SessionList() {
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[120px]">SR No.</TableHead>
+        <TableRow className="text-nowrap">
+          <TableHead className="text-start">SR No.</TableHead>
           <TableHead>Class Name</TableHead>
           <TableHead>Subject Name</TableHead>
           <TableHead>Faculty Name</TableHead>
@@ -143,12 +143,15 @@ export function SessionList() {
         ) : (
           data.map((session, idx) => {
             return (
-              <TableRow key={session.SessionId}>
-                <TableCell className="font-medium">{idx + 1}.</TableCell>
+              <TableRow
+                key={session.SessionId}
+                className="text-center sm:text-start"
+              >
+                <TableCell>{idx + 1}.</TableCell>
                 <TableCell>{session.SessionClassName}</TableCell>
                 <TableCell>{session.SessionSubjectName}</TableCell>
                 <TableCell>{session.SessionFacultyName}</TableCell>
-                <TableCell className="flex justify-end text-right">
+                <TableCell className="flex justify-end text-end">
                   <FaRegTrashAlt
                     onClick={() => setDeleteConfirm(true)}
                     className="cursor-pointer text-xl text-textPrimaryRed"

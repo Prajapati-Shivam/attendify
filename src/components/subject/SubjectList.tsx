@@ -128,8 +128,8 @@ export function SubjectList() {
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[120px]">SR No.</TableHead>
+        <TableRow className="text-nowrap">
+          <TableHead className="text-start">SR No.</TableHead>
           <TableHead>Subject Name</TableHead>
           <TableHead>Class</TableHead>
           <TableHead>Created At</TableHead>
@@ -150,14 +150,17 @@ export function SubjectList() {
             )
             .map((subject, idx) => {
               return (
-                <TableRow key={subject.SubjectId}>
-                  <TableCell className="font-medium">{idx + 1}.</TableCell>
+                <TableRow
+                  key={subject.SubjectId}
+                  className="text-center sm:text-start"
+                >
+                  <TableCell>{idx + 1}.</TableCell>
                   <TableCell>{subject.SubjectName}</TableCell>
                   <TableCell>{subject.SubjectClassName}</TableCell>
                   <TableCell>
                     {formatDate(subject.SubjectCreatedAt, 'DD/MM/YY')}
                   </TableCell>
-                  <TableCell className="flex justify-end text-right">
+                  <TableCell className="text-end">
                     <FaRegTrashAlt
                       onClick={() => setDeleteConfirm(true)}
                       className="cursor-pointer text-xl text-textPrimaryRed"
