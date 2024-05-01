@@ -7,17 +7,23 @@ import {
   collection,
   deleteDoc,
   doc,
+  GeoPoint,
   getDocs,
   limit,
   orderBy,
   query,
+  runTransaction,
   serverTimestamp,
   setDoc,
   startAfter,
   where,
 } from 'firebase/firestore';
 
-import type { ISessionsCollection } from '@/@types/database';
+import type {
+  IAttendanceCollection,
+  IClassesCollection,
+  ISessionsCollection,
+} from '@/@types/database';
 import { CollectionName } from '@/@types/enum';
 import type { CreateSessionFields } from '@/app/sessions/create_session/page';
 import { removeTimeFromDate } from '@/lib/misc';
@@ -93,6 +99,55 @@ class DbSession {
     const sessionRef = doc(db, CollectionName.sessions, sessionId);
 
     return deleteDoc(sessionRef);
+  };
+
+  static generateAttendanceSheet = async ({
+    location,
+    classId,
+    instituteId,
+    sessionId,
+    facultyId,
+    subjectId,
+  }: {
+    location: { lat: number; lng: number };
+    instituteId: string;
+    classId: string;
+    sessionId: string;
+    facultyId: string;
+    subjectId: string;
+  }) => {
+    await runTransaction(db, async transaction => {
+      const attendanceId = getNewDocId(CollectionName.attendances);
+
+      const attendanceRef = doc(db, CollectionName.attendances, attendanceId);
+
+      const classRef = doc(db, CollectionName.classes, classId);
+      const classSnapshot = await transaction.get(classRef);
+      const classData = classSnapshot.data() as IClassesCollection;
+
+      const newAttendance: IAttendanceCollection = {
+        AttendanceId: attendanceId,
+        AttendanceInstituteId: instituteId,
+        AttendanceSessionId: sessionId,
+        AttendanceLocation: new GeoPoint(location.lat, location.lng),
+        AttendancePresentStudentList: [],
+        AttendanceTotalStudents: classData.ClassStudentsCount,
+        AttendanceClassId: classId,
+        AttendanceFacultyId: facultyId,
+        AttendanceSubjectId: subjectId,
+        AttendanceStatus: 'pending',
+        AttendanceCreatedAt: serverTimestamp(),
+        AttendanceModifiedAt: serverTimestamp(),
+      };
+
+      const sessionRef = doc(db, CollectionName.sessions, sessionId);
+
+      transaction.update(sessionRef, {
+        SessionIsAttendanceSheetGenerated: true,
+      });
+
+      transaction.set(attendanceRef, newAttendance);
+    });
   };
 }
 
