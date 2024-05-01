@@ -224,6 +224,8 @@ const LoginFormAdmin = () => {
         AuthUserId: uId,
         AuthUserRole: 'admin',
       });
+
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }

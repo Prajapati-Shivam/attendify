@@ -1,36 +1,30 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React from 'react';
 
+import Institute from '@/app/institute/page';
+import LoginPage from '@/app/login/page';
 import { useSessionStore } from '@/store';
 
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
-  const { authUser, isLoading, institute } = useSessionStore();
+  const { authUser, institute } = useSessionStore();
 
-  const router = useRouter();
+  if (
+    !authUser ||
+    !authUser.AuthUserAuthenticated ||
+    !authUser.AuthUserId ||
+    !authUser.AuthUserRole
+  ) {
+    return <LoginPage />;
+  }
 
-  useEffect(() => {
-    if (isLoading) return;
-
-    if (
-      !authUser ||
-      !authUser.AuthUserAuthenticated ||
-      !authUser.AuthUserId ||
-      !authUser.AuthUserRole
-    ) {
-      router.push('/login');
-      return;
-    }
-
-    if (
-      authUser.AuthUserAuthenticated &&
-      authUser.AuthUserRole === 'admin' &&
-      !institute
-    ) {
-      router.push('/institute');
-    }
-  }, [isLoading, authUser, institute]);
+  if (
+    authUser.AuthUserAuthenticated &&
+    authUser.AuthUserRole === 'admin' &&
+    !institute
+  ) {
+    return <Institute />;
+  }
 
   return <>{children}</>;
 };
