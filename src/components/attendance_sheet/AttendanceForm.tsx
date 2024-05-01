@@ -3,7 +3,6 @@ import React from 'react';
 import { SelectClassroom } from '../select_input/SelectClassroom';
 import { SelectDate } from '../select_input/SelectDate';
 import { SelectSubject } from '../select_input/SelectSubject';
-import { Button } from '../ui/button';
 
 const AttendanceForm = () => {
   return (
@@ -13,7 +12,6 @@ const AttendanceForm = () => {
         <SelectClassroom />
         <SelectSubject />
         <SelectDate />
-        <Button className="hover:bg-indigo-600/90">Get Attendance Sheet</Button>
       </form>
     </div>
   );

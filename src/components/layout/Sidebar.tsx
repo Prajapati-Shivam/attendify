@@ -44,7 +44,7 @@ const links = [
   {
     name: 'Attendance Sheet',
     logo: <FileSpreadsheet />,
-    route: '/attendance_sheet',
+    route: '/attendance_sheets',
   },
   {
     name: 'Classes',
