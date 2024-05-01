@@ -109,7 +109,7 @@ const StudentDetails = ({ studentData }: StudentDetailsProps) => {
         </div>
       </div>
 
-      <div className="mt-4 flex gap-x-4">
+      <div className="mt-4 flex flex-col gap-4 sm:flex-row">
         <Button className="hover:bg-blueButtonHoverBg">
           <span className="flex items-center justify-center gap-x-2 px-6">
             <Edit size={20} />
