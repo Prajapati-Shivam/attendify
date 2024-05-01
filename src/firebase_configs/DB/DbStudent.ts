@@ -125,6 +125,19 @@ class DbStudent {
     const snapshot = await getDoc(studentRef);
     return snapshot.data() as IStudentsCollection;
   };
+
+  static getStudentFromCred = (email: string, password: string) => {
+    const studentRef = collection(db, CollectionName.students);
+
+    const studentQuery = query(
+      studentRef,
+      where('StudentEmail', '==', email),
+      where('StudentPassword', '==', password),
+      limit(1),
+    );
+
+    return getDocs(studentQuery);
+  };
 }
 
 export default DbStudent;

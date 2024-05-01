@@ -37,9 +37,9 @@ export default function RootLayout({
               <Navbar />
               <Sidebar />
               {children}
-              <ToastContainer />
             </ProtectedPage>
           </AuthProvider>
+          <ToastContainer />
         </ThemeProvider>
       </body>
     </html>

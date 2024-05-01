@@ -95,6 +95,19 @@ class DbFaculty {
     const facultyRef = doc(db, CollectionName.faculties, facultyId);
     return deleteDoc(facultyRef);
   };
+
+  static getFacultyFromCred = (email: string, password: string) => {
+    const facultyRef = collection(db, CollectionName.faculties);
+
+    const facultyQuery = query(
+      facultyRef,
+      where('FacultyEmail', '==', email),
+      where('FacultyPassword', '==', password),
+      limit(1),
+    );
+
+    return getDocs(facultyQuery);
+  };
 }
 
 export default DbFaculty;
