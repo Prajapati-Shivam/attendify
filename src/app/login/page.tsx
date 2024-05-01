@@ -1,29 +1,23 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-
 import Footer from '@/components/layout/Footer';
 import LoginForm from '@/components/login/LoginForm';
 import { ConstAppDetails } from '@/constants/ConstAppDetails';
 import { useSessionStore } from '@/store';
 
+import Dashboard from '../page';
+
 const LoginPage = () => {
-  const { authUser, isLoading } = useSessionStore();
+  const { authUser } = useSessionStore();
 
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isLoading) return;
-    if (
-      authUser &&
-      authUser.AuthUserId &&
-      authUser.AuthUserAuthenticated &&
-      authUser.AuthUserRole
-    ) {
-      router.push('/');
-    }
-  }, [authUser, isLoading]);
+  if (
+    authUser &&
+    authUser.AuthUserId &&
+    authUser.AuthUserAuthenticated &&
+    authUser.AuthUserRole
+  ) {
+    return <Dashboard />;
+  }
 
   return (
     <>
