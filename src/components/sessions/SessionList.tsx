@@ -28,7 +28,12 @@ import TableShimmer from '../common/shimmer/TableShimmer';
 
 export function SessionList() {
   const { institute } = useSessionStore();
+
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+
+  const [generateSheetConfirmModal, setGenerateSheetConfirmModal] =
+    useState(false);
+
   const {
     data: snapshotData,
     fetchNextPage,
@@ -122,15 +127,63 @@ export function SessionList() {
       errorHandler(err);
     }
   };
+
+  const onGenerateAttendanceSheet = async ({
+    classId,
+    sessionId,
+    facultyId,
+    subjectId,
+  }: {
+    classId: string;
+    sessionId: string;
+    facultyId: string;
+    subjectId: string;
+  }) => {
+    if (!institute) return;
+    try {
+      setLoading(true);
+
+      // Fetch the user's current location using the Geolocation API
+      navigator.geolocation.getCurrentPosition(async position => {
+        const { latitude, longitude } = position.coords;
+
+        // Pass the location to the DbSession.generateAttendanceSheet function
+        await DbSession.generateAttendanceSheet({
+          classId,
+          sessionId,
+          facultyId,
+          subjectId,
+          instituteId: institute.InstituteId,
+          location: { lat: latitude, lng: longitude },
+        });
+
+        await queryClient.invalidateQueries({
+          queryKey: [REACT_QUERY_KEYS.SESSION_LIST],
+        });
+
+        showSnackbar({
+          message: 'Attendance sheet generated successfully',
+          type: 'success',
+        });
+
+        setLoading(false);
+      });
+    } catch (e) {
+      setLoading(false);
+      console.log(e);
+      errorHandler(e);
+    }
+  };
+
   return (
     <Table>
       <TableHeader>
-        <TableRow className="text-nowrap">
-          <TableHead className="text-start">SR No.</TableHead>
+        <TableRow>
           <TableHead>Class Name</TableHead>
           <TableHead>Subject Name</TableHead>
           <TableHead>Faculty Name</TableHead>
-          <TableHead className="text-right"></TableHead>
+          <TableHead className="text-end">Attendance Sheet</TableHead>
+          <TableHead className="text-end"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -141,19 +194,37 @@ export function SessionList() {
             </TableCell>
           </TableRow>
         ) : (
-          data.map((session, idx) => {
+          data.map(session => {
             return (
-              <TableRow
-                key={session.SessionId}
-                className="text-center sm:text-start"
-              >
-                <TableCell>{idx + 1}.</TableCell>
+              <TableRow key={session.SessionId}>
                 <TableCell>{session.SessionClassName}</TableCell>
                 <TableCell>{session.SessionSubjectName}</TableCell>
                 <TableCell>{session.SessionFacultyName}</TableCell>
-                <TableCell className="flex justify-end text-end">
+                <TableCell className="text-end">
+                  {session.SessionIsAttendanceSheetGenerated ? (
+                    <span className=" text-textPrimaryGreen">Generated</span>
+                  ) : (
+                    <span
+                      onClick={() => setGenerateSheetConfirmModal(true)}
+                      className="cursor-pointer text-textPrimaryBlue underline"
+                    >
+                      Generate{' '}
+                    </span>
+                  )}
+                </TableCell>
+                <TableCell className="flex  justify-end text-end">
                   <FaRegTrashAlt
-                    onClick={() => setDeleteConfirm(true)}
+                    onClick={() => {
+                      if (session.SessionIsAttendanceSheetGenerated) {
+                        showSnackbar({
+                          message:
+                            'Attendance sheet is already generated for this session, please delete that first',
+                          type: 'error',
+                        });
+                      } else {
+                        setDeleteConfirm(true);
+                      }
+                    }}
                     className="cursor-pointer text-xl text-textPrimaryRed"
                   />
                 </TableCell>
@@ -163,6 +234,23 @@ export function SessionList() {
                   setOpened={setDeleteConfirm}
                 >
                   <div>Are you sure you want to delete this session?</div>
+                </ConfirmDialog>
+                <ConfirmDialog
+                  positiveCallback={() =>
+                    onGenerateAttendanceSheet({
+                      classId: session.SessionClassId,
+                      sessionId: session.SessionId,
+                      facultyId: session.SessionFacultyId,
+                      subjectId: session.SessionSubjectId,
+                    })
+                  }
+                  open={generateSheetConfirmModal}
+                  setOpened={setGenerateSheetConfirmModal}
+                >
+                  <div>
+                    Are you sure you want to generate attendance sheet for this
+                    session with you current location?
+                  </div>
                 </ConfirmDialog>
               </TableRow>
             );

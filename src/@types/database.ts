@@ -112,7 +112,7 @@ export interface ISessionsCollection {
   SessionCreatedAt: Timestamp | FieldValue;
 }
 
-export interface IAttendanceStudentList {
+export interface IAttendancePresentStudentList {
   StudentId: string;
   StudentName: string;
   StudentIsPresent: boolean;
@@ -121,13 +121,16 @@ export interface IAttendanceStudentList {
 
 export interface IAttendanceCollection {
   AttendanceId: string;
+  AttendanceInstituteId: string;
   AttendanceSessionId: string;
   AttendanceLocation: GeoPoint;
-  AttendanceStudentList: IAttendanceStudentList[];
-  AttendancePresentStudents: number;
+  AttendancePresentStudentList: IAttendancePresentStudentList[];
   AttendanceTotalStudents: number;
   AttendanceClassId: string;
-  AttendanceClassArmId: string | null;
+  AttendanceClassArmId?: string | null;
+  AttendanceFacultyId: string;
+  AttendanceSubjectId: string;
+  AttendanceStatus: 'pending' | 'completed';
   AttendanceCreatedAt: Timestamp | FieldValue;
   AttendanceModifiedAt: Timestamp | FieldValue;
 }
