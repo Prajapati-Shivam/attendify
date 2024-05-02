@@ -13,7 +13,7 @@ type Props = {
   };
 };
 
-const attendaceData = {
+const attendanceData = {
   className: 'Class 2',
   subjectName: 'Science',
   facultyName: 'Jane Doe',
@@ -24,7 +24,32 @@ const attendaceData = {
 
 const AttendanceView = (props: Props) => {
   const { slug } = props.params;
-
+  const attendanceDetails = [
+    {
+      label: 'Class Name',
+      value: attendanceData.className,
+    },
+    {
+      label: 'Subject Name',
+      value: attendanceData.subjectName,
+    },
+    {
+      label: 'Faculty Name',
+      value: attendanceData.facultyName,
+    },
+    {
+      label: 'Total Student',
+      value: attendanceData.totalStudent,
+    },
+    {
+      label: 'No. of Student Present',
+      value: attendanceData.studentPresent,
+    },
+    {
+      label: 'Status',
+      value: attendanceData.status,
+    },
+  ];
   return (
     <PageContainer>
       <PageHeader route="attendance_sheets">
@@ -32,46 +57,16 @@ const AttendanceView = (props: Props) => {
       </PageHeader>
       <div className="mt-10 bg-surfaceLight p-4 dark:bg-surfaceDark">
         <div>
-          <div className="mb-4 text-xl font-semibold">Student Details</div>
+          <div className="mb-4 text-xl font-semibold">Attendance Details</div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div>
-              <div className="text-lg font-semibold">Class Name:</div>
-              <div className="text-base text-gray-500 dark:text-gray-400">
-                {attendaceData.className}
+            {attendanceDetails.map((item, index) => (
+              <div key={index}>
+                <div className="text-lg font-semibold">{item.label}:</div>
+                <div className="text-base text-gray-500 dark:text-gray-400">
+                  {item.value}
+                </div>
               </div>
-            </div>
-            <div>
-              <div className="text-lg font-semibold">Subject Name:</div>
-              <div className="text-base text-gray-500 dark:text-gray-400">
-                {attendaceData.subjectName}
-              </div>
-            </div>
-            <div>
-              <div className="text-lg font-semibold">Faculty Name:</div>
-              <div className="text-base text-gray-500 dark:text-gray-400">
-                {attendaceData.facultyName}
-              </div>
-            </div>
-            <div>
-              <div className="text-lg font-semibold">Total Student:</div>
-              <div className="text-base text-gray-500 dark:text-gray-400">
-                {attendaceData.totalStudent}
-              </div>
-            </div>
-            <div>
-              <div className="text-lg font-semibold">
-                No. of Student Present:
-              </div>
-              <div className="text-base text-gray-500 dark:text-gray-400">
-                {attendaceData.studentPresent}
-              </div>
-            </div>
-            <div>
-              <div className="text-lg font-semibold">Status:</div>
-              <div className="text-base text-gray-500 dark:text-gray-400">
-                {attendaceData.status}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 

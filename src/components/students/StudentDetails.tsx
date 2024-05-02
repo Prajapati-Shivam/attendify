@@ -43,72 +43,38 @@ const StudentDetails = ({ studentData }: StudentDetailsProps) => {
       errorHandler(err);
     }
   };
+
+  const studentDetails = [
+    { label: 'Full Name', value: studentData.StudentFullName },
+    { label: 'Phone', value: studentData.StudentPhone },
+    { label: 'Email', value: studentData.StudentEmail },
+    { label: 'Password', value: studentData.StudentPassword },
+    { label: 'Unique Id', value: studentData.StudentUniqueId },
+    { label: 'Roll No.', value: studentData.StudentRollNo },
+    { label: 'Course Name', value: studentData.StudentCourseName },
+    { label: 'Class Name', value: studentData.StudentClassName },
+    {
+      label: 'Course Start Year',
+      value: formatDate(studentData.StudentCourseStartYear, 'YYYY'),
+    },
+    {
+      label: 'Course End Year',
+      value: formatDate(studentData.StudentCourseEndYear, 'YYYY'),
+    },
+  ];
   return (
     <div className="p-4">
       <div>
         <div className="mb-4 text-xl font-semibold">Student Details</div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <div>
-            <div className="text-lg font-semibold">Full Name:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentFullName}
+          {studentDetails.map((item, index) => (
+            <div key={index}>
+              <div className="text-lg font-semibold">{item.label}:</div>
+              <div className="text-base text-gray-500 dark:text-gray-400">
+                {item.value}
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Phone:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentPhone}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Email:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentEmail}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Password:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentPassword}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Unique Id:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentUniqueId}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Roll No.:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentRollNo}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Course Name:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentCourseName}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Class Name:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentClassName}
-            </div>
-          </div>
-
-          <div>
-            <div className="text-lg font-semibold">Course Start Year:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {formatDate(studentData.StudentCourseStartYear, 'YYYY')}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Course End Year:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {formatDate(studentData.StudentCourseEndYear, 'YYYY')}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
