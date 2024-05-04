@@ -32,7 +32,7 @@ const Navbar = () => {
               <MessageSquare />
             </div> */}
             <div className="flex items-center gap-2">
-              <UserAvatar />
+              <UserAvatar user={authUser.AuthUserRole} />
               <span className="hidden sm:block">
                 Welcome{' '}
                 <span className="capitalize">{authUser.AuthUserRole}</span>
