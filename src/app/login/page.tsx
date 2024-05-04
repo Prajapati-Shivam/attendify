@@ -14,7 +14,16 @@ const LoginPage = () => {
     authUser &&
     authUser.AuthUserId &&
     authUser.AuthUserAuthenticated &&
-    authUser.AuthUserRole
+    authUser.AuthUserRole === 'admin'
+  ) {
+    return <Dashboard />;
+  }
+
+  if (
+    authUser &&
+    authUser.AuthUserId &&
+    authUser.AuthUserAuthenticated &&
+    authUser.AuthUserRole === 'student'
   ) {
     return <Dashboard />;
   }

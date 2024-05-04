@@ -14,14 +14,21 @@ import type { LocalStorageLoggedInUserData } from '@/@types/enum';
 import { LocalStorageKey } from '@/@types/enum';
 import SplashScreen from '@/components/splash_screen/SplashScreen';
 import Snackbar from '@/components/ui/snackbar';
+import DbStudent from '@/firebase_configs/DB/DbStudent';
 import DbUser from '@/firebase_configs/DB/DbUser';
 import { firebaseDataToObject } from '@/lib/misc';
 import * as storage from '@/lib/Storage';
 import { useSessionStore, useUIStore } from '@/store';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { setAuthUser, setIsLoading, isLoading, setAdmin, setInstitute } =
-    useSessionStore();
+  const {
+    setAuthUser,
+    setIsLoading,
+    isLoading,
+    setAdmin,
+    setInstitute,
+    setStudent,
+  } = useSessionStore();
 
   const { snackbar } = useUIStore();
 
@@ -77,30 +84,37 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           AuthUserId: _loggedInUser.LoggedInUserId,
         });
 
-        // Fetch admin data and store in zustand
-        const adminSnapshot = await DbUser.getAdminById(
-          _loggedInUser.LoggedInUserId,
-        );
+        if (_loggedInUser.LoggedInUserType === 'admin') {
+          // Fetch admin data and store in zustand
+          const adminSnapshot = await DbUser.getAdminById(
+            _loggedInUser.LoggedInUserId,
+          );
 
-        const adminData = adminSnapshot.data();
-        if (adminData) {
-          const _adminData = firebaseDataToObject(
-            adminData,
-          ) as unknown as IAdminsCollection;
-          setAdmin(_adminData);
-        }
+          const adminData = adminSnapshot.data();
+          if (adminData) {
+            const _adminData = firebaseDataToObject(
+              adminData,
+            ) as unknown as IAdminsCollection;
+            setAdmin(_adminData);
+          }
 
-        // Fetch institute data and store in zustand
-        const instituteSnapshot = await DbUser.getAdminInstitute(
-          _loggedInUser.LoggedInUserId,
-        );
+          // Fetch institute data and store in zustand
+          const instituteSnapshot = await DbUser.getAdminInstitute(
+            _loggedInUser.LoggedInUserId,
+          );
 
-        const instituteData = instituteSnapshot.docs[0]?.data();
-        if (instituteData) {
-          const _instituteData = firebaseDataToObject(
-            instituteData,
-          ) as unknown as IInstitutesCollection;
-          setInstitute(_instituteData);
+          const instituteData = instituteSnapshot.docs[0]?.data();
+          if (instituteData) {
+            const _instituteData = firebaseDataToObject(
+              instituteData,
+            ) as unknown as IInstitutesCollection;
+            setInstitute(_instituteData);
+          }
+        } else if (_loggedInUser.LoggedInUserType === 'student') {
+          const studentData = await DbStudent.getStudentById(
+            _loggedInUser.LoggedInUserId,
+          );
+          setStudent(studentData || null);
         }
 
         setIsLoading(false);

@@ -4,6 +4,7 @@ import type {
   IAdminsCollection,
   IInstitutesCollection,
   ILoggedInUsersCollection,
+  IStudentsCollection,
 } from '@/@types/database';
 import { LocalStorageKey } from '@/@types/enum';
 import DbUser from '@/firebase_configs/DB/DbUser';
@@ -23,6 +24,8 @@ interface AuthState {
   userSignOut: () => void;
   admin: IAdminsCollection | null;
   setAdmin: (admin: IAdminsCollection) => void;
+  student: IStudentsCollection | null;
+  setStudent: (student: IStudentsCollection) => void;
   institute: IInstitutesCollection | null;
   setInstitute: (admin: IInstitutesCollection) => void;
 }
@@ -38,6 +41,8 @@ export const createAuthSlice: StateCreator<AuthState> = set => ({
   setIsLoading: loading => set(state => ({ ...state, isLoading: loading })),
   admin: null,
   setAdmin: admin => set(state => ({ ...state, admin })),
+  student: null,
+  setStudent: student => set(state => ({ ...state, student })),
   institute: null,
   setInstitute: institute => set(state => ({ ...state, institute })),
 
