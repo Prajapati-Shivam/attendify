@@ -127,10 +127,10 @@ export function FacultyList() {
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[120px]">First Name</TableHead>
+        <TableRow className="text-nowrap">
+          <TableHead className="text-start">SR No.</TableHead>
+          <TableHead>First Name</TableHead>
           <TableHead>Last Name</TableHead>
-          <TableHead>Email</TableHead>
           <TableHead>Created At</TableHead>
           <TableHead className="text-right"></TableHead>
         </TableRow>
@@ -145,14 +145,17 @@ export function FacultyList() {
         ) : (
           data.map((faculty, idx) => {
             return (
-              <TableRow key={faculty.FacultyId}>
-                <TableCell className="font-medium">{idx + 1}.</TableCell>
+              <TableRow
+                key={faculty.FacultyId}
+                className="text-center sm:text-start"
+              >
+                <TableCell>{idx + 1}.</TableCell>
                 <TableCell>{faculty.FacultyFirstName}</TableCell>
                 <TableCell>{faculty.FacultyLastName}</TableCell>
                 <TableCell>
                   {formatDate(faculty.FacultyCreatedAt, 'DD/MM/YY')}
                 </TableCell>
-                <TableCell className="flex justify-end text-right">
+                <TableCell className="text-end">
                   <FaRegTrashAlt
                     onClick={() => setDeleteConfirm(true)}
                     className="cursor-pointer text-xl text-textPrimaryRed"

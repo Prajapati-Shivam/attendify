@@ -178,7 +178,7 @@ export function SessionList() {
   return (
     <Table>
       <TableHeader>
-        <TableRow>
+        <TableRow className="text-nowrap">
           <TableHead>Class Name</TableHead>
           <TableHead>Subject Name</TableHead>
           <TableHead>Faculty Name</TableHead>
@@ -196,7 +196,10 @@ export function SessionList() {
         ) : (
           data.map(session => {
             return (
-              <TableRow key={session.SessionId}>
+              <TableRow
+                key={session.SessionId}
+                className="text-center sm:text-start"
+              >
                 <TableCell>{session.SessionClassName}</TableCell>
                 <TableCell>{session.SessionSubjectName}</TableCell>
                 <TableCell>{session.SessionFacultyName}</TableCell>
@@ -212,7 +215,7 @@ export function SessionList() {
                     </span>
                   )}
                 </TableCell>
-                <TableCell className="flex  justify-end text-end">
+                <TableCell className="text-end">
                   <FaRegTrashAlt
                     onClick={() => {
                       if (session.SessionIsAttendanceSheetGenerated) {

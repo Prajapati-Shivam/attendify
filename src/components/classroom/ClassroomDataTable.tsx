@@ -10,7 +10,6 @@ import { DisplayCount, REACT_QUERY_KEYS } from '@/@types/enum';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -94,10 +93,9 @@ export function ClassroomDataTable() {
   }, [fetchNextPage, inView, hasNextPage, isFetching]);
   return (
     <Table>
-      <TableCaption>A list of your recent Classrooms.</TableCaption>
       <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
+        <TableRow className="text-nowrap">
+          <TableHead className="text-start">Name</TableHead>
           <TableHead>No. of Subject</TableHead>
           <TableHead>Total Students</TableHead>
           <TableHead className="text-end">Academic year</TableHead>
@@ -113,7 +111,7 @@ export function ClassroomDataTable() {
         ) : (
           data.map(res => {
             return (
-              <TableRow key={res.ClassId}>
+              <TableRow key={res.ClassId} className="text-center sm:text-start">
                 <TableCell>{res.ClassName}</TableCell>
                 <TableCell>{res.ClassSubjectsCount}</TableCell>
                 <TableCell>{res.ClassStudentsCount}</TableCell>

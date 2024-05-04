@@ -1,9 +1,12 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { Edit, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { REACT_QUERY_KEYS } from '@/@types/enum';
 import type { StudentsCollection } from '@/app/students/[slug]/page';
+import DbClass from '@/firebase_configs/DB/DbClass';
 import { errorHandler } from '@/lib/CustomError';
 import { formatDate } from '@/lib/misc';
 import { showSnackbar } from '@/lib/TsxUtils';
@@ -19,15 +22,15 @@ interface StudentDetailsProps {
 const StudentDetails = ({ studentData }: StudentDetailsProps) => {
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
   const onDelete = async (studentId: string) => {
     try {
       setLoading(true);
 
-      // await DbClass.deleteCourse(courseId);
-      // await queryClient.invalidateQueries({
-      //   queryKey: [REACT_QUERY_KEYS.COURSE_LIST],
-      // });
-      console.log('Student deleted ', studentId);
+      await DbClass.deleteCourse(studentId);
+      await queryClient.invalidateQueries({
+        queryKey: [REACT_QUERY_KEYS.COURSE_LIST],
+      });
       showSnackbar({
         message: 'Student deleted successfully',
         type: 'success',
@@ -40,76 +43,42 @@ const StudentDetails = ({ studentData }: StudentDetailsProps) => {
       errorHandler(err);
     }
   };
+
+  const studentDetails = [
+    { label: 'Full Name', value: studentData.StudentFullName },
+    { label: 'Phone', value: studentData.StudentPhone },
+    { label: 'Email', value: studentData.StudentEmail },
+    { label: 'Password', value: studentData.StudentPassword },
+    { label: 'Unique Id', value: studentData.StudentUniqueId },
+    { label: 'Roll No.', value: studentData.StudentRollNo },
+    { label: 'Course Name', value: studentData.StudentCourseName },
+    { label: 'Class Name', value: studentData.StudentClassName },
+    {
+      label: 'Course Start Year',
+      value: formatDate(studentData.StudentCourseStartYear, 'YYYY'),
+    },
+    {
+      label: 'Course End Year',
+      value: formatDate(studentData.StudentCourseEndYear, 'YYYY'),
+    },
+  ];
   return (
     <div className="p-4">
       <div>
         <div className="mb-4 text-xl font-semibold">Student Details</div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <div>
-            <div className="text-lg font-semibold">Full Name:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentFullName}
+          {studentDetails.map((item, index) => (
+            <div key={index}>
+              <div className="text-lg font-semibold">{item.label}:</div>
+              <div className="text-base text-gray-500 dark:text-gray-400">
+                {item.value}
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Phone:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentPhone}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Email:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentEmail}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Password:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentPassword}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Unique Id:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentUniqueId}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Roll No.:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentRollNo}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Course Name:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentCourseName}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Class Name:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {studentData.StudentClassName}
-            </div>
-          </div>
-
-          <div>
-            <div className="text-lg font-semibold">Course Start Year:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {formatDate(studentData.StudentCourseStartYear, 'YYYY')}
-            </div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">Course End Year:</div>
-            <div className="text-base text-gray-500 dark:text-gray-400">
-              {formatDate(studentData.StudentCourseEndYear, 'YYYY')}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
-      <div className="mt-4 flex gap-x-4">
+      <div className="mt-4 flex flex-col gap-4 sm:flex-row">
         <Button className="hover:bg-blueButtonHoverBg">
           <span className="flex items-center justify-center gap-x-2 px-6">
             <Edit size={20} />

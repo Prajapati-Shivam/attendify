@@ -11,12 +11,16 @@ const Classroom = () => {
   return (
     <PageContainer>
       <PageHeader>Classroom</PageHeader>
-      <Button className="mr-4 mt-5 hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg">
-        <Link href={'/classes/create_class'}>Create Classroom</Link>
-      </Button>
-      <Button className="mt-5 hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg">
-        <Link href={'/classes/create_batch'}>Create Batch</Link>
-      </Button>
+      <Link href={'/classes/create_class'}>
+        <Button className="mr-4 mt-5 hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg">
+          Create Classroom
+        </Button>
+      </Link>
+      {/* <Link href={'/classes/create_batch'}>
+        <Button className="mt-5 hover:bg-blueButtonHoverBg dark:hover:bg-blueButtonHoverBg">
+          Create Batch
+        </Button>
+      </Link> */}
       <div className="mt-10 bg-white p-4 dark:bg-gray-800">
         <ClassroomDataTable />
       </div>

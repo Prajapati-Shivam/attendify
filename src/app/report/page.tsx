@@ -6,7 +6,7 @@ import PageHeader from '@/components/common/Containers/PageHeader';
 const Courses = () => {
   return (
     <PageContainer>
-      <PageHeader>Courses</PageHeader>
+      <PageHeader>Report</PageHeader>
     </PageContainer>
   );
 };
