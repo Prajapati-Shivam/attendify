@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 'use client';
 
 import {
@@ -78,20 +80,22 @@ const links = [
   },
 ];
 
+const studentPortalLinks = [
+  {
+    name: 'My Sessions',
+    logo: <GraduationCapIcon />,
+    route: '/student_portal',
+  },
+];
+
 export function Sidebar() {
-  const { authUser, userSignOut, institute } = useSessionStore();
+  const { authUser, userSignOut } = useSessionStore();
 
   const pathname = usePathname();
 
   const router = useRouter();
 
   const [logoutConfirmModal, setLogoutConfirmModal] = useState(false);
-
-  if (
-    !authUser.AuthUserAuthenticated ||
-    (authUser.AuthUserRole === 'admin' && !institute)
-  )
-    return <div></div>;
 
   return (
     <Sheet>
@@ -110,7 +114,12 @@ export function Sidebar() {
           </SheetTitle>
         </SheetHeader>
         <div>
-          {links.map(link => (
+          {(authUser.AuthUserRole === 'admin'
+            ? links
+            : authUser.AuthUserRole === 'student'
+              ? studentPortalLinks
+              : links
+          ).map(link => (
             <SheetClose asChild key={link.name}>
               <Link
                 href={link.route}

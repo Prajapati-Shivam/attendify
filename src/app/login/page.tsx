@@ -6,6 +6,7 @@ import { ConstAppDetails } from '@/constants/ConstAppDetails';
 import { useSessionStore } from '@/store';
 
 import Dashboard from '../page';
+import StudentPortal from '../student_portal/page';
 
 const LoginPage = () => {
   const { authUser } = useSessionStore();
@@ -25,7 +26,7 @@ const LoginPage = () => {
     authUser.AuthUserAuthenticated &&
     authUser.AuthUserRole === 'student'
   ) {
-    return <Dashboard />;
+    return <StudentPortal />;
   }
 
   return (

@@ -1,15 +1,18 @@
 'use client';
 
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 
 import Institute from '@/app/institute/page';
 import LoginPage from '@/app/login/page';
-import Dashboard from '@/app/page';
 import { useSessionStore } from '@/store';
+
+import Navbar from '../layout/Navbar';
 
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
   const { authUser, institute } = useSessionStore();
+
+  const pathname = usePathname();
 
   const router = useRouter();
 
@@ -19,7 +22,12 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
     !authUser.AuthUserId ||
     !authUser.AuthUserRole
   ) {
-    return <LoginPage />;
+    router.push('/login');
+    return (
+      <>
+        <Navbar /> <LoginPage />
+      </>
+    );
   }
 
   if (
@@ -27,15 +35,17 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
     authUser.AuthUserRole === 'admin' &&
     !institute
   ) {
+    router.push('/institute');
     return <Institute />;
   }
 
   if (
-    !router.pathname.includes('student_portal') &&
+    !pathname.includes('student_portal') &&
     authUser.AuthUserAuthenticated &&
     authUser.AuthUserRole === 'student'
   ) {
-    return <Dashboard />;
+    router.push('/student_portal');
+    return <></>;
   }
 
   return <>{children}</>;

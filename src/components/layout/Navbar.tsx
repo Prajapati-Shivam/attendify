@@ -33,7 +33,10 @@ const Navbar = () => {
             </div> */}
             <div className="flex items-center gap-2">
               <UserAvatar />
-              <span className="hidden sm:block">Welcome Admin</span>
+              <span className="hidden sm:block">
+                Welcome{' '}
+                <span className="capitalize">{authUser.AuthUserRole}</span>
+              </span>
             </div>
           </div>
         )}
