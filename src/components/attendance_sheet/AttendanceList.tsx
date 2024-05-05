@@ -161,7 +161,10 @@ export function AttendanceList() {
                 className="cursor-pointer text-center sm:text-start"
                 onClick={() => {
                   if (res.AttendanceStatus === 'pending') {
-                    navigate.push('attendance_sheets/take_attendance');
+                    navigate.push(
+                      'attendance_sheets/take_attendance' +
+                        `?id=${res.AttendanceId}`,
+                    );
                   } else {
                     navigate.push(`attendance_sheets/${res.AttendanceId}`);
                   }

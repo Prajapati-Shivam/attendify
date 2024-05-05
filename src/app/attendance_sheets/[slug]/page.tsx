@@ -6,6 +6,7 @@ import React from 'react';
 import PageContainer from '@/components/common/Containers/PageContainer';
 import PageHeader from '@/components/common/Containers/PageHeader';
 import { Button } from '@/components/ui/button';
+import useListenAttendance from '@/hooks/listeners/useListenAttendance';
 
 type Props = {
   params: {
@@ -13,43 +14,12 @@ type Props = {
   };
 };
 
-const attendanceData = {
-  className: 'Class 2',
-  subjectName: 'Science',
-  facultyName: 'Jane Doe',
-  totalStudent: 30,
-  studentPresent: 25,
-  status: 'completed',
-};
-
 const AttendanceView = (props: Props) => {
   const { slug } = props.params;
-  const attendanceDetails = [
-    {
-      label: 'Class Name',
-      value: attendanceData.className,
-    },
-    {
-      label: 'Subject Name',
-      value: attendanceData.subjectName,
-    },
-    {
-      label: 'Faculty Name',
-      value: attendanceData.facultyName,
-    },
-    {
-      label: 'Total Student',
-      value: attendanceData.totalStudent,
-    },
-    {
-      label: 'No. of Student Present',
-      value: attendanceData.studentPresent,
-    },
-    {
-      label: 'Status',
-      value: attendanceData.status,
-    },
-  ];
+  const { attendance } = useListenAttendance({
+    attendanceId: slug,
+  });
+
   return (
     <PageContainer>
       <PageHeader route="attendance_sheets">
@@ -59,14 +29,10 @@ const AttendanceView = (props: Props) => {
         <div>
           <div className="mb-4 text-xl font-semibold">Attendance Details</div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {attendanceDetails.map((item, index) => (
-              <div key={index}>
-                <div className="text-lg font-semibold">{item.label}:</div>
-                <div className="text-base text-gray-500 dark:text-gray-400">
-                  {item.value}
-                </div>
-              </div>
-            ))}
+            <div>
+              No of student present:{' '}
+              {attendance?.AttendancePresentStudentList?.length || 0}
+            </div>
           </div>
         </div>
 
