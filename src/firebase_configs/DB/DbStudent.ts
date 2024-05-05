@@ -4,6 +4,7 @@ import type {
   Timestamp,
 } from 'firebase/firestore';
 import {
+  arrayUnion,
   collection,
   doc,
   getDoc,
@@ -17,6 +18,7 @@ import {
 } from 'firebase/firestore';
 
 import type {
+  IAttendancePresentStudentList,
   IClassesCollection,
   IStudentsCollection,
 } from '@/@types/database';
@@ -137,6 +139,35 @@ class DbStudent {
     );
 
     return getDocs(studentQuery);
+  };
+
+  static giveAttendance = async ({
+    attendanceId,
+    studentId,
+    studentName,
+    studentMacAddress,
+  }: {
+    attendanceId: string;
+    studentId: string;
+    studentName: string;
+    studentMacAddress: string;
+  }) => {
+    const studentData: IAttendancePresentStudentList[] = [
+      {
+        StudentId: studentId,
+        StudentIsPresent: true,
+        StudentMacAddress: studentMacAddress,
+        StudentName: studentName,
+      },
+    ];
+
+    const attendanceRef = doc(db, CollectionName.attendances, attendanceId);
+
+    await runTransaction(db, async transaction => {
+      transaction.update(attendanceRef, {
+        AttendancePresentStudentList: arrayUnion(...studentData),
+      });
+    });
   };
 }
 
