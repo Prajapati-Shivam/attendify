@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 import PageContainer from '@/components/common/Containers/PageContainer';
 import PageHeader from '@/components/common/Containers/PageHeader';
+import { Button } from '@/components/ui/button';
 import useListenAttendance from '@/hooks/listeners/useListenAttendance';
 
 const TakeAttendance = () => {
@@ -44,6 +45,7 @@ const TakeAttendance = () => {
               Total no. of student:{' '}
               {attendance?.AttendanceTotalStudents || 'N/A'}
             </div>
+            <Button className="mt-5 hover:bg-blueButtonHoverBg">Submit</Button>
           </div>
         </div>
       </div>

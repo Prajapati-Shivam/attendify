@@ -2,6 +2,7 @@
 
 import type { QrcodeErrorCallback, QrcodeSuccessCallback } from 'html5-qrcode';
 import { Html5QrcodeScanner } from 'html5-qrcode';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
@@ -65,11 +66,21 @@ const ScanQr = () => {
   return (
     <div className="flex h-[calc(100vh-100px)] w-full flex-col items-center justify-center">
       <div className="flex w-full max-w-md flex-col gap-4">
-        <div id="reader"></div>
         {scanResult ? (
-          <div>Your attendance is marked successfully</div>
+          <div className="flex h-full flex-col items-center justify-center gap-8">
+            <Image
+              src="/assets/images/success_animation.gif"
+              width={200}
+              height={200}
+              alt="success animation"
+            />
+
+            <p className="text-center text-xl font-bold text-green-500">
+              Attendance Submitted Successfully
+            </p>
+          </div>
         ) : (
-          <div>Your attendance is not yet marked</div>
+          <div id="reader"></div>
         )}
       </div>
       <LoaderDialog loading={loading} description="Submitting attendance..." />
