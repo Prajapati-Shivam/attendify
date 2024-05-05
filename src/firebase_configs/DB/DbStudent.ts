@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import type {
   DocumentData,
   QueryConstraint,
@@ -10,6 +11,7 @@ import {
   getDoc,
   getDocs,
   limit,
+  orderBy,
   query,
   runTransaction,
   serverTimestamp,
@@ -168,6 +170,65 @@ class DbStudent {
         AttendancePresentStudentList: arrayUnion(...studentData),
       });
     });
+  };
+
+  static getStudentAttendanceSheets = ({
+    lastDoc,
+    lmt,
+    classId,
+    subjectId,
+    endDate,
+    isLifeTime,
+    startDate,
+  }: {
+    classId: string;
+    lmt?: number | null;
+    lastDoc?: DocumentData | null;
+    subjectId?: string | null;
+    startDate?: Date | null;
+    endDate?: Date | null;
+    isLifeTime?: boolean;
+  }) => {
+    const attendanceRef = collection(db, CollectionName.attendances);
+
+    let queryParams: QueryConstraint[] = [
+      where('AttendanceClassId', '==', classId),
+      orderBy('AttendanceCreatedAt', 'desc'),
+    ];
+
+    if (subjectId) {
+      queryParams = [
+        ...queryParams,
+        where('AttendanceSubjectId', '==', subjectId),
+      ];
+    }
+
+    if (!isLifeTime) {
+      queryParams = [
+        ...queryParams,
+        where(
+          'AttendanceCreatedAt',
+          '>=',
+          dayjs(startDate).startOf('day').toDate(),
+        ),
+        where(
+          'AttendanceCreatedAt',
+          '<=',
+          dayjs(endDate).endOf('day').toDate(),
+        ),
+      ];
+    }
+
+    if (lastDoc) {
+      queryParams = [...queryParams, startAfter(lastDoc)];
+    }
+
+    if (lmt) {
+      queryParams = [...queryParams, limit(lmt)];
+    }
+    const attendanceQuery = query(attendanceRef, ...queryParams);
+
+    return getDocs(attendanceQuery);
   };
 }
 

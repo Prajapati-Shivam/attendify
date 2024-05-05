@@ -31,9 +31,8 @@ const ScanQr = () => {
   const [loading, setLoading] = useState(false);
 
   const success: QrcodeSuccessCallback = async (result: string) => {
-    if (scanner && student) {
+    if (scanner && student && result) {
       scanner.clear();
-      setScanResult(result?.length > 0);
 
       try {
         setLoading(true);
@@ -44,6 +43,7 @@ const ScanQr = () => {
           studentMacAddress: 'test1-mac',
         });
         setLoading(false);
+        setScanResult(true);
         console.log('successfully gave attendance');
       } catch (error) {
         console.log(error);
