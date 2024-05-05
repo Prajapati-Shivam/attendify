@@ -253,6 +253,14 @@ class DbClass {
 
     return getDocs(courseQuery);
   };
+
+  static getSubjectById = async (subjectId: string) => {
+    const subjectRef = doc(db, CollectionName.subjects, subjectId);
+
+    const snapshot = await getDoc(subjectRef);
+
+    return snapshot.data() as ISubjectsCollection;
+  };
 }
 
 export default DbClass;

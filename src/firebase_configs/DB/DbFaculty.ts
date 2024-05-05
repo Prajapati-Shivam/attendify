@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -89,6 +90,14 @@ class DbFaculty {
     const courseQuery = query(courseRef, ...queryParams);
 
     return getDocs(courseQuery);
+  };
+
+  static getFacultyById = async (facultyId: string) => {
+    const facultyRef = doc(db, CollectionName.faculties, facultyId);
+
+    const snapshot = await getDoc(facultyRef);
+
+    return snapshot.data() as IFacultiesCollection;
   };
 
   static deleteFaculty = (facultyId: string) => {
