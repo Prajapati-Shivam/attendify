@@ -158,7 +158,7 @@ export function AttendanceList() {
             return (
               <TableRow
                 key={res.AttendanceId}
-                className="cursor-pointer text-center sm:text-start"
+                className="cursor-pointer text-center transition-colors duration-200 ease-in-out hover:bg-gray-200 hover:dark:bg-gray-700 sm:text-start"
                 onClick={() => {
                   if (res.AttendanceStatus === 'pending') {
                     navigate.push(

@@ -26,24 +26,24 @@ const TakeAttendance = () => {
 
   return (
     <PageContainer>
-      <PageHeader>Take Attendance</PageHeader>
-      <div className="mt-10 flex flex-col gap-8 sm:flex-row">
-        <div className="flex-1">
-          <img src={qrCodeBase64} alt="" className="size-[400px]" />
+      <PageHeader route="attendance_sheets">Take Attendance</PageHeader>
+      <div className="mt-10 flex flex-col gap-8 md:flex-row">
+        <div className="flex flex-1 justify-center">
+          <img src={qrCodeBase64} alt="qrcode" className="h-auto max-w-full" />
         </div>
-        <div className="flex-1">
-          <p className="text-4xl font-semibold">
+        <div className="flex flex-1 flex-col items-center justify-center gap-y-6">
+          <h3 className="text-center text-2xl font-semibold sm:text-4xl">
             Ask students to scan the QR code to mark their attendance
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <div>
-            Total no. of student: {attendance?.AttendanceTotalStudents || 'N/A'}
-          </div>
-          <div>
-            Total no. of present student:{' '}
-            {attendance?.AttendancePresentStudentList.length || 0}
+          </h3>
+          <div className="flex flex-col gap-2 text-center">
+            <div>
+              Total no. of present student:{' '}
+              {attendance?.AttendancePresentStudentList.length || 0}
+            </div>
+            <div>
+              Total no. of student:{' '}
+              {attendance?.AttendanceTotalStudents || 'N/A'}
+            </div>
           </div>
         </div>
       </div>
