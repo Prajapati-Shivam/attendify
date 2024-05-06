@@ -108,6 +108,7 @@ const InputOtp = ({
       <div className="mt-[2px] flex w-full flex-wrap justify-between gap-2">
         {Array.from({ length: 6 }).map((_, index) => (
           <input
+            inputMode="numeric"
             key={index}
             type="text"
             maxLength={1}
