@@ -20,12 +20,14 @@ import {
 } from 'firebase/firestore';
 
 import type {
+  IAttendanceCollection,
   IAttendancePresentStudentList,
   IClassesCollection,
   IStudentsCollection,
 } from '@/@types/database';
 import { CollectionName } from '@/@types/enum';
 import type { CreateStudentFields } from '@/app/students/create_student/page';
+import CustomError from '@/lib/CustomError';
 import { fullTextSearchIndex } from '@/lib/misc';
 
 import { db } from '../config';
@@ -166,6 +168,26 @@ class DbStudent {
     const attendanceRef = doc(db, CollectionName.attendances, attendanceId);
 
     await runTransaction(db, async transaction => {
+      const snapshot = await transaction.get(attendanceRef);
+      if (!snapshot.exists()) {
+        throw new CustomError('Attendance sheet not found');
+      }
+      const attendanceData = snapshot.data() as IAttendanceCollection;
+
+      const { AttendanceStatus, AttendancePresentStudentList } = attendanceData;
+
+      if (AttendanceStatus === 'completed') {
+        throw new CustomError('This attendance sheet is already submitted');
+      }
+
+      if (
+        AttendancePresentStudentList.find(res => res.StudentId === studentId)
+      ) {
+        throw new CustomError(
+          'You have already marked your attendance for this session',
+        );
+      }
+
       transaction.update(attendanceRef, {
         AttendancePresentStudentList: arrayUnion(...studentData),
       });

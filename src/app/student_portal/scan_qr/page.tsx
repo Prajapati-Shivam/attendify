@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
 import DbStudent from '@/firebase_configs/DB/DbStudent';
+import { errorHandler } from '@/lib/CustomError';
 import { useSessionStore } from '@/store';
 
 const ScanQr = () => {
@@ -49,6 +50,7 @@ const ScanQr = () => {
       } catch (error) {
         console.log(error);
         setLoading(false);
+        errorHandler(error);
       }
     }
   };
