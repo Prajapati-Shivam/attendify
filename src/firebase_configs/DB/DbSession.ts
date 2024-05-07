@@ -18,6 +18,7 @@ import {
   serverTimestamp,
   setDoc,
   startAfter,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 
@@ -220,6 +221,14 @@ class DbSession {
   static getAttendanceSheetById = (attendanceId: string) => {
     const docRef = doc(db, CollectionName.attendances, attendanceId);
     return getDoc(docRef);
+  };
+
+  static submitAttendance = (attendanceId: string) => {
+    const attendanceRef = doc(db, CollectionName.attendances, attendanceId);
+
+    return updateDoc(attendanceRef, {
+      AttendanceStatus: 'completed',
+    } as Partial<IAttendanceCollection>);
   };
 }
 

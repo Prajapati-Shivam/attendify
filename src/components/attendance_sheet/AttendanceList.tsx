@@ -54,6 +54,7 @@ export function AttendanceList() {
         lmt: DisplayCount.ATTENDANCE_SHEET_LIST,
         lastDoc: pageParam,
         instituteId: institute!.InstituteId,
+        isLifeTime: true,
       });
       const data = snapshot.docs.map(
         doc => doc.data() as IAttendanceCollection,
