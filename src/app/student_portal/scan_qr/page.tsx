@@ -2,13 +2,17 @@
 
 import type { QrcodeErrorCallback, QrcodeSuccessCallback } from 'html5-qrcode';
 import { Html5QrcodeScanner } from 'html5-qrcode';
-import Image from 'next/image';
+import type { LottieOptions } from 'lottie-react';
+import Lottie from 'lottie-react';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
 import DbStudent from '@/firebase_configs/DB/DbStudent';
 import { errorHandler } from '@/lib/CustomError';
 import { useSessionStore } from '@/store';
+
+import lottieAnimationSuccess from '../../../../public/assets/lotties/lottie_success.json';
 
 const ScanQr = () => {
   const { student } = useSessionStore();
@@ -32,6 +36,8 @@ const ScanQr = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const router = useRouter();
+
   const success: QrcodeSuccessCallback = async (result: string) => {
     if (scanner && student && result) {
       scanner.clear();
@@ -46,11 +52,12 @@ const ScanQr = () => {
         });
         setLoading(false);
         setScanResult(true);
-        console.log('successfully gave attendance');
+        setTimeout(() => router.back(), 2000);
       } catch (error) {
         console.log(error);
         setLoading(false);
         errorHandler(error);
+        router.back();
       }
     }
   };
@@ -65,16 +72,24 @@ const ScanQr = () => {
     }
   }, [scanner]);
 
+  const lottieOptions: LottieOptions = {
+    loop: false,
+    autoplay: true,
+    animationData: lottieAnimationSuccess,
+    rendererSettings: {
+      // Set the dimensions here
+      preserveAspectRatio: 'xMidYMid meet', // You can adjust this to control aspect ratio
+    },
+  };
+
   return (
     <div className="flex h-[calc(100vh-100px)] w-full flex-col items-center justify-center">
       <div className="flex w-full max-w-md flex-col gap-4">
         {scanResult ? (
           <div className="flex h-full flex-col items-center justify-center gap-8">
-            <Image
-              src="/assets/images/success_animation.gif"
-              width={200}
-              height={200}
-              alt="success animation"
+            <Lottie
+              {...lottieOptions}
+              style={{ width: '200px', height: '200px', display: 'block' }}
             />
 
             <p className="text-center text-xl font-bold text-green-500">

@@ -51,6 +51,7 @@ export function SessionList() {
         lmt: DisplayCount.ATTENDANCE_SHEET_LIST,
         lastDoc: pageParam,
         classId: student!.StudentClassId,
+        isLifeTime: true,
       });
       const data = snapshot.docs.map(
         doc => doc.data() as IAttendanceCollection,

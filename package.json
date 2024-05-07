@@ -29,6 +29,7 @@
     "dayjs": "^1.11.10",
     "firebase": "^10.7.2",
     "html5-qrcode": "^2.3.8",
+    "lottie-react": "^2.4.0",
     "lucide-react": "^0.316.0",
     "next": "14.1.0",
     "next-themes": "^0.2.1",
