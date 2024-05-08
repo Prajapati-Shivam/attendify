@@ -76,13 +76,12 @@ export function AttendanceList() {
 
           const facultyData =
             await DbFaculty.getFacultyById(AttendanceFacultyId);
-          const { FacultyFirstName, FacultyLastName } = facultyData;
 
           docData.push({
             ...res,
             AttendanceClassName: ClassName,
             AttendanceSubjectName: SubjectName,
-            AttendanceFacultyName: `${FacultyFirstName} ${FacultyLastName}`,
+            AttendanceFacultyName: `${facultyData?.FacultyFirstName || ''} ${facultyData?.FacultyLastName || ''}`,
           });
         }),
       );
