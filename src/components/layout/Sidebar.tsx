@@ -6,6 +6,7 @@ import {
   AreaChart,
   FileSpreadsheet,
   GraduationCapIcon,
+  HelpCircle,
   Hourglass,
   LayoutList,
   LibraryBig,
@@ -77,6 +78,11 @@ const links = [
     name: 'Report',
     logo: <ScrollText />,
     route: '/report',
+  },
+  {
+    name: 'Help',
+    logo: <HelpCircle />,
+    route: '/help',
   },
 ];
 
