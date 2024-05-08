@@ -30,8 +30,13 @@ const links = [
   },
   {
     title: 'Create Session',
-    desc: 'Schedule sessions for classes, exams, or other activities. Specify dates, timings, and locations for each session.',
+    desc: 'Schedule sessions for classes, exams, or other activities. Specify dates, faculty, class, subject and timings for each session and generate attendance sheets.',
     url: `${url}/sessions`,
+  },
+  {
+    title: 'Attendance Sheets',
+    desc: 'View and manage attendance sheets for each session. Mark attendance and view attendance statistics.',
+    url: `${url}/attendance_sheets`,
   },
 ];
 
@@ -51,16 +56,16 @@ const AdminHelp = () => {
         After creating your institution, you can proceed to set up various
         components within Attendlytics:
       </p>
-      <ul className="mb-4 list-disc">
+      <ul className="mb-4 list-inside list-disc">
         {links.map((link, index) => (
-          <li key={index} className="mb-4 flex items-center gap-2">
+          <li key={index} className="mb-2">
             <Link
-              className="text-lg font-semibold text-blue-500 hover:underline"
+              className="text-nowrap text-lg font-semibold text-blue-500 hover:underline"
               href={link.url}
             >
               {link.title}:
             </Link>
-            <p>{link.desc}</p>
+            <p className="ml-6">{link.desc}</p>
           </li>
         ))}
       </ul>
