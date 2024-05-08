@@ -1,11 +1,19 @@
 'use client';
 
-import { Edit, Trash2 } from 'lucide-react';
 import React from 'react';
 
 import PageContainer from '@/components/common/Containers/PageContainer';
 import PageHeader from '@/components/common/Containers/PageHeader';
-import { Button } from '@/components/ui/button';
+import NoSearchResult from '@/components/common/NoSearchResult';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import useFetchClasses from '@/hooks/fetch/useFetchClasses';
 import useListenAttendance from '@/hooks/listeners/useListenAttendance';
 
 type Props = {
@@ -15,52 +23,98 @@ type Props = {
 };
 
 const AttendanceView = (props: Props) => {
+  // const [deleteConfirm, setDeleteConfirm] = React.useState(false);
+  // const [loading, setLoading] = React.useState(false);
   const { slug } = props.params;
   const { attendance } = useListenAttendance({
     attendanceId: slug,
   });
-
+  const onDelete = async (attendanceId: string) => {
+    console.log('Delete', attendanceId);
+  };
+  const { data: classes } = useFetchClasses({});
   return (
     <PageContainer>
       <PageHeader route="attendance_sheets">
-        Attendance Details - {slug}
+        Attendance Details - Subject Name
       </PageHeader>
-      <div className="mt-10 bg-surfaceLight p-4 dark:bg-surfaceDark">
-        <div>
-          <div className="mb-4 text-xl font-semibold">Attendance Details</div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-5">
+        {attendance && (
+          <div>
+            <div>Time: {attendance.AttendanceModifiedAt.toString()}</div>
             <div>
-              No of student present:{' '}
-              {attendance?.AttendancePresentStudentList?.length || 0}
+              Class:{' '}
+              {
+                classes?.find(c => c.ClassId === attendance.AttendanceClassId)
+                  ?.ClassName
+              }
             </div>
           </div>
-        </div>
-
-        <div className="mt-4 flex flex-col gap-4 sm:flex-row">
-          <Button className="hover:bg-blueButtonHoverBg">
-            <span className="flex items-center justify-center gap-x-2 px-6">
-              <Edit size={20} />
-              <span>Edit</span>
-            </span>
-          </Button>
-          <Button
-            variant={'destructive'}
-            // onClick={() => setDeleteConfirm(true)}
-          >
-            <span className="flex items-center justify-center gap-x-2 px-4">
-              <Trash2 size={20} />
-              <span>Delete</span>
-            </span>
-          </Button>
-        </div>
-        {/* <ConfirmDialog
-          positiveCallback={() => onDelete(studentData.StudentId)}
-          open={deleteConfirm}
-          setOpened={setDeleteConfirm}
-        >
-          <div>Are you sure you want to delete this student?</div>
-        </ConfirmDialog>
-        <LoaderDialog loading={loading} title="Loading..." /> */}
+        )}
+      </div>
+      <div
+        className="mt-10 
+     bg-white p-4 dark:bg-surfaceDark"
+      >
+        <h3 className="ml-4 text-2xl">Present Student:</h3>
+        <Table>
+          <TableHeader>
+            <TableRow className="text-nowrap">
+              <TableHead>Student Name</TableHead>
+              <TableHead className="text-right"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {attendance?.AttendancePresentStudentList.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7}>
+                  <NoSearchResult />
+                </TableCell>
+              </TableRow>
+            ) : (
+              attendance?.AttendancePresentStudentList.map(student => (
+                <TableRow
+                  key={student.StudentId}
+                  className="text-center sm:text-start"
+                >
+                  <TableCell>{student.StudentName}</TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div
+        className="mt-10 
+        bg-white p-4 dark:bg-surfaceDark"
+      >
+        <h3 className="ml-4 text-2xl">Absent Student:</h3>
+        <Table>
+          <TableHeader>
+            <TableRow className="text-nowrap">
+              <TableHead>Student Name</TableHead>
+              <TableHead className="text-right"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {attendance?.AttendancePresentStudentList.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7}>
+                  <NoSearchResult />
+                </TableCell>
+              </TableRow>
+            ) : (
+              attendance?.AttendancePresentStudentList.map(student => (
+                <TableRow
+                  key={student.StudentId}
+                  className="text-center sm:text-start"
+                >
+                  <TableCell>{student.StudentName}</TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </div>
     </PageContainer>
   );
