@@ -18,7 +18,6 @@ import {
 } from '@/components/ui/table';
 import DbFaculty from '@/firebase_configs/DB/DbFaculty';
 import { errorHandler } from '@/lib/CustomError';
-import { formatDate } from '@/lib/misc';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
@@ -132,9 +131,9 @@ export function FacultyList() {
       <TableHeader>
         <TableRow className="text-nowrap">
           <TableHead className="text-start">SR No.</TableHead>
-          <TableHead>First Name</TableHead>
-          <TableHead>Last Name</TableHead>
-          <TableHead>Created At</TableHead>
+          <TableHead>Full Name</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Password</TableHead>
           <TableHead className="text-right"></TableHead>
         </TableRow>
       </TableHeader>
@@ -153,11 +152,11 @@ export function FacultyList() {
                 className="text-center sm:text-start"
               >
                 <TableCell>{idx + 1}.</TableCell>
-                <TableCell>{faculty.FacultyFirstName}</TableCell>
-                <TableCell>{faculty.FacultyLastName}</TableCell>
                 <TableCell>
-                  {formatDate(faculty.FacultyCreatedAt, 'DD/MM/YY')}
+                  {faculty.FacultyFirstName} {faculty.FacultyLastName}
                 </TableCell>
+                <TableCell>{faculty.FacultyEmail}</TableCell>
+                <TableCell>{faculty.FacultyPassword}</TableCell>
                 <TableCell className="text-end">
                   <FaRegTrashAlt
                     onClick={() => {

@@ -218,7 +218,7 @@ const LoginForm = () => {
                 onClick={onLoginForStudentAndFaculty}
                 className="flex-1 hover:bg-blueButtonHoverBg"
               >
-                Sign up
+                Sign in
               </Button>
             </div>
             <Link
