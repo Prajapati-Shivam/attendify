@@ -29,6 +29,7 @@ import type {
 import { CollectionName } from '@/@types/enum';
 import type { CreateClassFields } from '@/app/classes/create_class/page';
 import type { SubjectFormFields } from '@/components/subject/CreateSubject';
+import CustomError from '@/lib/CustomError';
 
 import { db } from '../config';
 import { getNewDocId } from './utils';
@@ -111,7 +112,16 @@ class DbClass {
     return setDoc(courseRef, newCourse);
   };
 
-  static deleteCourse = (courseId: string) => {
+  static deleteCourse = async (courseId: string) => {
+    const classRef = collection(db, CollectionName.classes);
+    const classQuery = query(classRef, where('ClassCourseId', '==', courseId));
+    const snapshot = await getDocs(classQuery);
+    if (!snapshot.empty) {
+      throw new CustomError(
+        'Class with course already exist, please delete that class first to delete this course',
+      );
+    }
+
     const courseRef = doc(db, CollectionName.courses, courseId);
 
     return deleteDoc(courseRef);
@@ -201,13 +211,36 @@ class DbClass {
   };
 
   static deleteSubject = async (subjectId: string) => {
-    try {
-      const subjectRef = doc(db, CollectionName.subjects, subjectId);
-      await deleteDoc(subjectRef);
-    } catch (error) {
-      console.log(error);
-      throw error;
+    const sessionRef = collection(db, CollectionName.sessions);
+    const sessionQuery = query(
+      sessionRef,
+      where('SessionSubjectId', '==', subjectId),
+      limit(1),
+    );
+    const snapshot = await getDocs(sessionQuery);
+
+    if (!snapshot.empty) {
+      throw new CustomError(
+        'Session with this subject already exist, please delete the session first to delete this subject',
+      );
     }
+
+    await runTransaction(db, async transaction => {
+      const subjectRef = doc(db, CollectionName.subjects, subjectId);
+      const subjectSnapshot = await transaction.get(subjectRef);
+      const subjectData = subjectSnapshot.data() as ISubjectsCollection;
+      const { SubjectClassId } = subjectData;
+
+      const classRef = doc(db, CollectionName.classes, SubjectClassId);
+      const classSnapshot = await transaction.get(classRef);
+      const classData = classSnapshot.data() as IClassesCollection;
+
+      transaction.update(classRef, {
+        ClassSubjectsCount: classData.ClassSubjectsCount - 1,
+      });
+
+      transaction.delete(subjectRef);
+    });
   };
 
   static getSubjects = ({

@@ -89,6 +89,27 @@ class DbStudent {
     });
   };
 
+  static deleteStudent = async (studentId: string) => {
+    const studentRef = doc(db, CollectionName.students, studentId);
+
+    await runTransaction(db, async transaction => {
+      const snapshot = await transaction.get(studentRef);
+      const studentData = snapshot.data() as IStudentsCollection;
+
+      const { StudentClassId } = studentData;
+
+      const classRef = doc(db, CollectionName.classes, StudentClassId);
+      const classSnapshot = await transaction.get(classRef);
+      const classData = classSnapshot.data() as IClassesCollection;
+
+      transaction.update(classRef, {
+        ClassStudentsCount: classData.ClassStudentsCount - 1,
+      });
+
+      transaction.delete(studentRef);
+    });
+  };
+
   static getStudents = ({
     instituteId,
     lastDoc,

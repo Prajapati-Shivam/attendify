@@ -17,6 +17,7 @@ import {
 import type { IFacultiesCollection } from '@/@types/database';
 import { CollectionName } from '@/@types/enum';
 import type { CreateFacultyFields } from '@/app/faculties/create_faculty/page';
+import CustomError from '@/lib/CustomError';
 import { fullTextSearchIndex } from '@/lib/misc';
 
 import { db } from '../config';
@@ -100,8 +101,23 @@ class DbFaculty {
     return snapshot.data() as IFacultiesCollection;
   };
 
-  static deleteFaculty = (facultyId: string) => {
+  static deleteFaculty = async (facultyId: string) => {
+    const sessionRef = collection(db, CollectionName.sessions);
+    const sessionQuery = query(
+      sessionRef,
+      where('SessionFacultyId', '==', facultyId),
+      limit(1),
+    );
+    const snapshot = await getDocs(sessionQuery);
+
+    if (!snapshot.empty) {
+      throw new CustomError(
+        'Session with this faculty already exist, please delete the session first to delete this faculty',
+      );
+    }
+
     const facultyRef = doc(db, CollectionName.faculties, facultyId);
+
     return deleteDoc(facultyRef);
   };
 

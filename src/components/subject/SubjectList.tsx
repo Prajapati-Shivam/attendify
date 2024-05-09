@@ -103,11 +103,14 @@ export function SubjectList() {
 
   const queryClient = useQueryClient();
 
-  const onDelete = async (subjectId: string) => {
+  const [selectedSubjectId, setSelectedSubjectId] = useState('');
+
+  const onDelete = async () => {
+    if (!selectedSubjectId) return;
     try {
       setLoading(true);
 
-      await DbClass.deleteSubject(subjectId);
+      await DbClass.deleteSubject(selectedSubjectId);
 
       await queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.SUBJECT_LIST],
@@ -162,17 +165,13 @@ export function SubjectList() {
                   </TableCell>
                   <TableCell className="text-end">
                     <FaRegTrashAlt
-                      onClick={() => setDeleteConfirm(true)}
+                      onClick={() => {
+                        setSelectedSubjectId(subject.SubjectId);
+                        setDeleteConfirm(true);
+                      }}
                       className="cursor-pointer text-xl text-textPrimaryRed"
                     />
                   </TableCell>
-                  <ConfirmDialog
-                    positiveCallback={() => onDelete(subject.SubjectId)}
-                    open={deleteConfirm}
-                    setOpened={setDeleteConfirm}
-                  >
-                    <div>Are you sure you want to delete this subject?</div>
-                  </ConfirmDialog>
                 </TableRow>
               );
             })
@@ -186,6 +185,13 @@ export function SubjectList() {
           </TableCell>
         </TableRow>
       </TableBody>
+      <ConfirmDialog
+        positiveCallback={onDelete}
+        open={deleteConfirm}
+        setOpened={setDeleteConfirm}
+      >
+        <div>Are you sure you want to delete this subject?</div>
+      </ConfirmDialog>
       <LoaderDialog loading={loading} title="Loading..." />
     </Table>
   );
