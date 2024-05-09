@@ -102,11 +102,14 @@ export function FacultyList() {
 
   const queryClient = useQueryClient();
 
-  const onDelete = async (courseId: string) => {
+  const [selectedFacultyId, setSelectedFacultyId] = useState('');
+
+  const onDelete = async () => {
+    if (!selectedFacultyId) return;
     try {
       setLoading(true);
 
-      await DbFaculty.deleteFaculty(courseId);
+      await DbFaculty.deleteFaculty(selectedFacultyId);
 
       await queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.FACULTY_LIST],
@@ -157,17 +160,13 @@ export function FacultyList() {
                 </TableCell>
                 <TableCell className="text-end">
                   <FaRegTrashAlt
-                    onClick={() => setDeleteConfirm(true)}
+                    onClick={() => {
+                      setSelectedFacultyId(faculty.FacultyId);
+                      setDeleteConfirm(true);
+                    }}
                     className="cursor-pointer text-xl text-textPrimaryRed"
                   />
                 </TableCell>
-                <ConfirmDialog
-                  positiveCallback={() => onDelete(faculty.FacultyId)}
-                  open={deleteConfirm}
-                  setOpened={setDeleteConfirm}
-                >
-                  <div>Are you sure you want to delete this faculty?</div>
-                </ConfirmDialog>
               </TableRow>
             );
           })
@@ -181,6 +180,13 @@ export function FacultyList() {
           </TableCell>
         </TableRow>
       </TableBody>
+      <ConfirmDialog
+        positiveCallback={onDelete}
+        open={deleteConfirm}
+        setOpened={setDeleteConfirm}
+      >
+        <div>Are you sure you want to delete this faculty?</div>
+      </ConfirmDialog>
       <LoaderDialog loading={loading} title="Loading..." />
     </Table>
   );

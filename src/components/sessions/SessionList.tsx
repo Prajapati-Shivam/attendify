@@ -106,11 +106,14 @@ export function SessionList() {
 
   const queryClient = useQueryClient();
 
-  const onDelete = async (courseId: string) => {
+  const [selectedSessionId, setSelectedSessionId] = useState('');
+
+  const onDelete = async () => {
+    if (!selectedSessionId) return;
     try {
       setLoading(true);
 
-      await DbSession.deleteSession(courseId);
+      await DbSession.deleteSession(selectedSessionId);
       await queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.SESSION_LIST],
       });
@@ -128,20 +131,19 @@ export function SessionList() {
     }
   };
 
-  const onGenerateAttendanceSheet = async ({
-    classId,
-    sessionId,
-    facultyId,
-    subjectId,
-  }: {
+  const [selectedSession, setSelectedSession] = useState<{
     classId: string;
     sessionId: string;
     facultyId: string;
     subjectId: string;
-  }) => {
-    if (!institute) return;
+  } | null>(null);
+
+  const onGenerateAttendanceSheet = async () => {
+    if (!institute || !selectedSession) return;
     try {
       setLoading(true);
+
+      const { classId, facultyId, sessionId, subjectId } = selectedSession;
 
       // Fetch the user's current location using the Geolocation API
       navigator.geolocation.getCurrentPosition(async position => {
@@ -208,7 +210,15 @@ export function SessionList() {
                     <span className=" text-textPrimaryGreen">Generated</span>
                   ) : (
                     <span
-                      onClick={() => setGenerateSheetConfirmModal(true)}
+                      onClick={() => {
+                        setSelectedSession({
+                          classId: session.SessionClassId,
+                          facultyId: session.SessionFacultyId,
+                          sessionId: session.SessionId,
+                          subjectId: session.SessionSubjectId,
+                        });
+                        setGenerateSheetConfirmModal(true);
+                      }}
                       className="cursor-pointer text-textPrimaryBlue underline"
                     >
                       Generate{' '}
@@ -225,36 +235,13 @@ export function SessionList() {
                           type: 'error',
                         });
                       } else {
+                        setSelectedSessionId(session.SessionId);
                         setDeleteConfirm(true);
                       }
                     }}
                     className="cursor-pointer text-xl text-textPrimaryRed"
                   />
                 </TableCell>
-                <ConfirmDialog
-                  positiveCallback={() => onDelete(session.SessionId)}
-                  open={deleteConfirm}
-                  setOpened={setDeleteConfirm}
-                >
-                  <div>Are you sure you want to delete this session?</div>
-                </ConfirmDialog>
-                <ConfirmDialog
-                  positiveCallback={() =>
-                    onGenerateAttendanceSheet({
-                      classId: session.SessionClassId,
-                      sessionId: session.SessionId,
-                      facultyId: session.SessionFacultyId,
-                      subjectId: session.SessionSubjectId,
-                    })
-                  }
-                  open={generateSheetConfirmModal}
-                  setOpened={setGenerateSheetConfirmModal}
-                >
-                  <div>
-                    Are you sure you want to generate attendance sheet for this
-                    session with you current location?
-                  </div>
-                </ConfirmDialog>
               </TableRow>
             );
           })
@@ -268,6 +255,23 @@ export function SessionList() {
           </TableCell>
         </TableRow>
       </TableBody>
+      <ConfirmDialog
+        positiveCallback={onDelete}
+        open={deleteConfirm}
+        setOpened={setDeleteConfirm}
+      >
+        <div>Are you sure you want to delete this session?</div>
+      </ConfirmDialog>
+      <ConfirmDialog
+        positiveCallback={onGenerateAttendanceSheet}
+        open={generateSheetConfirmModal}
+        setOpened={setGenerateSheetConfirmModal}
+      >
+        <div>
+          Are you sure you want to generate attendance sheet for this session
+          with you current location?
+        </div>
+      </ConfirmDialog>
       <LoaderDialog loading={loading} title="Loading..." />
     </Table>
   );

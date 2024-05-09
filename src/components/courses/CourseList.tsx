@@ -102,11 +102,14 @@ export function CourseList() {
 
   const queryClient = useQueryClient();
 
-  const onDelete = async (courseId: string) => {
+  const [selectedCourseId, setSelectedCourseId] = useState('');
+
+  const onDelete = async () => {
+    if (!selectedCourseId) return;
     try {
       setLoading(true);
 
-      await DbClass.deleteCourse(courseId);
+      await DbClass.deleteCourse(selectedCourseId);
       await queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.COURSE_LIST],
       });
@@ -153,17 +156,13 @@ export function CourseList() {
                 </TableCell>
                 <TableCell className="text-end">
                   <FaRegTrashAlt
-                    onClick={() => setDeleteConfirm(true)}
+                    onClick={() => {
+                      setSelectedCourseId(course.CourseId);
+                      setDeleteConfirm(true);
+                    }}
                     className="cursor-pointer text-xl text-textPrimaryRed"
                   />
                 </TableCell>
-                <ConfirmDialog
-                  positiveCallback={() => onDelete(course.CourseId)}
-                  open={deleteConfirm}
-                  setOpened={setDeleteConfirm}
-                >
-                  <div>Are you sure you want to delete this course?</div>
-                </ConfirmDialog>
               </TableRow>
             );
           })
@@ -177,6 +176,13 @@ export function CourseList() {
           </TableCell>
         </TableRow>
       </TableBody>
+      <ConfirmDialog
+        positiveCallback={onDelete}
+        open={deleteConfirm}
+        setOpened={setDeleteConfirm}
+      >
+        <div>Are you sure you want to delete this course?</div>
+      </ConfirmDialog>
       <LoaderDialog loading={loading} title="Loading..." />
     </Table>
   );
