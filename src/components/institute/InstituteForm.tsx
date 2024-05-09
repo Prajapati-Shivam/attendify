@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { ConstRegex } from '@/constants/ConstRegex';
 import DbUser from '@/firebase_configs/DB/DbUser';
 import { errorHandler } from '@/lib/CustomError';
 import { showSnackbar } from '@/lib/TsxUtils';
@@ -36,9 +37,12 @@ const instituteFormSchema = z.object({
   instituteAddress: z.string().min(2, {
     message: 'Institute address must be at least 8 characters.',
   }),
-  institutePhone: z.string().min(2, {
-    message: 'Institute phone number must be at least 10 digits.',
-  }),
+  institutePhone: z
+    .string()
+    .min(2, {
+      message: 'Institute phone number must be at least 10 digits.',
+    })
+    .regex(ConstRegex.PHONE_NUMBER),
   instituteEmail: z.string().optional(),
   instituteWebsite: z.string().optional(),
 });

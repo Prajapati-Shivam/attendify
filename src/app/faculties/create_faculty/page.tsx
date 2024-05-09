@@ -30,7 +30,10 @@ import { useSessionStore } from '@/store';
 const createFacultySchema = z.object({
   FacultyFirstName: z.string().min(3, { message: 'First name is required' }),
   FacultyLastName: z.string().min(3, { message: 'Last name is required' }),
-  FacultyPhone: z.string().min(3, { message: 'Phone number is required' }),
+  FacultyPhone: z
+    .string()
+    .min(3, { message: 'Phone number is required' })
+    .regex(ConstRegex.PHONE_NUMBER),
   FacultyEmail: z
     .string()
     .min(3, { message: 'Email is required' })

@@ -33,7 +33,10 @@ import { useSessionStore } from '@/store';
 
 const createStudentSchema = z.object({
   StudentFullName: z.string().min(3, { message: 'This field is required' }),
-  StudentPhone: z.string().min(3, { message: 'This field is required' }),
+  StudentPhone: z
+    .string()
+    .min(3, { message: 'This field is required' })
+    .regex(ConstRegex.PHONE_NUMBER),
   StudentEmail: z
     .string()
     .min(3, { message: 'This field is required' })
