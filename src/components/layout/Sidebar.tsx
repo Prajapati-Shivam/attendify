@@ -40,14 +40,9 @@ const links = [
     route: '/',
   },
   {
-    name: 'Sessions',
-    logo: <Hourglass />,
-    route: '/sessions',
-  },
-  {
-    name: 'Attendance Sheet',
-    logo: <FileSpreadsheet />,
-    route: '/attendance_sheets',
+    name: 'Courses',
+    logo: <LayoutList />,
+    route: '/courses',
   },
   {
     name: 'Classes',
@@ -55,9 +50,9 @@ const links = [
     route: '/classes',
   },
   {
-    name: 'Courses',
-    logo: <LayoutList />,
-    route: '/courses',
+    name: 'Subjects',
+    logo: <LibraryBig />,
+    route: '/subjects',
   },
   {
     name: 'Students',
@@ -70,10 +65,16 @@ const links = [
     route: '/faculties',
   },
   {
-    name: 'Subjects',
-    logo: <LibraryBig />,
-    route: '/subjects',
+    name: 'Sessions',
+    logo: <Hourglass />,
+    route: '/sessions',
   },
+  {
+    name: 'Attendance Sheet',
+    logo: <FileSpreadsheet />,
+    route: '/attendance_sheets',
+  },
+
   {
     name: 'Report',
     logo: <ScrollText />,

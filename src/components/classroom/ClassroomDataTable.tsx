@@ -3,6 +3,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import type { DocumentData } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { FaRegTrashAlt } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
 
 import type { IClassesCollection } from '@/@types/database';
@@ -16,14 +17,19 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import DbClass from '@/firebase_configs/DB/DbClass';
+import { errorHandler } from '@/lib/CustomError';
 import { formatDate } from '@/lib/misc';
+import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
+import ConfirmDialog from '../common/dialogs/ConfirmDialog';
+import LoaderDialog from '../common/dialogs/LoaderDialog';
 import NoSearchResult from '../common/NoSearchResult';
 import TableShimmer from '../common/shimmer/TableShimmer';
 
 export function ClassroomDataTable() {
   const { institute } = useSessionStore();
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
   const {
     data: snapshotData,
     fetchNextPage,
@@ -91,6 +97,26 @@ export function ClassroomDataTable() {
       fetchNextPage();
     }
   }, [fetchNextPage, inView, hasNextPage, isFetching]);
+  const [loading, setLoading] = useState(false);
+  const [selectedClassId, setSelectedClassId] = useState('');
+  const onDelete = async (classId: string) => {
+    try {
+      setLoading(true);
+
+      console.log('Deleting class', classId);
+
+      showSnackbar({
+        message: 'Faculty deleted successfully',
+        type: 'success',
+      });
+
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
+      errorHandler(err);
+    }
+  };
   return (
     <Table>
       <TableHeader>
@@ -98,7 +124,8 @@ export function ClassroomDataTable() {
           <TableHead className="text-start">Name</TableHead>
           <TableHead>No. of Subject</TableHead>
           <TableHead>Total Students</TableHead>
-          <TableHead className="text-end">Academic year</TableHead>
+          <TableHead>Academic year</TableHead>
+          <TableHead className="text-right"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -115,9 +142,18 @@ export function ClassroomDataTable() {
                 <TableCell>{res.ClassName}</TableCell>
                 <TableCell>{res.ClassSubjectsCount}</TableCell>
                 <TableCell>{res.ClassStudentsCount}</TableCell>
-                <TableCell className="text-end">
+                <TableCell>
                   {formatDate(res.ClassAcademicStartYear, 'YYYY')} -{' '}
                   {formatDate(res.ClassAcademicEndYear, 'YYYY')}
+                </TableCell>
+                <TableCell className="text-end">
+                  <FaRegTrashAlt
+                    onClick={() => {
+                      setSelectedClassId(res.ClassId);
+                      setDeleteConfirm(true);
+                    }}
+                    className="cursor-pointer text-xl text-textPrimaryRed"
+                  />
                 </TableCell>
               </TableRow>
             );
@@ -132,6 +168,14 @@ export function ClassroomDataTable() {
           </TableCell>
         </TableRow>
       </TableBody>
+      <ConfirmDialog
+        positiveCallback={onDelete}
+        open={deleteConfirm}
+        setOpened={setDeleteConfirm}
+      >
+        <div>Are you sure you want to delete this Class?</div>
+      </ConfirmDialog>
+      <LoaderDialog loading={loading} title="Loading..." />
     </Table>
   );
 }
