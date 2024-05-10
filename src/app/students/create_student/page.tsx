@@ -11,8 +11,8 @@ import { REACT_QUERY_KEYS } from '@/@types/enum';
 import PageContainer from '@/components/common/Containers/PageContainer';
 import PageHeader from '@/components/common/Containers/PageHeader';
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
-import { InputDatePicker } from '@/components/common/inputs/InputDatePicker';
 import InputSelect from '@/components/common/inputs/InputSelect';
+import YearInput from '@/components/common/inputs/YearInput';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -265,10 +265,11 @@ const CreateStudent = () => {
                 <FormItem>
                   <FormLabel>Course Start Year</FormLabel>
                   <FormControl>
-                    <InputDatePicker
+                    {/* <InputDatePicker
                       date={field.value}
                       setDate={field.onChange}
-                    />
+                    /> */}
+                    <YearInput date={field.value} setDate={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -281,10 +282,11 @@ const CreateStudent = () => {
                 <FormItem>
                   <FormLabel>Course End Year</FormLabel>
                   <FormControl>
-                    <InputDatePicker
+                    {/* <InputDatePicker
                       date={field.value}
                       setDate={field.onChange}
-                    />
+                    /> */}
+                    <YearInput date={field.value} setDate={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

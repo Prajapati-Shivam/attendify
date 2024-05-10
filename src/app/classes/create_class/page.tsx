@@ -10,7 +10,7 @@ import PageContainer from '@/components/common/Containers/PageContainer';
 import PageHeader from '@/components/common/Containers/PageHeader';
 import LoaderDialog from '@/components/common/dialogs/LoaderDialog';
 import CourseInput from '@/components/common/inputs/CourseInput';
-import { InputDatePicker } from '@/components/common/inputs/InputDatePicker';
+import YearInput from '@/components/common/inputs/YearInput';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -54,7 +54,6 @@ function CreateClassroomPage() {
     if (!institute) return;
     try {
       setLoading(true);
-      console.log(values);
       await DbClass.createClass(values, institute?.InstituteId);
       setLoading(false);
       form.reset();
@@ -120,10 +119,11 @@ function CreateClassroomPage() {
                 <FormItem>
                   <FormLabel>Start Year</FormLabel>
                   <FormControl>
-                    <InputDatePicker
+                    {/* <InputDatePicker
                       date={field.value}
                       setDate={field.onChange}
-                    />
+                    /> */}
+                    <YearInput date={field.value} setDate={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -136,10 +136,11 @@ function CreateClassroomPage() {
                 <FormItem>
                   <FormLabel>End Year</FormLabel>
                   <FormControl>
-                    <InputDatePicker
+                    {/* <InputDatePicker
                       date={field.value}
                       setDate={field.onChange}
-                    />
+                    /> */}
+                    <YearInput date={field.value} setDate={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
