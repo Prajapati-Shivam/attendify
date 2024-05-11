@@ -23,25 +23,27 @@ type Props = {
 };
 
 const AttendanceView = (props: Props) => {
-  // const [deleteConfirm, setDeleteConfirm] = React.useState(false);
-  // const [loading, setLoading] = React.useState(false);
   const { slug } = props.params;
   const { attendance } = useListenAttendance({
     attendanceId: slug,
   });
-  const onDelete = async (attendanceId: string) => {
-    console.log('Delete', attendanceId);
-  };
   const { data: classes } = useFetchClasses({});
+  // this is commented it is causing error
+  // const { data: subjects } = useFetchSubjects({
+  //   classId: attendance?.AttendanceClassId,
+  // });
   return (
     <PageContainer>
       <PageHeader route="attendance_sheets">
-        Attendance Details - Subject Name
+        Attendance Details -{' Subject Name'}
+        {/* {
+          subjects?.find(s => s.SubjectId === attendance?.AttendanceSubjectId)
+            ?.SubjectName
+        } */}
       </PageHeader>
       <div className="mt-5">
         {attendance && (
           <div>
-            <div>Time: {attendance.AttendanceModifiedAt.toString()}</div>
             <div>
               Class:{' '}
               {

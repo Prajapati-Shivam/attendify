@@ -281,7 +281,7 @@ function CreateSessionPage() {
         <LoaderDialog
           loading={loading}
           title="Please wait..."
-          description="Creating classroom."
+          description="Creating session."
         />
       </Form>
     </PageContainer>
