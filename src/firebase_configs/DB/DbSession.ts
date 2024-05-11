@@ -223,6 +223,26 @@ class DbSession {
     return getDoc(docRef);
   };
 
+  static deleteAttendanceSheet = async (attendanceId: string) => {
+    await runTransaction(db, async transaction => {
+      const attendanceRef = doc(db, CollectionName.attendances, attendanceId);
+      const attendanceSnapshot = await transaction.get(attendanceRef);
+      const attendanceData = attendanceSnapshot.data() as IAttendanceCollection;
+
+      const sessionRef = doc(
+        db,
+        CollectionName.sessions,
+        attendanceData.AttendanceSessionId,
+      );
+
+      transaction.update(sessionRef, {
+        SessionIsAttendanceSheetGenerated: false,
+      });
+
+      transaction.delete(attendanceRef);
+    });
+  };
+
   static submitAttendance = (attendanceId: string) => {
     const attendanceRef = doc(db, CollectionName.attendances, attendanceId);
 

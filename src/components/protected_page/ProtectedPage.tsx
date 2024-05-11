@@ -36,7 +36,12 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
     !institute
   ) {
     router.push('/institute');
-    return <Institute />;
+    return (
+      <>
+        <Navbar />
+        <Institute />
+      </>
+    );
   }
 
   if (

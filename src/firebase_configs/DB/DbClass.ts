@@ -55,6 +55,24 @@ class DbClass {
     return setDoc(docRef, newClass);
   };
 
+  static deleteClass = async (classId: string) => {
+    const studentRef = collection(db, CollectionName.students);
+    const studentQuery = query(
+      studentRef,
+      where('StudentClassId', '==', classId),
+    );
+    const snapshot = await getDocs(studentQuery);
+    if (!snapshot.empty) {
+      throw new CustomError(
+        'Student with this class already exist, please delete the student first to delete this class',
+      );
+    }
+
+    const classRef = doc(db, CollectionName.classes, classId);
+
+    return deleteDoc(classRef);
+  };
+
   static getClasses = ({
     instituteId,
     lastDoc,

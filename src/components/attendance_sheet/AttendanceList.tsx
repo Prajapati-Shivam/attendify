@@ -1,9 +1,10 @@
 'use client';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import type { DocumentData } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { FaRegTrashAlt } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
 
 import type { IAttendanceCollection } from '@/@types/database';
@@ -19,8 +20,12 @@ import {
 import DbClass from '@/firebase_configs/DB/DbClass';
 import DbFaculty from '@/firebase_configs/DB/DbFaculty';
 import DbSession from '@/firebase_configs/DB/DbSession';
+import { errorHandler } from '@/lib/CustomError';
+import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
+import ConfirmDialog from '../common/dialogs/ConfirmDialog';
+import LoaderDialog from '../common/dialogs/LoaderDialog';
 import NoSearchResult from '../common/NoSearchResult';
 import TableShimmer from '../common/shimmer/TableShimmer';
 
@@ -38,7 +43,7 @@ export function AttendanceList() {
   const navigate = useRouter();
 
   const { institute } = useSessionStore();
-
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
   const {
     data: snapshotData,
     fetchNextPage,
@@ -134,6 +139,40 @@ export function AttendanceList() {
       fetchNextPage();
     }
   }, [fetchNextPage, inView, hasNextPage, isFetching]);
+
+  const [loading, setLoading] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const [selectedAttendanceId, setSelectedAttendanceId] = useState('');
+
+  const onDelete = async () => {
+    if (!selectedAttendanceId) return;
+    try {
+      setLoading(true);
+      await DbSession.deleteAttendanceSheet(selectedAttendanceId);
+      await queryClient.invalidateQueries({
+        queryKey: [REACT_QUERY_KEYS.ATTENDANCE_SHEET_LIST],
+      });
+      showSnackbar({
+        message: 'Attendance Sheet deleted successfully',
+        type: 'success',
+      });
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
+      errorHandler(err);
+    }
+  };
+
+  const handleRedirect = (res: AttendanceCollection) => {
+    if (res.AttendanceStatus === 'pending') {
+      navigate.push(`attendance_sheets/take_attendance?id=${res.AttendanceId}`);
+    } else {
+      navigate.push(`attendance_sheets/${res.AttendanceId}`);
+    }
+  };
   return (
     <Table>
       <TableHeader>
@@ -143,7 +182,8 @@ export function AttendanceList() {
           <TableHead>Faculty Name</TableHead>
           <TableHead>No. of Student Present</TableHead>
           <TableHead>Total Student</TableHead>
-          <TableHead className="text-right">Status</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead className="text-right"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -159,26 +199,36 @@ export function AttendanceList() {
               <TableRow
                 key={res.AttendanceId}
                 className="cursor-pointer text-center transition-colors duration-200 ease-in-out hover:bg-gray-200 hover:dark:bg-gray-700 sm:text-start"
-                onClick={() => {
-                  if (res.AttendanceStatus === 'pending') {
-                    navigate.push(
-                      'attendance_sheets/take_attendance' +
-                        `?id=${res.AttendanceId}`,
-                    );
-                  } else {
-                    navigate.push(`attendance_sheets/${res.AttendanceId}`);
-                  }
-                }}
               >
-                <TableCell>{res.AttendanceClassName}</TableCell>
-                <TableCell>{res.AttendanceSubjectName}</TableCell>
-                <TableCell>{res.AttendanceFacultyName}</TableCell>
-                <TableCell>
+                <TableCell onClick={() => handleRedirect(res)}>
+                  {res.AttendanceClassName}
+                </TableCell>
+                <TableCell onClick={() => handleRedirect(res)}>
+                  {res.AttendanceSubjectName}
+                </TableCell>
+                <TableCell onClick={() => handleRedirect(res)}>
+                  {res.AttendanceFacultyName}
+                </TableCell>
+                <TableCell onClick={() => handleRedirect(res)}>
                   {res.AttendancePresentStudentList.length || 0}
                 </TableCell>
-                <TableCell>{res.AttendanceTotalStudents}</TableCell>
-                <TableCell className="text-end capitalize">
+                <TableCell onClick={() => handleRedirect(res)}>
+                  {res.AttendanceTotalStudents}
+                </TableCell>
+                <TableCell
+                  className="capitalize"
+                  onClick={() => handleRedirect(res)}
+                >
                   {res.AttendanceStatus}
+                </TableCell>
+                <TableCell className="text-end">
+                  <FaRegTrashAlt
+                    onClick={() => {
+                      setSelectedAttendanceId(res.AttendanceId);
+                      setDeleteConfirm(true);
+                    }}
+                    className="cursor-pointer text-xl text-textPrimaryRed"
+                  />
                 </TableCell>
               </TableRow>
             );
@@ -193,6 +243,14 @@ export function AttendanceList() {
           </TableCell>
         </TableRow>
       </TableBody>
+      <ConfirmDialog
+        positiveCallback={onDelete}
+        open={deleteConfirm}
+        setOpened={setDeleteConfirm}
+      >
+        <div>Are you sure you want to delete this Attendance Sheet?</div>
+      </ConfirmDialog>
+      <LoaderDialog loading={loading} title="Loading..." />
     </Table>
   );
 }

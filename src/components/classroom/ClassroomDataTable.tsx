@@ -1,6 +1,6 @@
 'use client';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import type { DocumentData } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
@@ -99,14 +99,19 @@ export function ClassroomDataTable() {
   }, [fetchNextPage, inView, hasNextPage, isFetching]);
   const [loading, setLoading] = useState(false);
   const [selectedClassId, setSelectedClassId] = useState('');
-  const onDelete = async (classId: string) => {
+  const queryClient = useQueryClient();
+  const onDelete = async () => {
     try {
       setLoading(true);
 
-      console.log('Deleting class', classId);
+      // console.log('Deleting class', selectedClassId);
+      await DbClass.deleteClass(selectedClassId);
+      await queryClient.invalidateQueries({
+        queryKey: [REACT_QUERY_KEYS.CLASS_LIST],
+      });
 
       showSnackbar({
-        message: 'Faculty deleted successfully',
+        message: 'Class deleted successfully',
         type: 'success',
       });
 
