@@ -266,6 +266,7 @@ const LoginFormAdmin = () => {
 
   return (
     <div className="flex w-full flex-col items-center gap-8">
+      <div className="size-full" id="recaptcha-container"></div>
       {!show ? (
         <div className="flex w-full flex-col gap-1">
           <InputWithTopHeader

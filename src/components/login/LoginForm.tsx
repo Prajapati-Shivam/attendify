@@ -176,8 +176,6 @@ const LoginForm = () => {
 
   return (
     <>
-      <div className="size-full" id="recaptcha-container"></div>
-
       <div className="flex flex-col gap-5 rounded-md bg-white p-5 shadow-md dark:bg-slate-800 sm:p-10">
         <UserRadio value={userType} setValue={setUserType} disabled={false} />
 
