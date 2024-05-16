@@ -272,7 +272,7 @@ class DbClass {
     lmt?: number | null;
     lastDoc?: DocumentData | null;
     searchQuery?: string | null;
-    classId?: string;
+    classId?: string | null;
   }) => {
     const subjectRef = collection(db, CollectionName.subjects);
 

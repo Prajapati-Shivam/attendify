@@ -39,7 +39,15 @@ interface AttendanceCollection
   AttendanceFacultyName: string;
 }
 
-export function AttendanceList() {
+interface AttendanceListProps {
+  selectedClassId: string;
+  selectedSubjectId: string;
+}
+
+export function AttendanceList({
+  selectedClassId,
+  selectedSubjectId,
+}: AttendanceListProps) {
   const navigate = useRouter();
 
   const { institute } = useSessionStore();
@@ -53,13 +61,20 @@ export function AttendanceList() {
     isFetching,
     error,
   } = useInfiniteQuery({
-    queryKey: [REACT_QUERY_KEYS.ATTENDANCE_SHEET_LIST, institute!.InstituteId],
+    queryKey: [
+      REACT_QUERY_KEYS.ATTENDANCE_SHEET_LIST,
+      institute!.InstituteId,
+      selectedClassId,
+      selectedSubjectId,
+    ],
     queryFn: async ({ pageParam }) => {
       const snapshot = await DbSession.getAttendanceSheets({
         lmt: DisplayCount.ATTENDANCE_SHEET_LIST,
         lastDoc: pageParam,
         instituteId: institute!.InstituteId,
         isLifeTime: true,
+        classId: selectedClassId,
+        subjectId: selectedSubjectId,
       });
       const data = snapshot.docs.map(
         doc => doc.data() as IAttendanceCollection,

@@ -13,7 +13,7 @@ import {
 interface InputSelectProps {
   data: { label: string; value: string }[];
   value: string;
-  onChange: () => void;
+  onChange: (e: string) => void;
   placeholder?: string;
 }
 
@@ -24,7 +24,10 @@ const InputSelect = ({
   placeholder,
 }: InputSelectProps) => {
   return (
-    <Select onValueChange={onChange} defaultValue={value}>
+    <Select
+      onValueChange={e => onChange(e === value ? '' : e)}
+      defaultValue={value}
+    >
       <SelectTrigger className="w-full">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
