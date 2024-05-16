@@ -90,14 +90,14 @@ export function AttendanceList() {
           });
         }),
       );
-      return docData;
+      return { docData, docs: snapshot.docs };
     },
     getNextPageParam: lastPage => {
-      if (lastPage?.length === 0) {
+      if (lastPage?.docs?.length === 0) {
         return null;
       }
-      if (lastPage?.length === DisplayCount.ATTENDANCE_SHEET_LIST) {
-        return lastPage.at(-1);
+      if (lastPage?.docs?.length === DisplayCount.ATTENDANCE_SHEET_LIST) {
+        return lastPage?.docs.at(-1);
       }
       return null;
     },
@@ -107,7 +107,7 @@ export function AttendanceList() {
 
   const [data, setData] = useState<AttendanceCollection[]>(() => {
     if (snapshotData) {
-      return snapshotData.pages.flatMap(page => page.map(doc => doc));
+      return snapshotData.pages.flatMap(page => page.docData.map(doc => doc));
     }
     return [];
   });
@@ -121,7 +121,7 @@ export function AttendanceList() {
     if (snapshotData) {
       const docData: AttendanceCollection[] = [];
       snapshotData.pages?.forEach(page => {
-        page?.forEach(doc => {
+        page?.docData?.forEach(doc => {
           const datum = doc;
           docData.push(datum);
         });

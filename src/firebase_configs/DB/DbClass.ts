@@ -312,6 +312,16 @@ class DbClass {
 
     return snapshot.data() as ISubjectsCollection;
   };
+
+  static getAllStudentsOfClass = (classId: string) => {
+    const studentRef = collection(db, CollectionName.students);
+    const studentQuery = query(
+      studentRef,
+      where('StudentClassId', '==', classId),
+    );
+
+    return getDocs(studentQuery);
+  };
 }
 
 export default DbClass;
