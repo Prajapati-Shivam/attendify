@@ -41,6 +41,20 @@ class DbStudent {
     const studentId = getNewDocId(CollectionName.students);
     const studentRef = doc(db, CollectionName.students, studentId);
 
+    //* Check if any student with this email id already exist
+
+    const studentsRef = collection(db, CollectionName.students);
+    const studentsQuery = query(
+      studentsRef,
+      where('StudentEmail', '==', data.StudentEmail),
+      limit(1),
+    );
+    const studentsSnapshot = await getDocs(studentsQuery);
+
+    if (!studentsSnapshot.empty) {
+      throw new CustomError('Student with this email already exist');
+    }
+
     await runTransaction(db, async transaction => {
       const {
         StudentClassId,

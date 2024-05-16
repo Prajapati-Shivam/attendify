@@ -24,7 +24,10 @@ import { db } from '../config';
 import { getNewDocId } from './utils';
 
 class DbFaculty {
-  static createFaculty = (instituteId: string, data: CreateFacultyFields) => {
+  static createFaculty = async (
+    instituteId: string,
+    data: CreateFacultyFields,
+  ) => {
     const facultyId = getNewDocId(CollectionName.faculties);
     const facultyRef = doc(db, CollectionName.faculties, facultyId);
 
@@ -35,6 +38,20 @@ class DbFaculty {
       FacultyPassword,
       FacultyPhone,
     } = data;
+
+    //* Check if any faculty with this email id already exist
+
+    const facultiesRef = collection(db, CollectionName.faculties);
+    const facultyQuery = query(
+      facultiesRef,
+      where('FacultyEmail', '==', FacultyEmail),
+      limit(1),
+    );
+    const facultySnapshot = await getDocs(facultyQuery);
+
+    if (!facultySnapshot.empty) {
+      throw new CustomError('Faculty with this email already exist');
+    }
 
     const FacultyNameSearchIndex = fullTextSearchIndex(
       `${FacultyFirstName.trim().toLowerCase()}${FacultyLastName.trim().toLowerCase()}`,
