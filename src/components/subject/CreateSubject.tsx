@@ -8,22 +8,7 @@ import { z } from 'zod';
 
 import { REACT_QUERY_KEYS } from '@/@types/enum';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer';
+import { DialogFooter } from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -39,6 +24,7 @@ import { errorHandler } from '@/lib/CustomError';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
+import DialogDrawer from '../common/dialogs/DialogDrawer';
 import LoaderDialog from '../common/dialogs/LoaderDialog';
 import InputSelect from '../common/inputs/InputSelect';
 
@@ -93,135 +79,68 @@ export function CreateSubject() {
     }
   };
 
-  if (window.innerWidth > 640) {
-    return (
-      <Dialog open={opened} onOpenChange={setOpened}>
-        <DialogTrigger asChild>
-          <Button className="mt-5 hover:bg-blueButtonHoverBg">
-            Create Subject
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Create Subject</DialogTitle>
-          </DialogHeader>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-y-4"
-            >
-              <FormField
-                control={form.control}
-                name="subjectClassId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Subject Class</FormLabel>
-                    <FormControl>
-                      <InputSelect
-                        data={classes.map(res => {
-                          return { label: res.ClassName, value: res.ClassId };
-                        })}
-                        onChange={field.onChange}
-                        value={field.value}
-                        placeholder="Subject class"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="subjectName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Subject Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder=""
-                        {...field}
-                        className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <DialogFooter>
-                <Button type="submit" className="hover:bg-blueButtonHoverBg">
-                  Create
-                </Button>
-              </DialogFooter>
-            </form>
-            <LoaderDialog loading={loading} title="Loading..." />
-          </Form>
-        </DialogContent>
-      </Dialog>
-    );
-  }
   return (
-    <Drawer open={opened} onOpenChange={setOpened}>
-      <DrawerTrigger asChild>
+    <DialogDrawer
+      opened={opened}
+      setOpened={setOpened}
+      title="Create Subject"
+      trigger={
         <Button className="mt-5 hover:bg-blueButtonHoverBg">
           Create Subject
         </Button>
-      </DrawerTrigger>
-      <DrawerContent className="sm:max-w-[425px]">
-        <DrawerHeader>
-          <DrawerTitle>Create Subject</DrawerTitle>
-          <DrawerClose />
-        </DrawerHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-4 px-4"
-          >
-            <FormField
-              control={form.control}
-              name="subjectClassId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subject Class</FormLabel>
-                  <FormControl>
-                    <InputSelect
-                      data={classes.map(res => {
-                        return { label: res.ClassName, value: res.ClassId };
-                      })}
-                      onChange={field.onChange}
-                      value={field.value}
-                      placeholder="Subject class"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="subjectName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subject Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <DialogFooter>
-              <Button type="submit" className="hover:bg-blueButtonHoverBg">
-                Create
-              </Button>
-            </DialogFooter>
-          </form>
-          <LoaderDialog loading={loading} title="Loading..." />
-        </Form>
-      </DrawerContent>
-    </Drawer>
+      }
+      positiveCallback={form.handleSubmit(onSubmit)}
+    >
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-y-4"
+        >
+          <FormField
+            control={form.control}
+            name="subjectClassId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Subject Class</FormLabel>
+                <FormControl>
+                  <InputSelect
+                    data={classes.map(res => {
+                      return { label: res.ClassName, value: res.ClassId };
+                    })}
+                    onChange={field.onChange}
+                    value={field.value}
+                    placeholder="Subject class"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="subjectName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Subject Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder=""
+                    {...field}
+                    className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <DialogFooter>
+            <Button type="submit" className="hover:bg-blueButtonHoverBg">
+              Create
+            </Button>
+          </DialogFooter>
+        </form>
+        <LoaderDialog loading={loading} title="Loading..." />
+      </Form>
+    </DialogDrawer>
   );
 }
