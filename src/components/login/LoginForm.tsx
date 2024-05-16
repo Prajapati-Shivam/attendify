@@ -3,7 +3,6 @@
 'use client';
 
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
-import Link from 'next/link';
 import { useState } from 'react';
 import { v4 } from 'uuid';
 
@@ -28,6 +27,7 @@ import * as storage from '@/lib/Storage';
 import { useSessionStore } from '@/store';
 
 import LoaderDialog from '../common/dialogs/LoaderDialog';
+import { ForgotPassword } from './ForgotPassword';
 import LoginFormAdmin from './login_forms/LoginFormAdmin';
 
 const LoginForm = () => {
@@ -219,12 +219,7 @@ const LoginForm = () => {
                 Sign in
               </Button>
             </div>
-            <Link
-              href={'/forgot_password'}
-              className="text-gray-500 dark:text-gray-300"
-            >
-              Forgot Password?
-            </Link>
+            <ForgotPassword />
           </>
         )}
 

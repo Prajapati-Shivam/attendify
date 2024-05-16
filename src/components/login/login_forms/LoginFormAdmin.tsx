@@ -300,7 +300,7 @@ const LoginFormAdmin = () => {
         }}
         className="w-full bg-secondaryLight hover:bg-blueButtonHoverBg active:bg-blueButtonActiveBg"
       >
-        {show ? 'Login' : 'Send Otp'}
+        {show ? 'Login' : 'Send OTP'}
       </Button>
 
       <LoaderDialog loading={loading} title="Please wait..." />
