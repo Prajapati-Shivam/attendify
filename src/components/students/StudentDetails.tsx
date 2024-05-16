@@ -2,11 +2,12 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import { Edit, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { REACT_QUERY_KEYS } from '@/@types/enum';
 import type { StudentsCollection } from '@/app/students/[slug]/page';
-import DbClass from '@/firebase_configs/DB/DbClass';
+import DbStudent from '@/firebase_configs/DB/DbStudent';
 import { errorHandler } from '@/lib/CustomError';
 import { formatDate } from '@/lib/misc';
 import { showSnackbar } from '@/lib/TsxUtils';
@@ -21,15 +22,20 @@ interface StudentDetailsProps {
 
 const StudentDetails = ({ studentData }: StudentDetailsProps) => {
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+
   const [loading, setLoading] = useState(false);
+
   const queryClient = useQueryClient();
+
+  const router = useRouter();
+
   const onDelete = async (studentId: string) => {
     try {
       setLoading(true);
 
-      await DbClass.deleteCourse(studentId);
+      await DbStudent.deleteStudent(studentId);
       await queryClient.invalidateQueries({
-        queryKey: [REACT_QUERY_KEYS.COURSE_LIST],
+        queryKey: [REACT_QUERY_KEYS.STUDENT_LIST],
       });
       showSnackbar({
         message: 'Student deleted successfully',
@@ -37,6 +43,8 @@ const StudentDetails = ({ studentData }: StudentDetailsProps) => {
       });
 
       setLoading(false);
+
+      router.back();
     } catch (err) {
       setLoading(false);
       console.log(err);
