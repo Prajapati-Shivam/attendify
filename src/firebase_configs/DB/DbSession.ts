@@ -74,10 +74,12 @@ class DbSession {
     instituteId,
     lastDoc,
     lmt,
+    facultyId,
   }: {
     instituteId: string;
     lmt?: number | null;
     lastDoc?: DocumentData | null;
+    facultyId?: string | null;
   }) => {
     const sessionRef = collection(db, CollectionName.sessions);
 
@@ -85,6 +87,13 @@ class DbSession {
       where('SessionInstituteId', '==', instituteId),
       orderBy('SessionDate', 'desc'),
     ];
+
+    if (facultyId) {
+      queryParams = [
+        ...queryParams,
+        where('SessionFacultyId', '==', facultyId),
+      ];
+    }
 
     if (lastDoc) {
       queryParams = [...queryParams, startAfter(lastDoc)];

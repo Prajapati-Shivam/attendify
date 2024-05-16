@@ -50,7 +50,7 @@ export function AttendanceList({
 }: AttendanceListProps) {
   const navigate = useRouter();
 
-  const { institute } = useSessionStore();
+  const { institute, faculty } = useSessionStore();
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const {
     data: snapshotData,
@@ -63,7 +63,8 @@ export function AttendanceList({
   } = useInfiniteQuery({
     queryKey: [
       REACT_QUERY_KEYS.ATTENDANCE_SHEET_LIST,
-      institute!.InstituteId,
+      institute,
+      faculty,
       selectedClassId,
       selectedSubjectId,
     ],
@@ -71,7 +72,9 @@ export function AttendanceList({
       const snapshot = await DbSession.getAttendanceSheets({
         lmt: DisplayCount.ATTENDANCE_SHEET_LIST,
         lastDoc: pageParam,
-        instituteId: institute!.InstituteId,
+        instituteId: institute
+          ? institute!.InstituteId
+          : faculty!.FacultyInstituteId,
         isLifeTime: true,
         classId: selectedClassId,
         subjectId: selectedSubjectId,

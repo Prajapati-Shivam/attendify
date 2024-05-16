@@ -95,6 +95,19 @@ const studentPortalLinks = [
   },
 ];
 
+const facultyPortalLinks = [
+  {
+    name: 'My Sessions',
+    logo: <GraduationCapIcon />,
+    route: '/faculty_portal',
+  },
+  {
+    name: 'Attendance Sheet',
+    logo: <FileSpreadsheet />,
+    route: '/faculty_portal/attendance_sheets',
+  },
+];
+
 export function Sidebar() {
   const { authUser, userSignOut } = useSessionStore();
 
@@ -125,7 +138,9 @@ export function Sidebar() {
             ? links
             : authUser.AuthUserRole === 'student'
               ? studentPortalLinks
-              : links
+              : authUser.AuthUserRole === 'faculty'
+                ? facultyPortalLinks
+                : links
           ).map(link => (
             <SheetClose asChild key={link.name}>
               <Link

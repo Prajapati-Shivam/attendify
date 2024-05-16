@@ -53,6 +53,15 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
     return <></>;
   }
 
+  if (
+    !pathname.includes('faculty_portal') &&
+    authUser.AuthUserAuthenticated &&
+    authUser.AuthUserRole === 'faculty'
+  ) {
+    router.push('/faculty_portal');
+    return <></>;
+  }
+
   return <>{children}</>;
 };
 

@@ -2,6 +2,7 @@ import type { StateCreator } from 'zustand';
 
 import type {
   IAdminsCollection,
+  IFacultiesCollection,
   IInstitutesCollection,
   ILoggedInUsersCollection,
   IStudentsCollection,
@@ -26,6 +27,8 @@ interface AuthState {
   setAdmin: (admin: IAdminsCollection) => void;
   student: IStudentsCollection | null;
   setStudent: (student: IStudentsCollection) => void;
+  faculty: IFacultiesCollection | null;
+  setFaculty: (faculty: IFacultiesCollection) => void;
   institute: IInstitutesCollection | null;
   setInstitute: (admin: IInstitutesCollection) => void;
 }
@@ -43,6 +46,8 @@ export const createAuthSlice: StateCreator<AuthState> = set => ({
   setAdmin: admin => set(state => ({ ...state, admin })),
   student: null,
   setStudent: student => set(state => ({ ...state, student })),
+  faculty: null,
+  setFaculty: faculty => set(state => ({ ...state, faculty })),
   institute: null,
   setInstitute: institute => set(state => ({ ...state, institute })),
 

@@ -3,7 +3,6 @@
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import type { DocumentData } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { FaRegTrashAlt } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
 
 import type { ISessionsCollection } from '@/@types/database';
@@ -28,9 +27,7 @@ import NoSearchResult from '../common/NoSearchResult';
 import TableShimmer from '../common/shimmer/TableShimmer';
 
 export function SessionList() {
-  const { institute } = useSessionStore();
-
-  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const { faculty } = useSessionStore();
 
   const [generateSheetConfirmModal, setGenerateSheetConfirmModal] =
     useState(false);
@@ -44,12 +41,13 @@ export function SessionList() {
     isFetching,
     error,
   } = useInfiniteQuery({
-    queryKey: [REACT_QUERY_KEYS.SESSION_LIST, institute!.InstituteId],
+    queryKey: [REACT_QUERY_KEYS.SESSION_LIST, faculty],
     queryFn: async ({ pageParam }) => {
       const snapshot = await DbSession.getSessions({
         lmt: DisplayCount.SESSION_LIST,
         lastDoc: pageParam,
-        instituteId: institute!.InstituteId,
+        instituteId: faculty!.FacultyInstituteId,
+        facultyId: faculty?.FacultyId,
       });
       return snapshot.docs;
     },
@@ -107,31 +105,6 @@ export function SessionList() {
 
   const queryClient = useQueryClient();
 
-  const [selectedSessionId, setSelectedSessionId] = useState('');
-
-  const onDelete = async () => {
-    if (!selectedSessionId) return;
-    try {
-      setLoading(true);
-
-      await DbSession.deleteSession(selectedSessionId);
-      await queryClient.invalidateQueries({
-        queryKey: [REACT_QUERY_KEYS.SESSION_LIST],
-      });
-
-      showSnackbar({
-        message: 'Session deleted successfully',
-        type: 'success',
-      });
-
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      console.log(err);
-      errorHandler(err);
-    }
-  };
-
   const [selectedSession, setSelectedSession] = useState<{
     classId: string;
     sessionId: string;
@@ -140,7 +113,7 @@ export function SessionList() {
   } | null>(null);
 
   const onGenerateAttendanceSheet = async () => {
-    if (!institute || !selectedSession) return;
+    if (!faculty || !selectedSession) return;
     try {
       setLoading(true);
 
@@ -156,7 +129,7 @@ export function SessionList() {
           sessionId,
           facultyId,
           subjectId,
-          instituteId: institute.InstituteId,
+          instituteId: faculty.FacultyInstituteId,
           location: { lat: latitude, lng: longitude },
         });
 
@@ -187,7 +160,6 @@ export function SessionList() {
           <TableHead>Faculty Name</TableHead>
           <TableHead>Date</TableHead>
           <TableHead className="text-end">Attendance Sheet</TableHead>
-          <TableHead className="text-end"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -231,23 +203,6 @@ export function SessionList() {
                     </span>
                   )}
                 </TableCell>
-                <TableCell className="text-end">
-                  <FaRegTrashAlt
-                    onClick={() => {
-                      if (session.SessionIsAttendanceSheetGenerated) {
-                        showSnackbar({
-                          message:
-                            'Attendance sheet is already generated for this session, please delete that first',
-                          type: 'error',
-                        });
-                      } else {
-                        setSelectedSessionId(session.SessionId);
-                        setDeleteConfirm(true);
-                      }
-                    }}
-                    className="cursor-pointer text-xl text-textPrimaryRed"
-                  />
-                </TableCell>
               </TableRow>
             );
           })
@@ -261,13 +216,7 @@ export function SessionList() {
           </TableCell>
         </TableRow>
       </TableBody>
-      <ConfirmDialog
-        positiveCallback={onDelete}
-        open={deleteConfirm}
-        setOpened={setDeleteConfirm}
-      >
-        <div>Are you sure you want to delete this session?</div>
-      </ConfirmDialog>
+
       <ConfirmDialog
         positiveCallback={onGenerateAttendanceSheet}
         open={generateSheetConfirmModal}

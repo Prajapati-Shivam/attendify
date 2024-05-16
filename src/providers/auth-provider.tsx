@@ -14,6 +14,7 @@ import type { LocalStorageLoggedInUserData } from '@/@types/enum';
 import { LocalStorageKey } from '@/@types/enum';
 import SplashScreen from '@/components/splash_screen/SplashScreen';
 import Snackbar from '@/components/ui/snackbar';
+import DbFaculty from '@/firebase_configs/DB/DbFaculty';
 import DbStudent from '@/firebase_configs/DB/DbStudent';
 import DbUser from '@/firebase_configs/DB/DbUser';
 import { firebaseDataToObject } from '@/lib/misc';
@@ -28,6 +29,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setAdmin,
     setInstitute,
     setStudent,
+    setFaculty,
   } = useSessionStore();
 
   const { snackbar } = useUIStore();
@@ -115,6 +117,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             _loggedInUser.LoggedInUserId,
           );
           setStudent(studentData || null);
+        } else if (_loggedInUser.LoggedInUserType === 'faculty') {
+          const facultyData = await DbFaculty.getFacultyById(
+            _loggedInUser.LoggedInUserId,
+          );
+          setFaculty(facultyData || null);
         }
 
         setIsLoading(false);
