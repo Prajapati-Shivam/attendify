@@ -1,12 +1,4 @@
-import { Button } from '@/components/ui/button';
-
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '../../ui/dialog';
+import DialogDrawer from './DialogDrawer';
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -26,38 +18,16 @@ const ConfirmDialog = ({
   children,
 }: ConfirmDialogProps) => {
   return (
-    <Dialog open={open} onOpenChange={setOpened} modal>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-        </DialogHeader>
-
-        {children}
-        <DialogFooter>
-          <Button
-            variant="outline"
-            className="mt-4 hover:border-blueButtonHoverBg sm:mr-2 sm:mt-0"
-            onClick={() => {
-              setOpened(false);
-              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-              negativeCallback && negativeCallback();
-            }}
-          >
-            Cancel
-          </Button>
-
-          <Button
-            className="hover:bg-blueButtonHoverBg"
-            onClick={() => {
-              setOpened(false);
-              positiveCallback();
-            }}
-          >
-            Okay
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <DialogDrawer
+      opened={open}
+      setOpened={setOpened}
+      title={title}
+      positiveCallback={positiveCallback}
+      isDialogFooterReq
+      negativeCallback={negativeCallback}
+    >
+      {children}
+    </DialogDrawer>
   );
 };
 
