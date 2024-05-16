@@ -130,10 +130,25 @@ const AttendanceView = (props: Props) => {
   return (
     <PageContainer>
       <PageHeader route="attendance_sheets">Attendance Details</PageHeader>
-      <div className="mt-5 flex flex-col">
-        <div>Class: {attendanceSheetData?.AttendanceClassName}</div>
-        <div>Subject: {attendanceSheetData?.AttendanceSubjectName}</div>
-        <div>Faculty: {attendanceSheetData?.AttendanceFacultyName}</div>
+      <div className="mt-5 flex flex-col bg-white p-4 dark:bg-surfaceDark">
+        <div>
+          <span className="text-xl">Class:</span>
+          <span className="ml-2 text-base text-gray-500 dark:text-gray-400">
+            {attendanceSheetData?.AttendanceClassName}
+          </span>
+        </div>
+        <div>
+          <span className="text-xl">Subject:</span>
+          <span className="ml-2 text-base text-gray-500 dark:text-gray-400">
+            {attendanceSheetData?.AttendanceSubjectName}
+          </span>
+        </div>
+        <div>
+          <span className="text-xl">Faculty:</span>
+          <span className="ml-2 text-base text-gray-500 dark:text-gray-400">
+            {attendanceSheetData?.AttendanceFacultyName}
+          </span>
+        </div>
       </div>
       <div
         className="mt-10 
