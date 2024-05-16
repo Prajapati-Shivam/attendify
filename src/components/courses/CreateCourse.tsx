@@ -17,14 +17,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer';
-import {
   Form,
   FormControl,
   FormField,
@@ -38,6 +30,7 @@ import { errorHandler } from '@/lib/CustomError';
 import { showSnackbar } from '@/lib/TsxUtils';
 import { useSessionStore } from '@/store';
 
+import DialogDrawer from '../common/dialogs/DialogDrawer';
 import LoaderDialog from '../common/dialogs/LoaderDialog';
 
 const courseFormSchema = z.object({
@@ -52,7 +45,6 @@ const courseFormSchema = z.object({
 export type CourseFormFields = z.infer<typeof courseFormSchema>;
 
 export function CreateCourse() {
-  const [open, setOpen] = useState(false);
   const form = useForm<CourseFormFields>({
     resolver: zodResolver(courseFormSchema),
     defaultValues: {
@@ -156,63 +148,62 @@ export function CreateCourse() {
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
+    <DialogDrawer
+      opened={opened}
+      setOpened={setOpened}
+      title="Create Subject"
+      trigger={
         <Button className="mt-5 hover:bg-blueButtonHoverBg">
           Create Course
         </Button>
-      </DrawerTrigger>
-      <DrawerContent className="sm:max-w-[425px]">
-        <DrawerHeader>
-          <DrawerTitle>Create Course</DrawerTitle>
-          <DrawerClose />
-        </DrawerHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-4 px-4"
-          >
-            <FormField
-              control={form.control}
-              name="fullName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Course Full Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="shortName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Course Short Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder=""
-                      {...field}
-                      className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full hover:bg-blueButtonHoverBg">
-              Create
-            </Button>
-          </form>
-          <LoaderDialog loading={loading} title="Loading..." />
-        </Form>
-      </DrawerContent>
-    </Drawer>
+      }
+      positiveCallback={form.handleSubmit(onSubmit)}
+    >
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-y-4 px-4"
+        >
+          <FormField
+            control={form.control}
+            name="fullName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Course Full Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder=""
+                    {...field}
+                    className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="shortName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Course Short Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder=""
+                    {...field}
+                    className="border-inputBorderLight dark:border-inputBorderDark dark:bg-primaryVariantDark"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full hover:bg-blueButtonHoverBg">
+            Create
+          </Button>
+        </form>
+        <LoaderDialog loading={loading} title="Loading..." />
+      </Form>
+    </DialogDrawer>
   );
 }
